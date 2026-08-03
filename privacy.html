@@ -93,9 +93,19 @@
 <h2>Удаление данных</h2>
 
 <p>Историю расшифровок можно очистить внутри приложения. Удаление
-приложения с телефона удаляет вместе с ним всё: историю, настройки,
-журнал диагностики и файлы моделей. Копий у нас нет — забирать назад
-нечего, потому что мы ничего не забирали.</p>
+приложения с телефона уносит вместе с ним историю, настройки, журнал
+диагностики и файлы моделей.</p>
+
+<p>Ключи сторонних сервисов — отдельный случай, и сказать о нём стоит
+прямо. iOS хранит их в Keychain, а Keychain переживает удаление
+приложения: кода, который сработал бы в момент удаления, у приложения
+нет вовсе — так устроена система, а не наш выбор. Поэтому «Scribla»
+стирает ключи при первом запуске после новой установки. Если вы хотите
+убрать их сразу, очистите поле ключа в настройках до того, как удалять
+приложение.</p>
+
+<p>Копий у нас нет — забирать назад нечего, потому что мы ничего
+не забирали.</p>
 
 <h2>Дети</h2>
 
@@ -185,9 +195,18 @@ read or transmit what you type on ordinary keys.</p>
 <h2>Deleting data</h2>
 
 <p>Transcript history can be cleared inside the app. Deleting the app from
-the phone removes everything with it: history, settings, the diagnostics log
-and the model files. We hold no copies — there is nothing to take back,
-because we never took anything.</p>
+the phone takes the history, the settings, the diagnostics log and the model
+files with it.</p>
+
+<p>Third-party service keys are a separate case, and it deserves to be said
+plainly. iOS keeps them in the Keychain, and the Keychain outlives the app's
+deletion: an app has no code that runs at the moment it is deleted — that is
+how the system works, not a choice of ours. So Scribla erases the keys on the
+first launch after a new install. If you want them gone right away, clear the
+key field in the settings before deleting the app.</p>
+
+<p>We hold no copies — there is nothing to take back, because we never took
+anything.</p>
 
 <h2>Children</h2>
 
