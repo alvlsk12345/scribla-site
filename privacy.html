@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scribla — политика приватности</title>
+<style>
+  :root { color-scheme: light dark; }
+  body {
+    max-width: 42rem; margin: 0 auto; padding: 2rem 1.25rem 4rem;
+    font: 17px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  }
+  h1 { font-size: 1.7rem; margin: 0 0 .25rem; }
+  h2 { font-size: 1.15rem; margin: 2.25rem 0 .5rem; }
+  .updated { opacity: .6; font-size: .9rem; margin: 0 0 2rem; }
+  ul { padding-left: 1.2rem; }
+  li { margin: .35rem 0; }
+  hr { border: 0; border-top: 1px solid; opacity: .15; margin: 3.5rem 0; }
+  code { font-size: .95em; opacity: .85; }
+  a { color: #c2410c; }
+  @media (prefers-color-scheme: dark) { a { color: #fb923c; } }
+</style>
+</head>
+<body>
+
+<h1>Scribla — политика приватности</h1>
+<p class="updated">Обновлено 2 августа 2026 года</p>
+
+<p>Scribla — приложение для диктовки на iPhone: клавиатура и приложение-движок,
+которое превращает речь в текст. Эта страница объясняет, что происходит
+с вашими данными. Коротко: распознавание идёт на самом телефоне, звук
+не сохраняется нигде и никуда не отправляется.</p>
+
+<h2>Что остаётся на устройстве</h2>
+<ul>
+  <li><b>Звук.</b> Запись живёт в оперативной памяти кольцевым буфером
+      и затирается следующей. На диск она не пишется даже временно
+      и с телефона не уходит никогда — ни в каком режиме.</li>
+  <li><b>Распознавание речи.</b> Работает целиком на устройстве, моделью
+      внутри приложения. Сети в этом контуре нет вовсе.</li>
+  <li><b>История расшифровок.</b> Только текст, только в памяти телефона,
+      в защищённом контейнере приложения. Сколько записей хранить —
+      ваша настройка; любую запись и всю историю можно удалить.</li>
+  <li><b>Ключи сторонних сервисов</b>, если вы их вводите, лежат в Keychain
+      с классом «только это устройство, только после разблокировки».
+      В резервные копии в открытом виде они не попадают и в журнал
+      диагностики не пишутся.</li>
+</ul>
+
+<h2>Что уходит с устройства и когда</h2>
+
+<p>Ничего из перечисленного ниже не происходит само: каждый случай —
+это возможность, которую включаете вы.</p>
+
+<ul>
+  <li><b>Полировка текста, ответы AI и запасной перевод.</b> Если они
+      включены, распознанный текст отправляется выбранному сервису:
+      встроенному провайдеру (<code>ollama.com</code>, на ключе разработчика)
+      либо OpenAI или DeepSeek — на вашем собственном ключе. Что эти
+      сервисы делают с полученным текстом, определяют их собственные
+      правила, а не наши.</li>
+  <li><b>Поиск в интернете.</b> Если он включён, ваш вопрос отправляется
+      поисковому сервису <code>ollama.com</code>, и найденные страницы
+      подкладываются модели вместе с вопросом.</li>
+  <li><b>Курсы валют.</b> Приложение запрашивает опубликованные курсы
+      у Банка России (<code>cbr.ru</code>). Никаких ваших данных
+      в запросе нет — это обращение за общедоступной таблицей.</li>
+  <li><b>Загрузка английской модели.</b> По вашей команде файлы модели
+      скачиваются с <code>github.com</code>. Ваших данных в запросе нет.</li>
+</ul>
+
+<h2>Клавиатура и полный доступ</h2>
+
+<p>Клавиатура «Scribla» просит полный доступ, и это стоит объяснить прямо,
+потому что формулировка системного предупреждения звучит тревожно.</p>
+
+<p>Полный доступ нужен клавиатуре ровно для одного: прочитать распознанный
+текст из общего контейнера, куда его положило наше же приложение.
+Другого канала доставки текста в клавиатуру у iOS нет. Сама клавиатура
+в сеть не выходит ни при каких условиях: сетевого кода в ней нет.
+Она не читает и не передаёт то, что вы печатаете обычными клавишами.</p>
+
+<h2>Чего нет вовсе</h2>
+<ul>
+  <li>Аналитики и счётчиков посещений.</li>
+  <li>Рекламы и рекламных идентификаторов.</li>
+  <li>Отслеживания между приложениями и сайтами.</li>
+  <li>Передачи данных брокерам или третьим лицам ради их целей.</li>
+  <li>Учётных записей: регистрироваться в Scribla негде и незачем.</li>
+  <li>Сторонних библиотек аналитики и крэш-репортинга.</li>
+</ul>
+
+<h2>Удаление данных</h2>
+
+<p>Историю расшифровок можно очистить внутри приложения. Удаление
+приложения с телефона удаляет вместе с ним всё: историю, настройки,
+журнал диагностики и файлы моделей. Копий у нас нет — забирать назад
+нечего, потому что мы ничего не забирали.</p>
+
+<h2>Дети</h2>
+
+<p>Приложение не адресовано детям и не собирает данные о них — как,
+впрочем, и о ком-либо ещё.</p>
+
+<h2>Изменения</h2>
+
+<p>Если в приложении появится возможность, меняющая обращение с данными,
+эта страница будет обновлена, а дата вверху — изменена.</p>
+
+<h2>Связь</h2>
+
+<p>Вопросы о приватности: <a href="mailto:dev@scribla.io">dev@scribla.io</a></p>
+
+<hr>
+
+<h1 lang="en">Scribla — Privacy Policy</h1>
+<p class="updated" lang="en">Updated 2 August 2026</p>
+
+<div lang="en">
+
+<p>Scribla is a dictation app for iPhone: a keyboard plus an engine app that
+turns speech into text. This page explains what happens to your data.
+In short: recognition runs on the phone itself, and audio is never stored
+anywhere and never sent anywhere.</p>
+
+<h2>What stays on the device</h2>
+<ul>
+  <li><b>Audio.</b> The recording lives in memory as a ring buffer and is
+      overwritten by the next one. It is never written to disk, not even
+      temporarily, and never leaves the phone — in any mode.</li>
+  <li><b>Speech recognition.</b> Runs entirely on the device, with a model
+      inside the app. There is no network in that path at all.</li>
+  <li><b>Transcript history.</b> Text only, in the phone's protected app
+      container. How many entries to keep is your setting; any entry and
+      the whole history can be deleted.</li>
+  <li><b>Third-party service keys</b>, if you enter any, live in the Keychain
+      with the "this device only, after first unlock" class. They do not
+      appear in backups in the clear and are never written to the
+      diagnostics log.</li>
+</ul>
+
+<h2>What leaves the device, and when</h2>
+
+<p>None of the following happens on its own: each one is a feature you
+turn on.</p>
+
+<ul>
+  <li><b>Text polishing, AI answers and fallback translation.</b> When
+      enabled, the recognised text is sent to the service you picked:
+      the built-in provider (<code>ollama.com</code>, on the developer's key),
+      or OpenAI or DeepSeek on your own key. What those services do with
+      the text is governed by their own terms, not ours.</li>
+  <li><b>Web search.</b> When enabled, your question is sent to the
+      <code>ollama.com</code> search service, and the pages found are given
+      to the model along with the question.</li>
+  <li><b>Currency rates.</b> The app requests published rates from the Bank
+      of Russia (<code>cbr.ru</code>). The request contains none of your data —
+      it fetches a public table.</li>
+  <li><b>English model download.</b> On your command, model files are
+      downloaded from <code>github.com</code>. The request contains none of
+      your data.</li>
+</ul>
+
+<h2>The keyboard and Full Access</h2>
+
+<p>The Scribla keyboard asks for Full Access, and that deserves a plain
+explanation, because the system warning sounds alarming.</p>
+
+<p>Full Access is needed for exactly one thing: to read the recognised text
+from the shared container, where our own app put it. iOS offers no other
+channel for delivering text into a keyboard. The keyboard itself never goes
+online under any circumstances — it contains no networking code. It does not
+read or transmit what you type on ordinary keys.</p>
+
+<h2>What there is none of</h2>
+<ul>
+  <li>Analytics or usage counters.</li>
+  <li>Advertising or advertising identifiers.</li>
+  <li>Tracking across apps and websites.</li>
+  <li>Sharing data with brokers or third parties for their own purposes.</li>
+  <li>Accounts: there is nowhere and no reason to register in Scribla.</li>
+  <li>Third-party analytics or crash-reporting libraries.</li>
+</ul>
+
+<h2>Deleting data</h2>
+
+<p>Transcript history can be cleared inside the app. Deleting the app from
+the phone removes everything with it: history, settings, the diagnostics log
+and the model files. We hold no copies — there is nothing to take back,
+because we never took anything.</p>
+
+<h2>Children</h2>
+
+<p>The app is not directed at children and collects no data about them —
+nor, for that matter, about anyone else.</p>
+
+<h2>Changes</h2>
+
+<p>If a feature appears that changes how data is handled, this page will be
+updated and the date at the top changed.</p>
+
+<h2>Contact</h2>
+
+<p>Privacy questions: <a href="mailto:dev@scribla.io">dev@scribla.io</a></p>
+
+</div>
+
+</body>
+</html>
