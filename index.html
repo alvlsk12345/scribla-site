@@ -3,114 +3,363 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Scribla — поддержка</title>
-<style>
-  :root { color-scheme: light dark; }
-  body {
-    max-width: 40rem; margin: 0 auto; padding: 3rem 1.25rem 4rem;
-    font: 17px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-  }
-  h1 { font-size: 2rem; margin: 0 0 .35rem; }
-  .tagline { font-size: 1.05rem; opacity: .75; margin: 0 0 2.5rem; }
-  h2 { font-size: 1.1rem; margin: 2.25rem 0 .5rem; }
-  ul { padding-left: 1.2rem; }
-  li { margin: .35rem 0; }
-  a { color: #c2410c; }
-  @media (prefers-color-scheme: dark) { a { color: #fb923c; } }
-  hr { border: 0; border-top: 1px solid; opacity: .15; margin: 3.5rem 0; }
-  .footer { margin-top: 3rem; font-size: .9rem; opacity: .6; }
-</style>
+<title>Scribla — диктовка для iPhone: пишет, считает, переводит</title>
+<meta name="description" content="Клавиатура-диктовка для iPhone. Нажали на Дьяка, сказали — текст встал в поле любого приложения. Распознавание внутри телефона, звук никуда не уходит.">
+<link rel="canonical" href="https://scribla.io/">
+<link rel="alternate" hreflang="ru" href="https://scribla.io/">
+<link rel="alternate" hreflang="en" href="https://scribla.io/en/">
+<link rel="icon" href="assets/brand/scribla-appicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/brand/AppIcon-1024.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Scribla — мысль быстрее пальцев">
+<meta property="og:description" content="Диктовка для iPhone. Нажали на Дьяка, сказали — текст в поле. Распознавание внутри телефона.">
+<meta property="og:url" content="https://scribla.io/">
+<meta name="theme-color" content="#F5EDE3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#17100D" media="(prefers-color-scheme: dark)">
+<link rel="stylesheet" href="assets/site.css">
 </head>
 <body>
 
-<h1>Scribla</h1>
-<p class="tagline">Мысль быстрее пальцев. Диктовка на iPhone: пишет, считает,
-переводит — с голоса, прямо на устройстве.</p>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/">
+      <img class="mark" src="assets/brand/scribla-avatar.svg" alt="" width="32" height="32">
+      <picture>
+        <source srcset="assets/brand/scribla-wordmark-white.svg" media="(prefers-color-scheme: dark)">
+        <img class="word" src="assets/brand/scribla-wordmark.svg" alt="Scribla">
+      </picture>
+    </a>
+    <nav class="nav">
+      <a href="#umeet">Что умеет</a>
+      <a href="#privacy">Приватность</a>
+      <a href="#support">Поддержать</a>
+      <a href="#versions">Версии</a>
+      <a href="#feedback">Написать</a>
+    </nav>
+    <div class="lang">
+      <a href="/" aria-current="page">RU</a>
+      <a href="/en/">EN</a>
+    </div>
+  </div>
+</header>
 
-<h2>Как это работает</h2>
-<p>Scribla — это клавиатура. Вы переключаетесь на неё в любом приложении,
-нажимаете на Дьяка и говорите; текст появляется в поле ввода.
-Распознавание идёт внутри телефона, звук никуда не отправляется.</p>
+<main>
 
-<h2>Частые вопросы</h2>
+<!-- ============================================ первый экран -->
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <picture>
+        <source srcset="assets/brand/scribla-wordmark-white.svg" media="(prefers-color-scheme: dark)">
+        <img class="hero-word" src="assets/brand/scribla-wordmark.svg" alt="Scribla" width="420" height="76">
+      </picture>
+      <h1>Мысль быстрее пальцев</h1>
+      <p class="lead">Диктовка для iPhone, которая работает в любом приложении.
+        Нажали на Дьяка, сказали — текст встал в поле. Распознавание идёт
+        внутри телефона: звук никуда не уходит.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#support">Поддержать разработку</a>
+        <a class="btn btn-ghost" href="#versions">Узнать о выходе</a>
+      </div>
+    </div>
 
-<p><b>Клавиатура просит полный доступ — это безопасно?</b><br>
-Полный доступ нужен ровно для одного: прочитать распознанный текст
-из общего хранилища, куда его положило само приложение «Scribla».
-Другого способа доставить текст в клавиатуру iOS не даёт. Сама клавиатура
-в сеть не выходит и не читает то, что вы печатаете обычными клавишами.
-Подробнее — в <a href="privacy.html">политике приватности</a>.</p>
+    <!-- Демонстрация, а не описание: сверху речь, как её услышали,
+         снизу то, что встало в поле. Примеры настоящие. -->
+    <div class="phone" aria-hidden="true">
+      <div class="phone-screen">
+        <div class="chat" data-chat></div>
+        <div class="kbd">
+          <div class="kbd-row"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="kbd-row"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="kbd-row"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="kbd-mic" data-mic><img src="assets/brand/scribla-avatar.svg" alt="" width="52" height="52"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-<p><b>Почему горит оранжевая точка?</b><br>
-Микрофон открывается заранее: из фона iOS начать запись не разрешает,
-а без открытого микрофона нажатие на кнопку не начало бы диктовку.
-Пока вы не нажали кнопку, звук никуда не идёт и нигде не сохраняется.
-Когда микрофон отпускать — ваша настройка: от пяти минут до «никогда».</p>
+<!-- ============================================ как это работает -->
+<section id="how">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Как это работает</p>
+      <h2>Три шага, и то первый — один раз</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <h3>Включить клавиатуру</h3>
+        <p>Настройки → Основные → Клавиатура → Клавиатуры → Scribla.
+          Минута, и больше к этому возвращаться не нужно.</p>
+      </div>
+      <div class="step">
+        <h3>Переключиться и нажать на Дьяка</h3>
+        <p>В любом приложении, где есть поле ввода: мессенджер, почта,
+          заметки, поиск.</p>
+      </div>
+      <div class="step">
+        <h3>Говорить</h3>
+        <p>Текст встанет в поле сам. Если распознало не то — полоса правки
+          рядом, слово меняется отдельно, всю фразу переписывать не нужно.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-<p><b>Клавиатура не видит текст.</b><br>
-Скорее всего не включён полный доступ: Настройки → Основные → Клавиатура →
-Клавиатуры → Scribla. Проверить можно на главном экране приложения —
-там список шагов с отметками.</p>
+<!-- ============================================ что умеет -->
+<section id="umeet">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Что умеет</p>
+      <h2>Текст, который не надо причёсывать</h2>
+      <p class="lead">Расшифровка отдаёт поток слов без знаков. Scribla отдаёт
+        то, что можно отправить.</p>
+    </div>
+    <div class="cards">
 
-<p><b>Микрофон перестал работать.</b><br>
-Откройте «Scribla» и нажмите «Открыть микрофон» на главном экране.
-Такое бывает, когда микрофон забрало другое приложение — звонок,
-диктофон или другая клавиатура.</p>
+      <div class="card">
+        <h3>Диктовка на устройстве</h3>
+        <p>Русский и английский. Распознавание работает внутри iPhone —
+          и потому без интернета тоже.</p>
+      </div>
 
-<h2>Написать нам</h2>
-<p>Вопрос, ошибка, пожелание: <a href="mailto:alvlsk@me.com">alvlsk@me.com</a><br>
-Отвечаем на русском и по-английски.</p>
+      <div class="card">
+        <h3>Чистка речи</h3>
+        <p>«Ну», «э-э» и повторы уходят. Знаки и заглавные ставятся по
+          правилам языка, а не наугад.</p>
+        <div class="ex">ну э-э аида доброе утро спасибо большое
+          <b>Аида, доброе утро! Спасибо большое.</b></div>
+      </div>
 
-<p><a href="privacy.html">Политика приватности</a></p>
+      <div class="card">
+        <h3>Словарь «слышится → пишется»</h3>
+        <p>Имена, термины и сокращения распознавание ломает одинаково каждый
+          раз. Напишите один раз, как надо, — дальше будет так.</p>
+        <div class="ex">пришлите эн-ди-эй до пятницы
+          <b>Пришлите NDA до пятницы.</b></div>
+      </div>
 
-<hr>
+      <div class="card">
+        <h3>Счёт и проценты</h3>
+        <p>Считает на устройстве, интернет не нужен.</p>
+        <div class="ex">пятнадцать процентов от двух тысяч четырёхсот
+          <b>360</b></div>
+      </div>
 
-<div lang="en">
+      <div class="card">
+        <h3>Перевод</h3>
+        <p>Говорите по-русски — в поле встанет по-английски. Удобно, когда
+          думать на чужом языке дольше, чем сказать на своём.</p>
+      </div>
 
-<h1>Scribla</h1>
-<p class="tagline">Faster than your fingers. Dictation for iPhone: it writes,
-calculates and translates from your voice, right on the device.</p>
+      <div class="card">
+        <h3>Ответы и полировка</h3>
+        <p>Ответить на сообщение, а не только записать своё. И превратить
+          длинную мысль вслух в письменный текст с абзацами.</p>
+      </div>
 
-<h2>How it works</h2>
-<p>Scribla is a keyboard. Switch to it in any app, tap the scribe and speak;
-the text appears in the input field. Recognition happens inside the phone
-and audio is never sent anywhere.</p>
+    </div>
+  </div>
+</section>
 
-<h2>Common questions</h2>
+<!-- ============================================ приватность -->
+<section id="privacy" class="privacy">
+  <div class="wrap">
+    <div>
+      <p class="eyebrow">Приватность</p>
+      <h2>Звук никуда не уходит</h2>
+      <p class="lead">Отправлять запись просто некуда — так устроен продукт,
+        а не написано мелким шрифтом в политике.</p>
+      <ul class="facts">
+        <li>Распознавание идёт <b>внутри iPhone</b>. Записи не уходят на серверы
+          и нигде не сохраняются.</li>
+        <li>Клавиатура <b>в сеть не выходит</b> и не читает то, что вы печатаете
+          обычными клавишами.</li>
+        <li>Полный доступ нужен ровно для одного — забрать распознанный текст
+          из общего хранилища, куда его положило само приложение.
+          <b>Другого способа iOS не даёт.</b></li>
+        <li>Оранжевая точка горит потому, что микрофон открывается заранее:
+          из фона iOS начать запись не разрешает. <b>Пока вы не нажали кнопку,
+          звук никуда не идёт.</b></li>
+        <li>Единственное исключение — <b>режимы с AI</b>: там текст уходит
+          к модели. Они выключены по умолчанию, включаются вручную, и об этом
+          сказано на самом переключателе.</li>
+      </ul>
+      <p class="note"><a href="privacy.html">Политика приватности целиком</a></p>
+    </div>
+    <img src="assets/brand/scribla-dyak.svg" alt="" width="240" height="240">
+  </div>
+</section>
 
-<p><b>The keyboard asks for Full Access — is that safe?</b><br>
-Full Access is needed for exactly one thing: to read the recognised text
-from the shared container, where the Scribla app itself put it. iOS offers
-no other way to deliver text into a keyboard. The keyboard never goes online
-and does not read what you type on ordinary keys. Details are in the
-<a href="privacy.html">privacy policy</a>.</p>
+<!-- ============================================ поддержать -->
+<section id="support">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Поддержать</p>
+      <h2>Scribla бесплатна, и разработку никто не оплачивает</h2>
+      <p class="lead">Её делает один человек в свободное время. Перевод —
+        не покупка: он ничего не открывает и ни к чему не обязывает.
+        Просто спасибо.</p>
+    </div>
 
-<p><b>Why is the orange dot on?</b><br>
-The microphone is opened ahead of time: iOS does not allow starting a
-recording from the background, and without an open microphone a tap on the
-button could not begin dictation. Until you tap, no audio goes anywhere and
-nothing is stored. When to release the microphone is your setting — from
-five minutes to never.</p>
+    <div class="panel panel-wide">
+      <div class="amounts" role="group" aria-label="Сумма перевода">
+        <button class="amount" type="button" data-amount="100" aria-pressed="false">100&nbsp;₽</button>
+        <button class="amount" type="button" data-amount="1000" aria-pressed="false">1 000&nbsp;₽</button>
+        <button class="amount" type="button" data-amount="custom" aria-pressed="false">Своя сумма</button>
+      </div>
+      <div class="field" data-custom hidden>
+        <label for="amt">Сколько</label>
+        <input id="amt" type="number" min="10" max="100000" step="10" placeholder="500" inputmode="numeric">
+      </div>
+      <a class="btn btn-primary" data-donate href="#" aria-disabled="true">Перевести через СБП</a>
+      <p class="note">Оплата проходит на стороне банка — карту вводите там,
+        сюда её данные не попадают.</p>
+    </div>
+  </div>
+</section>
 
-<p><b>The keyboard doesn't see any text.</b><br>
-Most likely Full Access is off: Settings → General → Keyboard → Keyboards →
-Scribla. You can check on the app's main screen — it lists the setup steps
-with their marks.</p>
+<!-- ============================================ версии -->
+<section id="versions">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Версии</p>
+      <h2>Что нового</h2>
+    </div>
+    <div class="releases">
+      <div class="rel">
+        <div class="rel-v">1.0.0<span class="rel-d">готовится</span></div>
+        <div>
+          <span class="status">Подаётся в App&nbsp;Store</span>
+          <ul>
+            <li>Диктовка на устройстве: русский и английский</li>
+            <li>Чистка речи, знаки препинания и заглавные по правилам</li>
+            <li>Словарь «слышится → пишется» с буквенной раскладкой в клавиатуре</li>
+            <li>Полоса правки: слово меняется без переписывания фразы</li>
+            <li>Счёт, перевод, ответы и полировка текста</li>
+            <li>Знакомство из шести страниц, его можно пересмотреть из настроек</li>
+          </ul>
+        </div>
+      </div>
+    </div>
 
-<p><b>The microphone stopped working.</b><br>
-Open Scribla and tap "Open the microphone" on the main screen. This happens
-when another app takes the microphone — a call, a recorder or another
-keyboard.</p>
+    <div class="panel notify">
+      <form data-notify novalidate>
+        <div class="field">
+          <label for="nt-email">Напишем, когда выйдет</label>
+          <input id="nt-email" type="email" name="email" required autocomplete="email"
+                 placeholder="вы@почта.ру" spellcheck="false">
+          <span class="hint">Одно письмо на выход версии. Рассылок нет, адрес
+            никому не передаём.</span>
+        </div>
+        <button class="btn btn-primary" type="submit">Сообщить мне</button>
+        <div class="msg" data-notify-msg role="status"></div>
+      </form>
+    </div>
+  </div>
+</section>
 
-<h2>Get in touch</h2>
-<p>Questions, bugs, requests: <a href="mailto:alvlsk@me.com">alvlsk@me.com</a><br>
-We reply in English and Russian.</p>
+<!-- ============================================ отзывы -->
+<section id="feedback">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Обратная связь</p>
+      <h2>Что поправить, чего не хватает</h2>
+      <p class="lead">Scribla делает один человек, и почти всё в ней появилось
+        из чьей-то жалобы. Пишите не стесняясь — короткое и злое полезнее
+        вежливого и общего.</p>
+    </div>
 
-<p><a href="privacy.html">Privacy policy</a></p>
+    <div class="panel">
+      <form data-feedback novalidate>
+        <div class="field">
+          <label for="fb-text">Сообщение</label>
+          <textarea id="fb-text" name="message" required maxlength="2000"
+                    placeholder="Что случилось, чего ждали и что получилось вместо этого."></textarea>
+          <span class="counter"><b data-fb-count>0</b> / 2 000</span>
+        </div>
+        <div class="field">
+          <label for="fb-email">Почта <span class="hint">— если ждёте ответа</span></label>
+          <input id="fb-email" type="email" name="email" autocomplete="email"
+                 placeholder="необязательно" spellcheck="false">
+        </div>
+        <button class="btn btn-primary" type="submit">Отправить</button>
+        <div class="msg" data-fb-msg role="status"></div>
+      </form>
+    </div>
+  </div>
+</section>
 
-</div>
+<!-- ============================================ вопросы -->
+<section id="faq">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Вопросы</p>
+      <h2>Спрашивают чаще всего</h2>
+    </div>
+    <div class="faq">
+      <details>
+        <summary>Сколько это стоит?</summary>
+        <p>Сейчас нисколько — открыто всё. Появится ли что-то платное, решится
+          позже и по делу: сперва надо понять, нужна ли Scribla кому-то, кроме
+          автора. Если такой день настанет, о нём скажут заранее, а не в день
+          включения.</p>
+      </details>
+      <details>
+        <summary>Клавиатура просит полный доступ — это безопасно?</summary>
+        <p>Полный доступ нужен ровно для одного: прочитать распознанный текст
+          из общего хранилища, куда его положило само приложение Scribla.
+          Другого способа доставить текст в клавиатуру iOS не даёт. Сама
+          клавиатура в сеть не выходит и не читает то, что вы печатаете
+          обычными клавишами.</p>
+      </details>
+      <details>
+        <summary>Почему горит оранжевая точка?</summary>
+        <p>Микрофон открывается заранее: из фона iOS начать запись не
+          разрешает, а без открытого микрофона нажатие на кнопку не начало бы
+          диктовку. Пока вы не нажали кнопку, звук никуда не идёт и нигде не
+          сохраняется. Когда микрофон отпускать — ваша настройка: от пяти
+          минут до «никогда».</p>
+      </details>
+      <details>
+        <summary>Клавиатура не видит текст</summary>
+        <p>Скорее всего не включён полный доступ: Настройки → Основные →
+          Клавиатура → Клавиатуры → Scribla. Проверить можно на главном экране
+          приложения — там список шагов с отметками.</p>
+      </details>
+      <details>
+        <summary>Микрофон перестал работать</summary>
+        <p>Откройте Scribla и нажмите «Открыть микрофон» на главном экране.
+          Такое бывает, когда микрофон забрало другое приложение — звонок,
+          диктофон или другая клавиатура.</p>
+      </details>
+      <details>
+        <summary>Нужен ли интернет?</summary>
+        <p>Для диктовки, чистки речи, словаря замен и счёта — нет, всё это
+          работает на устройстве. Интернет нужен только режимам с AI:
+          ответам и полировке текста.</p>
+      </details>
+    </div>
+  </div>
+</section>
 
-<p class="footer">© 2026 alvlsk12345</p>
+</main>
 
+<footer>
+  <div class="wrap">
+    <div>
+      <p style="margin:0 0 .4rem">Scribla — диктовка для iPhone.
+        Делает один человек.</p>
+      <p style="margin:0">© 2026 alvlsk12345 · <a href="mailto:alvlsk@me.com">alvlsk@me.com</a></p>
+    </div>
+    <div class="f-links">
+      <a href="privacy.html">Политика приватности</a>
+      <a href="support.html">Поддержка</a>
+      <a href="/en/">English</a>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
 </body>
 </html>
