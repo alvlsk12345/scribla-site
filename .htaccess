@@ -1,0 +1,57 @@
+# Scribla — правила для Apache на общем хостинге Timeweb.
+
+# ---------------------------------------------------------------- адреса
+# Фронтенд обращается к /api/notify, а на диске лежит /api/notify.php.
+# Так один и тот же скрипт страницы работает и здесь, и на Node —
+# отличаются только внутренности сервера, а не адреса.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # На HTTPS переводим только когда точно знаем, что пришли по HTTP.
+  # Условие намеренно строгое: ошибка здесь даёт бесконечный цикл
+  # и кладёт сайт целиком, а сертификат тут и так стоит.
+  RewriteCond %{HTTP:X-Forwarded-Proto} =http
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+  RewriteRule ^api/(notify|feedback|admin)/?$ api/$1.php [L]
+</IfModule>
+
+# ---------------------------------------------------------------- закрытое
+# Внутренности API, тесты и файлы Node-версии в вебе не нужны.
+<IfModule mod_rewrite.c>
+  RewriteRule ^api/lib/ - [F,L]
+  RewriteRule ^(test|lib|\.git|\.claude)/ - [F,L]
+  RewriteRule ^(server\.js|package\.json|package-lock\.json|\.gitignore)$ - [F,L]
+</IfModule>
+
+<FilesMatch "^\.">
+  Require all denied
+</FilesMatch>
+
+Options -Indexes
+
+# ---------------------------------------------------------------- мелочи
+DirectoryIndex index.html index.htm
+
+AddDefaultCharset UTF-8
+<IfModule mod_mime.c>
+  AddType font/woff2 .woff2
+  AddType image/svg+xml .svg
+</IfModule>
+
+# Шрифты и картинки именованы навсегда — их можно держать долго.
+# HTML нельзя: иначе правка текста доедет до людей через год.
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType font/woff2    "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType image/png     "access plus 1 year"
+  ExpiresByType text/css      "access plus 7 days"
+  ExpiresByType text/javascript "access plus 7 days"
+  ExpiresByType text/html     "access plus 0 seconds"
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
