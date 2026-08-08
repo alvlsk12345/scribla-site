@@ -112,7 +112,8 @@ function fetch(string $url): ?string
         ]);
         $out = curl_exec($ch);
         $code = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
+        // curl_close() с PHP 8.0 ничего не делает, а с 8.5 ещё и ругается
+        // в вывод — предупреждение вклеивалось перед JSON и ломало ответ.
         if (is_string($out) && $code === 200) { return $out; }
     }
     if (ini_get('allow_url_fopen')) {
