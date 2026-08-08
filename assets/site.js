@@ -12,6 +12,32 @@
      страницу CloudTips. Пока пусто, кнопка не притворяется рабочей. */
   const DONATE_URL = '';
 
+  /* Страниц две, скрипт один. Язык берём из <html lang>, а не из адреса:
+     так строка остаётся верной, куда бы страницу ни переложили. */
+  const EN = document.documentElement.lang === 'en';
+
+  const T = EN ? {
+    sending:  'Sending…',
+    badEmail: 'Check the address — looks like a typo',
+    tooShort: 'Too short — two words don\'t say what happened',
+    offline:  'The server is not responding. Try later or write to alvlsk@me.com',
+    notifyOk: 'Noted. We\'ll write once — when it ships.',
+    feedbackOk: 'Thank you. Everything gets read.',
+    donateSoon: 'Donations open soon',
+    pickAmount: 'Choose an amount',
+    donate: n => `Send ${n} ₽`,
+  } : {
+    sending:  'Отправляем…',
+    badEmail: 'Проверьте адрес — похоже, в нём опечатка',
+    tooShort: 'Слишком коротко — из двух слов не понять, что случилось',
+    offline:  'Сервер не отвечает. Попробуйте позже или напишите на alvlsk@me.com',
+    notifyOk: 'Записали. Напишем один раз — когда выйдет.',
+    feedbackOk: 'Спасибо. Прочитаем всё.',
+    donateSoon: 'Приём переводов скоро откроется',
+    pickAmount: 'Выберите сумму',
+    donate: n => `Перевести ${n} ₽`,
+  };
+
   /* ---------------------------------------------------- шапка */
 
   const top = $('.top');
@@ -24,7 +50,19 @@
      Примеры настоящие — так продукт и ведёт себя. Придумывать сюда
      красивое нельзя: первый же человек проверит и не найдёт. */
 
-  const DEMO = [
+  const DEMO = EN ? [
+    { tag: 'Dictation',  said: 'um so anna good morning thanks a lot',
+      text: 'Anna, good morning! Thanks a lot.' },
+    { tag: 'Dictionary', said: 'send the en dee ay by friday',
+      text: 'Send the NDA by Friday.' },
+    { tag: 'Maths',      said: 'fifteen percent of two thousand four hundred',
+      text: '360' },
+    /* Перевод показываем в ту сторону, в которую он и работает:
+       говорят по-русски, в поле встаёт по-английски. Придумать
+       обратный пример было бы красивее и неправдой. */
+    { tag: 'Translation', said: 'документы получены ответим до пятницы',
+      text: 'The documents have been received, we will reply by Friday.' },
+  ] : [
     { tag: 'Диктовка', said: 'ну э-э аида доброе утро спасибо большое',
       text: 'Аида, доброе утро! Спасибо большое.' },
     { tag: 'Словарь',  said: 'пришлите эн-ди-эй до пятницы',
@@ -85,7 +123,7 @@
   async function send(form, url, body, box, okText) {
     const btn = $('button[type=submit]', form);
     const was = btn.textContent;
-    btn.disabled = true; btn.textContent = 'Отправляем…';
+    btn.disabled = true; btn.textContent = T.sending;
     box.className = 'msg';
     try {
       const r = await fetch(url, {
@@ -94,14 +132,12 @@
         body: JSON.stringify(body),
       });
       const data = await r.json().catch(() => ({}));
-      if (!r.ok) throw new Error(data.error || 'Не получилось отправить');
+      if (!r.ok) throw new Error(data.error || (EN ? 'Could not send' : 'Не получилось отправить'));
       say(box, 'ok', data.message || okText);
       form.reset();
       return true;
     } catch (e) {
-      say(box, 'err', e.message === 'Failed to fetch'
-        ? 'Сервер не отвечает. Попробуйте позже или напишите на alvlsk@me.com'
-        : e.message);
+      say(box, 'err', e.message === 'Failed to fetch' ? T.offline : e.message);
       return false;
     } finally {
       btn.disabled = false; btn.textContent = was;
@@ -114,8 +150,8 @@
     const email = $('input[name=email]', notify).value.trim();
     const box = $('[data-notify-msg]');
     if (!/^[^@\s]+@[^@\s.]+\.[^@\s]{2,}$/.test(email))
-      return say(box, 'err', 'Проверьте адрес — похоже, в нём опечатка');
-    send(notify, '/api/notify', { email }, box, 'Записали. Напишем один раз — когда выйдет.');
+      return say(box, 'err', T.badEmail);
+    send(notify, '/api/notify', { email }, box, T.notifyOk);
   });
 
   const fb = $('[data-feedback]');
@@ -127,8 +163,8 @@
     const message = fbText.value.trim();
     const email = $('input[name=email]', fb).value.trim();
     if (message.length < 10)
-      return say(box, 'err', 'Слишком коротко — из двух слов не понять, что случилось');
-    send(fb, '/api/feedback', { message, email }, box, 'Спасибо. Прочитаем всё.');
+      return say(box, 'err', T.tooShort);
+    send(fb, '/api/feedback', { message, email }, box, T.feedbackOk);
   });
 
   /* ---------------------------------------------------- переводы */
@@ -140,8 +176,8 @@
     const ok = DONATE_URL && amount > 0;
     donate.setAttribute('aria-disabled', String(!ok));
     donate.href = ok ? DONATE_URL + (DONATE_URL.includes('?') ? '&' : '?') + 'amount=' + amount : '#';
-    donate.textContent = !DONATE_URL ? 'Приём переводов скоро откроется'
-      : amount ? `Перевести ${amount} ₽` : 'Выберите сумму';
+    donate.textContent = !DONATE_URL ? T.donateSoon
+      : amount ? T.donate(amount) : T.pickAmount;
   }
 
   $$('.amount').forEach(b => b.addEventListener('click', () => {

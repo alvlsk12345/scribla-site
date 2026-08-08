@@ -26,7 +26,7 @@ const REPO_DIR = 'scribla-site-main';
 
 /* Что раскладываем. Список закрытый: всё, чего в нём нет, на сервер
  * не попадёт, как бы оно ни называлось в архиве. */
-const TAKE = ['index.html', 'privacy.html', 'support.html', '.htaccess', 'assets', 'api'];
+const TAKE = ['index.html', 'privacy.html', 'support.html', '.htaccess', 'assets', 'api', 'en'];
 
 /* Каталоги, которые заменяются целиком. Иначе удалённый в репозитории
  * файл остался бы на сервере навсегда. `api` сюда не входит намеренно:
