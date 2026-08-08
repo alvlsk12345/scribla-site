@@ -158,23 +158,74 @@ section + section { border-top: 1px solid var(--line); }
 
 /* ---------------------------------------------------------- первый экран */
 
-.hero { padding-top: clamp(3rem, 7vw, 5rem); padding-bottom: clamp(3.5rem, 7vw, 6rem); }
-.hero .wrap { display: grid; gap: clamp(2.5rem, 5vw, 4rem); align-items: center; }
-@media (min-width: 940px) { .hero .wrap { grid-template-columns: 1fr 22rem; } }
+/* Первый экран — терракотовая карточка, та же, что на главном экране
+   приложения и на платёжной странице: Дьяк с пером, надпись, справа
+   телефон. Три поверхности продукта выглядят одной вещью.
+   Карточка одинакова в обеих темах — терракота не «светлая» и не
+   «тёмная», это цвет бренда; темнеет в тёмной теме лишь на полтона. */
 
-.hero-word { height: clamp(52px, 9vw, 76px); width: auto; display: block; margin-bottom: 1.6rem; }
-.hero h1 { margin-bottom: 1.1rem; }
-.hero .lead { max-width: 32rem; }
+.hero { padding-top: clamp(1.2rem, 3vw, 2.4rem); padding-bottom: clamp(3rem, 6vw, 5rem); }
+
+/* Фактура запечена в саму картинку: градиент терракоты, умноженный
+   на бумагу с платёжной страницы, — один JPEG на 32 КБ. Раньше это
+   делал mix-blend-mode прямо в CSS, и на нём давился композитор
+   Chromium: захват экрана чернел, стоило слою уйти за вьюпорт.
+   Страница при этом была живой — но приём, который валит снимки,
+   может валить и слабые устройства, поэтому блендов в CSS нет вовсе. */
+.hero-band {
+  position: relative; overflow: hidden;
+  border-radius: 30px;
+  background: #B85A28 url("img/hero-paper.jpg") center / cover;
+  box-shadow: var(--shadow-lg);
+  padding: clamp(1.6rem, 4vw, 3.2rem);
+  display: grid; gap: clamp(1.8rem, 4vw, 2.8rem); align-items: center;
+}
+@media (min-width: 960px)  { .hero-band { grid-template-columns: 1.2fr .9fr; } }
+@media (min-width: 1140px) { .hero-band { grid-template-columns: auto 1.15fr .9fr; } }
+
+/* Дьяк с пером — перо пергаментное и живёт только на терракоте,
+   поэтому он именно здесь, а не на светлом поле страницы. */
+.hero-dyak {
+  display: none;
+  width: clamp(160px, 16vw, 225px); height: auto;
+  filter: drop-shadow(0 14px 30px rgba(60, 25, 8, .35));
+}
+@media (min-width: 1140px) { .hero-dyak { display: block; } }
+
+.hero-word { height: clamp(42px, 6vw, 58px); width: auto; display: block; margin-bottom: 1.4rem; }
+.hero h1 { margin-bottom: 1.1rem; color: #F7EFE3; }
+.hero .lead { max-width: 32rem; color: rgba(247, 239, 227, .88); }
 .hero-cta { display: flex; flex-wrap: wrap; gap: .8rem; align-items: center; margin-top: 2rem; }
+
+/* Кнопки на терракоте: главная — пергаментом, вторая — контуром. */
+.hero-band .btn-primary { background: #F5EDE3; color: #241A15; box-shadow: 0 2px 12px rgba(40, 15, 5, .28); }
+.hero-band .btn-primary:hover { background: #fff; }
+.hero-band .btn-ghost { color: #F5EDE3; border-color: rgba(245, 237, 227, .5); }
+.hero-band .btn-ghost:hover { border-color: rgba(245, 237, 227, .9); }
+
+/* Тёмная тема притемняет ту же картинку обычной полупрозрачной
+   заливкой — без блендов. */
+@media (prefers-color-scheme: dark) {
+  .hero-band {
+    background-image:
+      linear-gradient(rgba(26, 11, 4, .28), rgba(26, 11, 4, .28)),
+      url("img/hero-paper.jpg");
+  }
+}
 
 
 /* ------------------------------------------------- телефон с демонстрацией */
 
+/* Телефон закреплён светлым В ОБЕИХ темах, и это не упрямство:
+   в тёмной теме демонстрация была нечитаемой — приглушённая речь
+   на тёмной карточке пропадала. Телефон показывает светлый интерфейс
+   клавиатуры, как настоящий телефон в руке; цвета здесь буквальные,
+   а не из переменных темы, чтобы тема его не перекрашивала. */
 .phone {
   width: 100%; max-width: 19.5rem; margin-inline: auto;
   aspect-ratio: 9 / 16.4;
-  background: var(--bg-card);
-  border: 1px solid var(--line);
+  background: #FBF6F0;
+  border: 1px solid rgba(36, 26, 21, .15);
   border-radius: 38px;
   box-shadow: var(--shadow-lg);
   padding: 13px 11px 11px;
@@ -183,7 +234,7 @@ section + section { border-top: 1px solid var(--line); }
 }
 .phone::before {
   content: ""; position: absolute; top: 9px; left: 50%; transform: translateX(-50%);
-  width: 78px; height: 21px; border-radius: 999px; background: var(--bg-sunk); z-index: 2;
+  width: 78px; height: 21px; border-radius: 999px; background: #EAD9C3; z-index: 2;
 }
 .phone-screen { flex: 1; display: flex; flex-direction: column; padding-top: 28px; min-height: 0; }
 
@@ -193,12 +244,12 @@ section + section { border-top: 1px solid var(--line); }
 }
 /* Прошлые реплики глушим — взгляд идёт к свежей, но экран не пустой. */
 .pair { display: grid; gap: .3rem; }
-.pair:not(:last-child) { opacity: .38; }
+.pair:not(:last-child) { opacity: .5; }
 
 /* Реплика, как её услышали, — письменная. */
 .said {
   font-family: var(--serif); font-style: italic; font-size: .98rem; line-height: 1.4;
-  color: var(--text-mute); min-height: 1.4em;
+  color: #6F5C4C; min-height: 1.4em;
 }
 .said:not(:empty)::before { content: "«"; }
 .said:not(:empty)::after  { content: "»"; }
@@ -206,7 +257,7 @@ section + section { border-top: 1px solid var(--line); }
 /* Что встало в поле, — печатное. */
 .became {
   justify-self: start; max-width: 94%;
-  background: var(--accent); color: var(--accent-on);
+  background: #B85A28; color: #fff;
   font-weight: 600; font-size: .95rem; line-height: 1.38;
   padding: .55rem .8rem; border-radius: 15px 15px 15px 5px;
   opacity: 0; transform: translateY(6px) scale(.97);
@@ -216,9 +267,9 @@ section + section { border-top: 1px solid var(--line); }
 .became .tag { display: block; font: 700 .64rem/1 var(--sans); letter-spacing: .07em; text-transform: uppercase; opacity: .72; margin-bottom: .28rem; }
 
 /* Полоска клавиатуры: кнопка-Дьяк и намёк на ряды. */
-.kbd { border-top: 1px solid var(--line); padding: .7rem .3rem .2rem; display: grid; gap: .32rem; }
+.kbd { border-top: 1px solid #E4D3BC; padding: .7rem .3rem .2rem; display: grid; gap: .32rem; }
 .kbd-row { display: grid; grid-auto-flow: column; gap: .22rem; }
-.kbd-row i { height: 24px; border-radius: 5px; background: var(--bg-sunk); display: block; }
+.kbd-row i { height: 24px; border-radius: 5px; background: #ECDECB; display: block; }
 .kbd-mic { display: flex; justify-content: center; padding: .45rem 0 .1rem; }
 .kbd-mic img { width: 52px; height: 52px; border-radius: 50%; box-shadow: 0 4px 14px -4px rgba(184,90,40,.6); }
 .kbd-mic.rec img { animation: pulse 1.4s ease-in-out infinite; }
@@ -253,11 +304,27 @@ section + section { border-top: 1px solid var(--line); }
   border-radius: var(--r); padding: 1.5rem;
   box-shadow: var(--shadow);
 }
+/* Значок возможности: линия в терракоту на тёплой плашке. Рисованные
+   иконки, а не эмодзи — эмодзи в каждой системе свои, эти одинаковы
+   везде и весят строки, а не килобайты. */
+.chip {
+  width: 46px; height: 46px; border-radius: 13px;
+  display: flex; align-items: center; justify-content: center;
+  background: color-mix(in srgb, var(--terra) 12%, transparent);
+  color: var(--accent);
+  margin-bottom: .95rem;
+}
+.chip svg {
+  width: 23px; height: 23px;
+  fill: none; stroke: currentColor; stroke-width: 1.8;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+
 .card h3 { margin-bottom: .5rem; }
 .card p { color: var(--text-soft); font-size: .97rem; margin: 0; }
 .card .ex {
   margin-top: .9rem; padding-top: .9rem; border-top: 1px dashed var(--line);
-  font-family: var(--serif); font-style: italic; font-size: 1rem; color: var(--text-mute);
+  font-family: var(--serif); font-style: italic; font-size: 1rem; color: var(--text-soft);
 }
 .card .ex b { display: block; font: 700 .95rem/1.4 var(--sans); font-style: normal; color: var(--text); margin-top: .3rem; }
 
@@ -266,7 +333,14 @@ section + section { border-top: 1px solid var(--line); }
 .privacy { background: var(--bg-sunk); }
 .privacy .wrap { display: grid; gap: 2.5rem; align-items: center; }
 @media (min-width: 900px) { .privacy .wrap { grid-template-columns: 1fr 15rem; } }
-.privacy img { width: 100%; max-width: 13rem; margin-inline: auto; display: block; opacity: .95; }
+/* Квадрат Дьяка остаётся квадратом нарочно — перо пергаментное и без
+   терракотовой подложки пропало бы на светлом фоне. Смягчаем углы
+   и даём тёплую тень, чтобы это читалось карточкой, а не заплаткой. */
+.privacy img {
+  width: 100%; max-width: 13.5rem; margin-inline: auto; display: block;
+  border-radius: 30px;
+  box-shadow: 0 22px 48px -20px rgba(120, 55, 20, .55);
+}
 .facts { list-style: none; padding: 0; margin: 1.5rem 0 0; display: grid; gap: .8rem; }
 .facts li { padding-left: 1.9rem; position: relative; color: var(--text-soft); }
 .facts li::before {

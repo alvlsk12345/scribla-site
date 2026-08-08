@@ -48,24 +48,26 @@
 <!-- ============================================ первый экран -->
 <section class="hero">
   <div class="wrap">
-    <div>
-      <picture>
-        <source srcset="assets/brand/scribla-wordmark-white.svg" media="(prefers-color-scheme: dark)">
-        <img class="hero-word" src="assets/brand/scribla-wordmark.svg" alt="Scribla" width="420" height="76">
-      </picture>
-      <h1>Мысль быстрее пальцев</h1>
-      <p class="lead">Диктовка для iPhone, которая работает в любом приложении.
-        Нажали на Дьяка, сказали — текст встал в поле. Распознавание идёт
-        внутри телефона: звук никуда не уходит.</p>
-      <div class="hero-cta">
-        <a class="btn btn-primary" href="#support">Поддержать разработку</a>
-        <a class="btn btn-ghost" href="#versions">Узнать о выходе</a>
+    <div class="hero-band">
+      <!-- Дьяк с пером: перо пергаментное, живёт только на терракоте. -->
+      <img class="hero-dyak" src="assets/brand/scribla-dyak-alpha.svg" alt=""
+           width="225" height="225">
+      <div>
+        <img class="hero-word" src="assets/brand/scribla-wordmark-white.svg"
+             alt="Scribla" width="420" height="76">
+        <h1>Мысль быстрее пальцев</h1>
+        <p class="lead">Диктовка для iPhone, которая работает в любом приложении.
+          Нажали на Дьяка, сказали — текст встал в поле. Распознавание идёт
+          внутри телефона: звук никуда не уходит.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#support">Поддержать разработку</a>
+          <a class="btn btn-ghost" href="#versions">Узнать о выходе</a>
+        </div>
       </div>
-    </div>
 
-    <!-- Демонстрация, а не описание: сверху речь, как её услышали,
-         снизу то, что встало в поле. Примеры настоящие. -->
-    <div class="phone" aria-hidden="true">
+      <!-- Демонстрация, а не описание: сверху речь, как её услышали,
+           снизу то, что встало в поле. Примеры настоящие. -->
+      <div class="phone" aria-hidden="true">
       <div class="phone-screen">
         <div class="chat" data-chat></div>
         <div class="kbd">
@@ -74,6 +76,7 @@
           <div class="kbd-row"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
           <div class="kbd-mic" data-mic><img src="assets/brand/scribla-avatar.svg" alt="" width="52" height="52"></div>
         </div>
+      </div>
       </div>
     </div>
   </div>
@@ -118,12 +121,14 @@
     <div class="cards">
 
       <div class="card">
+        <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0 0 12 0M12 17v4"/></svg></div>
         <h3>Диктовка на устройстве</h3>
         <p>Русский и английский. Распознавание работает внутри iPhone —
           и потому без интернета тоже.</p>
       </div>
 
       <div class="card">
+        <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 4l1.8 4.6 4.6 1.4-4.6 1.4L12 16l-1.8-4.6L5.6 10l4.6-1.4zM18.6 15.4l.7 1.8 1.7.7-1.7.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"/></svg></div>
         <h3>Чистка речи</h3>
         <p>«Ну», «э-э» и повторы уходят. Знаки и заглавные ставятся по
           правилам языка, а не наугад.</p>
@@ -132,6 +137,7 @@
       </div>
 
       <div class="card">
+        <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 5.5A2.5 2.5 0 0 1 7.5 3H19v15.5H7.5A2.5 2.5 0 0 0 5 21z"/><path d="M5 5.5V21M9.5 7.5h5"/></svg></div>
         <h3>Словарь «слышится → пишется»</h3>
         <p>Имена, термины и сокращения распознавание ломает одинаково каждый
           раз. Напишите один раз, как надо, — дальше будет так.</p>
@@ -140,6 +146,7 @@
       </div>
 
       <div class="card">
+        <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M19 5 5 19"/><circle cx="7.3" cy="7.3" r="2.5"/><circle cx="16.7" cy="16.7" r="2.5"/></svg></div>
         <h3>Счёт и проценты</h3>
         <p>Считает на устройстве, интернет не нужен.</p>
         <div class="ex">пятнадцать процентов от двух тысяч четырёхсот
@@ -147,12 +154,14 @@
       </div>
 
       <div class="card">
+        <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.5 2.5 2.5 14.5 0 17-2.5-2.5-2.5-14.5 0-17z"/></svg></div>
         <h3>Перевод</h3>
         <p>Говорите по-русски — в поле встанет по-английски. Удобно, когда
           думать на чужом языке дольше, чем сказать на своём.</p>
       </div>
 
       <div class="card">
+        <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 20 14.5 9.5"/><path d="M16 3.5l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9zM19.8 12.4l.6 1.4 1.4.6-1.4.6-.6 1.4-.6-1.4-1.4-.6 1.4-.6z"/></svg></div>
         <h3>Ответы и полировка</h3>
         <p>Ответить на сообщение, а не только записать своё. И превратить
           длинную мысль вслух в письменный текст с абзацами.</p>

@@ -48,22 +48,25 @@
 <!-- ============================================ hero -->
 <section class="hero">
   <div class="wrap">
-    <div>
-      <picture>
-        <source srcset="../assets/brand/scribla-wordmark-white.svg" media="(prefers-color-scheme: dark)">
-        <img class="hero-word" src="../assets/brand/scribla-wordmark.svg" alt="Scribla" width="420" height="76">
-      </picture>
-      <h1>Faster than your fingers</h1>
-      <p class="lead">A dictation keyboard for iPhone that works in every app.
-        Tap the scribe, speak, and the text is in the field. Recognition runs
-        inside the phone: the audio never leaves it.</p>
-      <div class="hero-cta">
-        <a class="btn btn-primary" href="#support">Support the work</a>
-        <a class="btn btn-ghost" href="#versions">Tell me when it ships</a>
+    <div class="hero-band">
+      <!-- The scribe with his quill: the quill is parchment-coloured
+           and only lives on terracotta. -->
+      <img class="hero-dyak" src="../assets/brand/scribla-dyak-alpha.svg" alt=""
+           width="225" height="225">
+      <div>
+        <img class="hero-word" src="../assets/brand/scribla-wordmark-white.svg"
+             alt="Scribla" width="420" height="76">
+        <h1>Faster than your fingers</h1>
+        <p class="lead">A dictation keyboard for iPhone that works in every app.
+          Tap the scribe, speak, and the text is in the field. Recognition runs
+          inside the phone: the audio never leaves it.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#support">Support the work</a>
+          <a class="btn btn-ghost" href="#versions">Tell me when it ships</a>
+        </div>
       </div>
-    </div>
 
-    <div class="phone" aria-hidden="true">
+      <div class="phone" aria-hidden="true">
       <div class="phone-screen">
         <div class="chat" data-chat></div>
         <div class="kbd">
@@ -72,6 +75,7 @@
           <div class="kbd-row"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
           <div class="kbd-mic" data-mic><img src="../assets/brand/scribla-avatar.svg" alt="" width="52" height="52"></div>
         </div>
+      </div>
       </div>
     </div>
   </div>
@@ -115,12 +119,14 @@
     <div class="cards">
 
       <div class="card">
+        <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0 0 12 0M12 17v4"/></svg></div>
         <h3>Dictation on the device</h3>
         <p>English and Russian. Recognition runs inside the iPhone —
           which is also why it works with no connection.</p>
       </div>
 
       <div class="card">
+        <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 4l1.8 4.6 4.6 1.4-4.6 1.4L12 16l-1.8-4.6L5.6 10l4.6-1.4zM18.6 15.4l.7 1.8 1.7.7-1.7.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"/></svg></div>
         <h3>Cleaning up speech</h3>
         <p>"Um", "so" and repeats drop out. Punctuation and capitals follow
           the rules of the language rather than guesswork.</p>
@@ -129,6 +135,7 @@
       </div>
 
       <div class="card">
+        <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 5.5A2.5 2.5 0 0 1 7.5 3H19v15.5H7.5A2.5 2.5 0 0 0 5 21z"/><path d="M5 5.5V21M9.5 7.5h5"/></svg></div>
         <h3>A "heard → written" dictionary</h3>
         <p>Names, terms and abbreviations break the same way every time.
           Write it once the way it should be, and it stays that way.</p>
@@ -137,6 +144,7 @@
       </div>
 
       <div class="card">
+        <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M19 5 5 19"/><circle cx="7.3" cy="7.3" r="2.5"/><circle cx="16.7" cy="16.7" r="2.5"/></svg></div>
         <h3>Arithmetic and percentages</h3>
         <p>Counted on the device. No connection needed.</p>
         <div class="ex">fifteen percent of two thousand four hundred
@@ -144,12 +152,14 @@
       </div>
 
       <div class="card">
+        <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.5 2.5 2.5 14.5 0 17-2.5-2.5-2.5-14.5 0-17z"/></svg></div>
         <h3>Translation</h3>
         <p>Speak Russian and English comes out in the field. Useful when
           thinking in the other language takes longer than saying it in yours.</p>
       </div>
 
       <div class="card">
+        <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 20 14.5 9.5"/><path d="M16 3.5l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9zM19.8 12.4l.6 1.4 1.4.6-1.4.6-.6 1.4-.6-1.4-1.4-.6 1.4-.6z"/></svg></div>
         <h3>Replies and polish</h3>
         <p>Answer a message instead of only recording your own. And turn
           a long thought said out loud into written text with paragraphs.</p>
