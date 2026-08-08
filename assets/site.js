@@ -14,7 +14,8 @@
 
   /* Страниц две, скрипт один. Язык берём из <html lang>, а не из адреса:
      так строка остаётся верной, куда бы страницу ни переложили. */
-  const EN = document.documentElement.lang === 'en';
+  const LANG = document.documentElement.lang === 'en' ? 'en' : 'ru';
+  const EN = LANG === 'en';
 
   const T = EN ? {
     sending:  'Sending…',
@@ -151,7 +152,7 @@
     const box = $('[data-notify-msg]');
     if (!/^[^@\s]+@[^@\s.]+\.[^@\s]{2,}$/.test(email))
       return say(box, 'err', T.badEmail);
-    send(notify, '/api/notify', { email }, box, T.notifyOk);
+    send(notify, '/api/notify', { email, lang: LANG }, box, T.notifyOk);
   });
 
   const fb = $('[data-feedback]');
@@ -164,7 +165,7 @@
     const email = $('input[name=email]', fb).value.trim();
     if (message.length < 10)
       return say(box, 'err', T.tooShort);
-    send(fb, '/api/feedback', { message, email }, box, T.feedbackOk);
+    send(fb, '/api/feedback', { message, email, lang: LANG }, box, T.feedbackOk);
   });
 
   /* ---------------------------------------------------- переводы */
