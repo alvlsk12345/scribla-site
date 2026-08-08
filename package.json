@@ -1,0 +1,15 @@
+{
+  "name": "scribla-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Сайт Scribla — лендинг, политика приватности, поддержка и три ручки API",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test/run.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {}
+}
