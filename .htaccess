@@ -40,14 +40,22 @@ AddDefaultCharset UTF-8
 </IfModule>
 
 # Шрифты и картинки именованы навсегда — их можно держать долго.
-# HTML нельзя: иначе правка текста доедет до людей через год.
+#
+# А вот стили и скрипт — нельзя, и это оплачено промахом: недельный кэш
+# стоял здесь ровно один день, и в этот день кнопка переводов на живом
+# сайте показывала «скоро откроется», хотя сервер уже отдавал файл
+# с рабочей ссылкой. Сервер был прав, браузер держал старое.
+# Имена файлов у нас без отпечатка версии, так что единственная защита —
+# короткий срок. Десять минут: повторные заходы внутри сеанса из кэша,
+# а правка доезжает до людей в тот же день, а не через неделю.
 <IfModule mod_expires.c>
   ExpiresActive On
   ExpiresByType font/woff2    "access plus 1 year"
   ExpiresByType image/svg+xml "access plus 1 year"
   ExpiresByType image/png     "access plus 1 year"
-  ExpiresByType text/css      "access plus 7 days"
-  ExpiresByType text/javascript "access plus 7 days"
+  ExpiresByType text/css        "access plus 10 minutes"
+  ExpiresByType text/javascript "access plus 10 minutes"
+  ExpiresByType application/javascript "access plus 10 minutes"
   ExpiresByType text/html     "access plus 0 seconds"
 </IfModule>
 
