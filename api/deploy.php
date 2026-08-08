@@ -89,6 +89,8 @@ foreach (TAKE as $item) {
     $log[] = 'обновлено: ' . $item;
 }
 
+$log[] = stamp_assets($root);
+
 rm_rf($work);
 @unlink($tarGz);
 
@@ -123,6 +125,55 @@ function fetch(string $url): ?string
         if (is_string($out)) { return $out; }
     }
     return null;
+}
+
+/* Отпечаток версии в ссылках на стили и скрипт.
+ *
+ * Зачем это вообще. Статику здесь отдаёт nginx впереди Apache, до
+ * `.htaccess` она не доходит — проверено: HTML получает заголовок
+ * nosniff из наших правил, а `assets/site.js` нет. nginx ставит свой
+ * кэш на год, и управлять им мы не можем. Один день это стоило того,
+ * что кнопка переводов на живом сайте писала «скоро откроется», хотя
+ * сервер уже отдавал файл с рабочей ссылкой.
+ *
+ * Заголовками не побороть — значит меняем адрес. HTML отдаётся с
+ * max-age=0, то есть свежий всегда; подставляем в ссылку отпечаток
+ * содержимого, и браузер видит новый адрес — а старый пусть лежит
+ * в кэше хоть год, он никому не нужен.
+ *
+ * `fonts.css` не штампуем: он объявляет четыре неизменных файла
+ * шрифтов и меняться ему незачем. Если однажды поменяется — правьте
+ * заодно и `site.css`, тогда отпечаток обновится у обоих.
+ */
+function stamp_assets(string $root): string
+{
+    $marks = [];
+    foreach (['site.css', 'site.js'] as $name) {
+        $f = $root . '/assets/' . $name;
+        if (is_file($f)) { $marks[$name] = substr(md5_file($f) ?: '', 0, 8); }
+    }
+    if (!$marks) { return 'нечего штамповать'; }
+
+    $pages = array_merge(
+        glob($root . '/*.html') ?: [],
+        glob($root . '/*/*.html') ?: []
+    );
+    $touched = 0;
+    foreach ($pages as $page) {
+        $html = (string) file_get_contents($page);
+        $before = $html;
+        foreach ($marks as $name => $mark) {
+            $q = preg_quote($name, '~');
+            // Ловим и «assets/…», и «../assets/…», со старым штампом и без.
+            $html = preg_replace(
+                '~((?:\.\./)?assets/' . $q . ')(\?v=[0-9a-f]+)?~',
+                '$1?v=' . $mark,
+                $html
+            );
+        }
+        if ($html !== $before) { file_put_contents($page, $html); $touched++; }
+    }
+    return 'проштамповано страниц: ' . $touched . ' (' . implode(', ', $marks) . ')';
 }
 
 function copy_over(string $from, string $to): void
