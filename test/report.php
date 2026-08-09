@@ -1,0 +1,135 @@
+<?php
+declare(strict_types=1);
+
+/* Стенд сводки по журналам.
+ *
+ * Сводка — это то, по чему принимают решения о доработках, и врёт она
+ * тихо: неверная группировка не падает и не пустует, а просто ставит
+ * не ту беду первой. Разбирать после этого будут не самое частое,
+ * а самое заметное в списке, и заметить подмену нельзя ничем, кроме
+ * проверки на заранее известных числах.
+ *
+ * Три свойства, ради которых стенд и написан: одинаковые беды с разными
+ * числами считаются вместе; наверх идёт то, что задело больше телефонов,
+ * а не то, что чаще повторилось у одного; новым считается то, чего
+ * не было всю прошлую неделю.
+ */
+
+$tmp = sys_get_temp_dir() . '/scribla-report-' . getmypid();
+@mkdir($tmp . '/logs', 0700, true);
+
+$port = random_int(23000, 23999);
+$key  = 'ключ-сводки-' . bin2hex(random_bytes(4));
+
+$srv = proc_open(
+    [PHP_BINARY, '-S', '127.0.0.1:' . $port, '-t', __DIR__ . '/..', __DIR__ . '/router.php'],
+    [1 => ['file', $tmp . '/server.log', 'w'], 2 => ['file', $tmp . '/server.log', 'a']],
+    $pipes,
+    null,
+    ['SCRIBLA_DATA' => $tmp] + getenv()
+);
+
+// Ждём, пока сервер начнёт отвечать: фиксированная пауза падает
+// под нагрузкой, и стенд тогда врёт про продукт, а не про себя.
+for ($i = 0; $i < 100; $i++) {
+    $probe = @stream_socket_client("tcp://127.0.0.1:$port", $no, $err, 0.2);
+    if ($probe) { fclose($probe); break; }
+    usleep(50000);
+}
+
+$fail = 0;
+$ok = static function (string $what, bool $good) use (&$fail): void {
+    if (!$good) { $fail++; }
+    echo ($good ? '  ok  ' : '  НЕТ ') . $what . "\n";
+};
+
+$today = gmdate('Y-m-d');
+$long  = gmdate('Y-m-d', strtotime('-3 day'));
+
+/** Положить строку в журнал нужного дня. */
+$put = static function (string $day, string $install, string $message, string $source = 'приложение', string $app = '0.9 (1)', string $device = 'iPhone17,1') use ($tmp): void {
+    file_put_contents(
+        $tmp . '/logs/' . $day . '.jsonl',
+        json_encode(compact('install', 'message', 'source', 'app', 'device'), JSON_UNESCAPED_UNICODE) . "\n",
+        FILE_APPEND
+    );
+};
+
+/* `ignore_errors` обязателен: без него тело ответа при 403 и 404
+ * не читается вовсе, и проверки отказа молча проваливаются — стенд
+ * ругается на ручку, которая на самом деле права. */
+$get = static function (string $query) use ($port): array {
+    $raw = @file_get_contents(
+        'http://127.0.0.1:' . $port . '/api/report?' . $query,
+        false,
+        stream_context_create(['http' => ['ignore_errors' => true, 'timeout' => 10]])
+    );
+    return json_decode((string) $raw, true) ?: [];
+};
+
+echo "сводка\n";
+
+$answer = $get('key=' . urlencode($key));
+$ok('без файла с ключом ручки нет', ($answer['error'] ?? '') === 'Не найдено');
+
+file_put_contents($tmp . '/report.key', $key);
+
+$ok('с чужим ключом не отдаёт', ($get('key=' . urlencode('чужой-ключ'))['error'] ?? '') === 'Нет');
+
+/* Одна беда у пятерых против сорока повторов у одного. */
+for ($n = 1; $n <= 5; $n++) {
+    $put($today, 'INSTALL-' . $n, 'Микрофон потерян: перебил звонок');
+}
+for ($n = 1; $n <= 40; $n++) {
+    $put($today, 'INSTALL-ОДИН', 'Курсы валют загрузить не удалось');
+}
+
+/* Одна и та же беда с разными числами — считается вместе. */
+$put($today, 'INSTALL-1', 'Полировка не уложилась в 8 с');
+$put($today, 'INSTALL-2', 'Полировка не уложилась в 15 с');
+$put($today, 'INSTALL-3', 'Полировка не уложилась в 8,5 с');
+
+/* Клавиатура пишет только когда её открыли — это отметка «дошёл». */
+$put($today, 'INSTALL-1', 'Открылась, отметка о полном доступе записана', 'клавиатура');
+$put($today, 'INSTALL-2', 'Открылась, отметка о полном доступе записана', 'клавиатура');
+
+/* Позавчерашняя беда сегодня уже не новость, а сегодняшняя — новость. */
+$put($long, 'INSTALL-9', 'Модель «Русская» не собралась');
+$put($today, 'INSTALL-9', 'Модель «Русская» не собралась');
+$put($today, 'INSTALL-7', 'Верх клавиатуры остался пустым при панели «эмодзи»');
+
+$answer = $get('key=' . urlencode($key));
+$shapes = array_column($answer['messages'] ?? [], null, 'shape');
+
+$ok('день посчитан: ' . ($answer['day'] ?? '—'), ($answer['day'] ?? '') === $today);
+$ok('телефонов насчитано: ' . ($answer['installs'] ?? '—'), ($answer['installs'] ?? 0) === 8);
+$ok('дошли до клавиатуры: ' . ($answer['reached_keyboard'] ?? '—'), ($answer['reached_keyboard'] ?? 0) === 2);
+
+$first = $answer['messages'][0]['shape'] ?? '';
+$ok('первой идёт беда пятерых, а не сорок повторов одного: ' . mb_substr($first, 0, 30),
+    str_contains($first, 'Микрофон потерян'));
+
+$polish = $shapes['Полировка не уложилась в N с'] ?? null;
+$ok('разные секунды схлопнулись в одну строку', $polish !== null);
+$ok('и посчитаны вместе: ' . ($polish['count'] ?? '—'), ($polish['count'] ?? 0) === 3);
+$ok('по телефонам, а не по записям: ' . ($polish['installs'] ?? '—'), ($polish['installs'] ?? 0) === 3);
+
+$ok('сорок повторов у одного — это один телефон',
+    ($shapes['Курсы валют загрузить не удалось']['installs'] ?? 0) === 1);
+
+$fresh = $answer['new_shapes'] ?? [];
+$ok('пустая клавиатура — новое',
+    in_array('Верх клавиатуры остался пустым при панели «эмодзи»', $fresh, true));
+$ok('то, что было на неделе, новым не считается',
+    !in_array('Модель «Русская» не собралась', $fresh, true));
+
+$ok('неделя отдана целиком: ' . count($answer['week'] ?? []), count($answer['week'] ?? []) === 7);
+$ok('последний день недели — сегодняшний',
+    (($answer['week'] ?? [])[6]['day'] ?? '') === $today);
+
+proc_terminate($srv);
+proc_close($srv);
+exec('rm -rf ' . escapeshellarg($tmp));
+
+if ($fail) { echo "\nсводка: не сошлось — $fail\n"; exit(1); }
+echo "сводка: все проверки сошлись.\n";

@@ -137,16 +137,18 @@ $log[] = stamp_assets($root);
  * новый; старые сборки приложения после этого перестанут доходить,
  * что и правильно.
  */
-$logKeyFile = data_dir() . '/log.key';
-$freshLogKey = null;
-if (!is_file($logKeyFile) || trim((string) file_get_contents($logKeyFile)) === '') {
+$freshKeys = [];
+foreach (['log' => 'приёма журналов', 'report' => 'чтения сводок'] as $name => $what) {
+    $file = data_dir() . '/' . $name . '.key';
+    if (is_file($file) && trim((string) file_get_contents($file)) !== '') { continue; }
+
     $candidate = bin2hex(random_bytes(24));
-    if (@file_put_contents($logKeyFile, $candidate, LOCK_EX) !== false) {
-        @chmod($logKeyFile, 0600);
-        $freshLogKey = $candidate;
-        $log[] = 'ключ приёма журналов заведён — показан ниже, второй раз не покажется';
+    if (@file_put_contents($file, $candidate, LOCK_EX) !== false) {
+        @chmod($file, 0600);
+        $freshKeys[$name . '_key'] = $candidate;
+        $log[] = 'ключ ' . $what . ' заведён — показан ниже, второй раз не покажется';
     } else {
-        $log[] = 'ключ приёма журналов завести не удалось: ' . $logKeyFile;
+        $log[] = 'ключ ' . $what . ' завести не удалось: ' . $file;
     }
 }
 
@@ -157,8 +159,7 @@ rm_rf($work);
  * обновлялся, не заходя в панель. */
 @file_put_contents(data_dir() . '/deployed.txt', gmdate('c') . "\n", FILE_APPEND);
 
-say(200, ['message' => 'Выложено', 'at' => gmdate('c'), 'ref' => $ref, 'log' => $log]
-    + ($freshLogKey !== null ? ['log_key' => $freshLogKey] : []));
+say(200, ['message' => 'Выложено', 'at' => gmdate('c'), 'ref' => $ref, 'log' => $log] + $freshKeys);
 
 // ------------------------------------------------------------- утилиты
 

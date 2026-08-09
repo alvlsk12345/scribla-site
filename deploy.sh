@@ -23,6 +23,7 @@ if command -v php >/dev/null; then
   php test/profanity.php
   php test/mail.php
   php test/log.php
+  php test/report.php
 fi
 
 # 2. Отправка в GitHub — сервер берёт файлы оттуда, так что без этого
