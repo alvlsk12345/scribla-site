@@ -21,8 +21,7 @@ declare(strict_types=1);
 
 require __DIR__ . '/lib/http.php';
 
-const REPO_TAR = 'https://codeload.github.com/alvlsk12345/scribla-site/tar.gz/refs/heads/main';
-const REPO_DIR = 'scribla-site-main';
+const REPO = 'https://codeload.github.com/alvlsk12345/scribla-site/tar.gz/';
 
 /* Что раскладываем. Список закрытый: всё, чего в нём нет, на сервер
  * не попадёт, как бы оно ни называлось в архиве. */
@@ -32,6 +31,11 @@ const TAKE = ['index.html', 'privacy.html', 'support.html', '.htaccess', 'assets
  * файл остался бы на сервере навсегда. `api` сюда не входит намеренно:
  * мы сейчас исполняемся изнутри него. */
 const REPLACE_WHOLE = ['assets'];
+
+/* Отправленные в отставку файлы. Выкладка умеет только докладывать,
+ * поэтому убрать что-то с сервера можно единственным способом —
+ * назвать это здесь. Список короткий и разбирается вручную. */
+const REMOVE = ['api/flush.php'];
 
 require_post();
 
@@ -50,12 +54,27 @@ $log  = [];
 $tarGz = $tmp . '/main.tar.gz';
 @unlink($tarGz);
 
-$bytes = fetch(REPO_TAR);
+/* Забираем не ветку, а конкретный коммит — и это оплачено промахом.
+ *
+ * Архив ветки codeload отдаёт из кэша CDN. Две выкладки подряд: вторая
+ * привезла срез до второго коммита, сайт молча остался прежним, а сам
+ * `deploy.php` при этом отчитался «Выложено». Полчаса ушло на поиски
+ * несуществующей поломки в PHP.
+ *
+ * Хэш коммита — неизменяемый адрес: что попросили, то и приехало,
+ * а кэш из вредителя превращается в ускорение. */
+$ref = (string) ($_GET['ref'] ?? '');
+if ($ref !== '' && !preg_match('/^[0-9a-f]{40}$/', $ref)) {
+    say(400, ['error' => 'Непонятный коммит']);
+}
+$url = REPO . ($ref !== '' ? $ref : 'refs/heads/main');
+
+$bytes = fetch($url);
 if ($bytes === null || strlen($bytes) < 1024) {
     say(502, ['error' => 'Не скачался архив из GitHub', 'log' => $log]);
 }
 file_put_contents($tarGz, $bytes);
-$log[] = 'скачано ' . strlen($bytes) . ' байт';
+$log[] = 'скачано ' . strlen($bytes) . ' байт' . ($ref !== '' ? ', коммит ' . substr($ref, 0, 7) : ', ветка main');
 
 // ------------------------------------------------------------- распаковка
 
@@ -73,8 +92,12 @@ try {
     say(500, ['error' => 'Не распаковался архив: ' . $e->getMessage(), 'log' => $log]);
 }
 
-$src = $work . '/' . REPO_DIR;
-if (!is_dir($src)) { say(500, ['error' => 'В архиве нет ' . REPO_DIR, 'log' => $log]); }
+/* Имя папки внутри архива зависит от того, что просили: у ветки это
+ * `scribla-site-main`, у коммита — `scribla-site-<хэш>`. Не угадываем,
+ * а смотрим: папка там всегда ровно одна. */
+$dirs = array_values(array_filter((array) glob($work . '/*'), 'is_dir'));
+if (count($dirs) !== 1) { say(500, ['error' => 'Архив выглядит не так, как ожидали', 'log' => $log]); }
+$src = $dirs[0];
 $log[] = 'распаковано';
 
 // ------------------------------------------------------------- раскладка
@@ -89,6 +112,11 @@ foreach (TAKE as $item) {
     $log[] = 'обновлено: ' . $item;
 }
 
+foreach (REMOVE as $gone) {
+    $p = $root . '/' . $gone;
+    if (is_file($p) && @unlink($p)) { $log[] = 'убрано: ' . $gone; }
+}
+
 $log[] = stamp_assets($root);
 
 rm_rf($work);
@@ -98,7 +126,7 @@ rm_rf($work);
  * обновлялся, не заходя в панель. */
 @file_put_contents(data_dir() . '/deployed.txt', gmdate('c') . "\n", FILE_APPEND);
 
-say(200, ['message' => 'Выложено', 'at' => gmdate('c'), 'log' => $log]);
+say(200, ['message' => 'Выложено', 'at' => gmdate('c'), 'ref' => $ref, 'log' => $log]);
 
 // ------------------------------------------------------------- утилиты
 
