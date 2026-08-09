@@ -15,6 +15,17 @@ declare(strict_types=1);
  * не было всю прошлую неделю.
  */
 
+/* Стенд живёт по-московски, как боевой сервер.
+ *
+ * На маке часовой пояс был UTC, и смешение `strtotime` (считает
+ * в поясе сервера) с `gmdate` (печатает в UTC) здесь не проявлялось
+ * вовсе — а на хостинге сдвигало неделю на сутки: в графике не было
+ * сегодняшнего дня, и по тому же смещению вчерашняя беда попадала
+ * в «новое». Проверка обязана идти в том поясе, где код работает.
+ */
+putenv('TZ=Europe/Moscow');
+date_default_timezone_set('Europe/Moscow');
+
 $tmp = sys_get_temp_dir() . '/scribla-report-' . getmypid();
 @mkdir($tmp . '/logs', 0700, true);
 
@@ -26,7 +37,7 @@ $srv = proc_open(
     [1 => ['file', $tmp . '/server.log', 'w'], 2 => ['file', $tmp . '/server.log', 'a']],
     $pipes,
     null,
-    ['SCRIBLA_DATA' => $tmp] + getenv()
+    ['SCRIBLA_DATA' => $tmp, 'TZ' => 'Europe/Moscow'] + getenv()
 );
 
 // Ждём, пока сервер начнёт отвечать: фиксированная пауза падает

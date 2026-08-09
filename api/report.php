@@ -23,6 +23,23 @@ if (!hash_equals($key, (string) ($_GET['key'] ?? ''))) { say(403, ['error' => '�
 $asked = (string) ($_GET['day'] ?? '');
 $day = preg_match('/^\d{4}-\d{2}-\d{2}$/', $asked) ? $asked : gmdate('Y-m-d');
 
+/** День, отстоящий от заданного на N суток назад — в UTC.
+ *
+ * Не `strtotime` с `gmdate`, и это оплачено живым промахом. `strtotime`
+ * считает в часовом поясе сервера (у нас Москва), а `gmdate` печатает
+ * в UTC: «сегодня минус ноль дней» превращалось в 00:00 московских,
+ * то есть в 21:00 вчерашних по UTC, и вся неделя съезжала на сутки.
+ * Снаружи это выглядело безобидно — просто в графике не было
+ * сегодняшнего дня, — но по тому же смещению считалось и «чего раньше
+ * не было»: вчерашняя беда попадала в новые.
+ */
+function day_back(string $day, int $back): string
+{
+    return (new DateTimeImmutable($day, new DateTimeZone('UTC')))
+        ->modify('-' . $back . ' day')
+        ->format('Y-m-d');
+}
+
 /** Строки журнала за указанный день. */
 function rows_for(string $day): array
 {
@@ -89,7 +106,7 @@ foreach ($rows as $row) {
  */
 $before = [];
 for ($back = 1; $back <= 7; $back++) {
-    $past = gmdate('Y-m-d', strtotime($day . ' -' . $back . ' day'));
+    $past = day_back($day, $back);
     foreach (rows_for($past) as $row) {
         $before[shape((string) ($row['message'] ?? ''))] = true;
     }
@@ -119,7 +136,7 @@ $messages = array_slice($messages, 0, 40);
 /* Неделя одной строкой — чтобы на странице был не снимок, а движение. */
 $week = [];
 for ($back = 6; $back >= 0; $back--) {
-    $past = gmdate('Y-m-d', strtotime($day . ' -' . $back . ' day'));
+    $past = day_back($day, $back);
     $pastRows = rows_for($past);
     $pastInstalls = [];
     foreach ($pastRows as $row) { $pastInstalls[(string) ($row['install'] ?? '')] = true; }
