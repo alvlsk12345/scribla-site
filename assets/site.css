@@ -356,6 +356,56 @@ input:focus-visible, textarea:focus-visible { outline-offset: 1px; }
   .became { transition: none; }
 }
 
+/* --------------------------------------------------------- ролик */
+
+/* Соотношение задано рамкой, а не файлом: без него страница
+   подпрыгивает, когда видео дозагружается, и на телефоне это
+   видно всем — блок под роликом уезжает под палец. */
+
+.film { padding-top: clamp(1.6rem, 4vw, 3rem); padding-bottom: clamp(2rem, 5vw, 3.6rem); border: 0; }
+.film-frame { margin: 0; }
+
+.film-media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: clamp(18px, 2.6vw, 26px);
+  overflow: hidden;
+  background: #1A0B04;
+  box-shadow: var(--shadow-lg);
+}
+.film-media video { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+/* Кнопка звука лежит на самом ролике, а не под ним: пока человек
+   смотрит в кадр, взгляд не уходит на подпись. Тёмная подложка —
+   потому что нижний левый угол кадра то светлеет, то темнеет. */
+.film-sound {
+  position: absolute;
+  left: clamp(.6rem, 1.8vw, 1.1rem); bottom: clamp(.6rem, 1.8vw, 1.1rem);
+  display: inline-flex; align-items: center; gap: .5rem;
+  min-height: 44px; padding: .5rem 1rem;
+  font: 600 .88rem/1 var(--sans);
+  color: #F5EDE3; background: rgba(20, 8, 2, .52);
+  border: 1px solid rgba(245, 237, 227, .38); border-radius: 999px;
+  backdrop-filter: blur(6px);
+  cursor: pointer;
+}
+.film-sound:hover { border-color: rgba(245, 237, 227, .85); background: rgba(20, 8, 2, .68); }
+.film-sound svg { width: 15px; height: 15px; fill: currentColor; flex: none; }
+/* Вторая дуга гаснет, когда звук выключен: значок должен показывать
+   состояние, а не только предлагать действие. */
+.film-sound[aria-pressed="false"] [data-film-wave] { opacity: .25; }
+
+.film-frame figcaption {
+  margin-top: .8rem; text-align: center;
+  font-size: .92rem; color: var(--muted);
+}
+
+/* Ролик — не иллюстрация к тексту, а сам текст: если человек просил
+   не двигать картинки, показываем кадр и даём запустить руками. */
+@media (prefers-reduced-motion: reduce) {
+  .film-sound { left: 50%; transform: translateX(-50%); }
+}
+
 /* ---------------------------------------------------------- шаги */
 
 .steps { display: grid; gap: 1.5rem; counter-reset: s; }

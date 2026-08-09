@@ -33,6 +33,9 @@
     shotsMany: 'Kept the first three. Three is the limit.',
     shotsBad: 'The browser could not open this image. PNG or JPEG works.',
     shotOff: n => `Remove screenshot ${n}`,
+    soundOn:  'With sound',
+    soundOff: 'Mute',
+    filmPlay: 'Play with sound',
   } : {
     sending:  'Отправляем…',
     badEmail: 'Проверьте адрес — похоже, в нём опечатка',
@@ -49,6 +52,9 @@
     shotsMany: 'Взяли первые три — больше не нужно',
     shotsBad: 'Эту картинку браузер не открыл. Подойдёт PNG или JPEG.',
     shotOff: n => `Убрать скриншот ${n}`,
+    soundOn:  'Со звуком',
+    soundOff: 'Без звука',
+    filmPlay: 'Смотреть со звуком',
   };
 
   /* ---------------------------------------------------- шапка */
@@ -57,6 +63,59 @@
   const onScroll = () => top.classList.toggle('stuck', scrollY > 8);
   addEventListener('scroll', onScroll, { passive: true });
   onScroll();
+
+  /* ---------------------------------------------------- ролик
+
+     Немой автозапуск — не осторожность, а единственный разрешённый:
+     со звуком браузер не даст стартовать вообще, и человек увидит
+     стоп-кадр вместо ролика. Кнопка включает голос и отматывает
+     к началу: фраза звучит в первую секунду, и без перемотки
+     достался бы только её хвост.
+
+     При отключённой анимации и в режиме экономии трафика ролик ждёт
+     на постере: сам он не начнётся, но запустить можно всегда. */
+
+  const film = $('[data-film]');
+  if (film) {
+    const filmBtn = $('[data-film-sound]');
+    const filmLbl = $('[data-film-label]');
+    const still = calm.matches || navigator.connection?.saveData === true;
+
+    /* «Смотреть со звуком» — только там, где ролик сам не пойдёт.
+       Привязывать надпись к текущей паузе нельзя: до прокрутки видео
+       ещё стоит, и кнопка меняла слова у человека на глазах, хотя
+       ничего не менялось. */
+    const filmLabel = () => {
+      filmBtn.setAttribute('aria-pressed', String(!film.muted));
+      filmLbl.textContent = !film.muted ? T.soundOff
+        : (still ? T.filmPlay : T.soundOn);
+    };
+
+    filmBtn.addEventListener('click', () => {
+      if (film.muted) {
+        film.muted = false;
+        film.currentTime = 0;
+        film.play().catch(() => {});
+      } else {
+        film.muted = true;
+      }
+      filmLabel();
+    });
+
+    /* Пролистали мимо — звук снимаем сами. Голос из блока, которого
+       уже не видно, звучит как чужое окно, открывшееся за спиной. */
+    new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) {
+        if (!still && film.paused) film.play().catch(() => {});
+      } else if (!film.paused) {
+        film.muted = true;
+        film.pause();
+      }
+      filmLabel();
+    }, { threshold: 0.25 }).observe(film);
+
+    filmLabel();
+  }
 
   /* ---------------------------------------------------- демонстрация
 

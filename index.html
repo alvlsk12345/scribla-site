@@ -106,6 +106,44 @@
   </div>
 </section>
 
+<!-- ============================================ ролик
+
+     Отдельной полосой под первым экраном, а не фоном под заголовком:
+     текст поверх движения читается хуже, а ролик здесь и есть то,
+     ради чего человек задержится.
+
+     Звук выключен не по нашей воле — браузеры не дают включить его
+     сами, и видео со звуком просто не запустилось бы. Поэтому кнопка:
+     нажали — и ролик начинается заново, уже с голосом. -->
+<section id="film" class="film">
+  <div class="wrap">
+    <figure class="film-frame">
+      <div class="film-media">
+        <video data-film
+               poster="assets/img/hero-film.jpg"
+               width="1280" height="720"
+               muted playsinline loop preload="metadata"
+               aria-label="Голос произносит «Привет! Как дела?», и перо пишет
+                           эту фразу на бумаге">
+          <source src="assets/video/hero-ru.mp4" type="video/mp4">
+        </video>
+        <button class="film-sound" type="button" data-film-sound aria-pressed="false">
+          <svg viewBox="0 0 16 16" aria-hidden="true" data-film-icon>
+            <path d="M7 2.5 3.8 5.2H1.6v5.6h2.2L7 13.5z"/>
+            <path d="M10.2 5.4a3.4 3.4 0 0 1 0 5.2" fill="none"
+                  stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M12.3 3.4a6.2 6.2 0 0 1 0 9.2" fill="none"
+                  stroke="currentColor" stroke-width="1.4" stroke-linecap="round"
+                  data-film-wave/>
+          </svg>
+          <span data-film-label>Со звуком</span>
+        </button>
+      </div>
+      <figcaption>Сказано голосом — написано пером.</figcaption>
+    </figure>
+  </div>
+</section>
+
 <!-- ============================================ как это работает -->
 <section id="how">
   <div class="wrap">
