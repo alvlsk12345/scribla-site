@@ -43,7 +43,28 @@ echo "→ выкладка"
 REF=$(git rev-parse HEAD)
 # Обращаемся к .php напрямую, а не к чистому адресу: так выкладка
 # не зависит от того, доехал ли уже свежий .htaccess.
-OUT=$(curl -sS --max-time 120 -X POST "$SITE/api/deploy.php?key=$KEY&ref=$REF")
+# Настройки почты едут вместе с выкладкой, если файл на месте. Пароль
+# от ящика — единственный секрет, который нельзя ни завести на сервере
+# самому, ни положить в репозиторий; телом запроса он не попадает
+# ни в историю команд, ни в журналы прокси. Нет файла — сервер оставляет
+# свои настройки как есть.
+MAIL_FILE=${SCRIBLA_MAIL_FILE:-$HOME/.scribla-mail.json}
+BODY=""
+if [ -f "$MAIL_FILE" ]; then
+  # Через файл, а не через --data: тело в аргументах командной строки
+  # видно всей машине в `ps`.
+  BODY=$(umask 077; mktemp)
+  printf '{"mail":%s}' "$(cat "$MAIL_FILE")" > "$BODY"
+  echo "  почта: настройки из $MAIL_FILE едут вместе с выкладкой"
+fi
+
+if [ -n "$BODY" ]; then
+  OUT=$(curl -sS --max-time 120 -X POST "$SITE/api/deploy.php?key=$KEY&ref=$REF" \
+        -H 'Content-Type: application/json' --data-binary "@$BODY")
+  rm -f "$BODY"
+else
+  OUT=$(curl -sS --max-time 120 -X POST "$SITE/api/deploy.php?key=$KEY&ref=$REF")
+fi
 echo "$OUT" | python3 -m json.tool 2>/dev/null || echo "$OUT"
 echo "$OUT" | grep -q '"message":"Выложено"' || { echo "Выкладка не удалась."; exit 1; }
 
