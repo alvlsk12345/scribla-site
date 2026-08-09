@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 require __DIR__ . '/lib/http.php';
+require __DIR__ . '/lib/mailer.php';
 
 require_post();
 
@@ -23,6 +24,12 @@ store('notify.jsonl', [
     'at'    => gmdate('c'),
     'ip'    => $ip,
 ]);
+
+mail_later('Scribla — ждут выхода: ' . $email,
+    'В список подписки добавился адрес.' . "\n\n"
+    . $email . "\n\n"
+    . 'Страница: ' . (($in['lang'] ?? '') === 'en' ? 'английская' : 'русская') . "\n"
+    . 'Когда: ' . gmdate('d.m.Y H:i') . ' UTC');
 
 say(200, ['message' => pick($in, 'Записали. Напишем один раз — когда выйдет.',
                                    "Noted. We'll write once — when it ships.")]);

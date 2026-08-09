@@ -2,6 +2,8 @@
 declare(strict_types=1);
 require __DIR__ . '/lib/http.php';
 require __DIR__ . '/lib/profanity.php';
+require __DIR__ . '/lib/shots.php';
+require __DIR__ . '/lib/mailer.php';
 
 require_post();
 
@@ -33,13 +35,30 @@ if ($email !== '' && !looks_like_email($email)) {
  * Поэтому принимаем и помечаем, разбирает владелец. */
 $foul = Profanity::isFoul($message);
 
+$shots = shots_take();
+
 store('feedback.jsonl', [
     'message' => $message,
     'email'   => $email,
     'foul'    => $foul,
+    'shots'   => array_column($shots, 'file'),
     'at'      => gmdate('c'),
     'ip'      => $ip,
 ]);
+
+/* Письмо владельцу. Журнал на сервере — это архив, а не уведомление:
+ * пока в него не заглянешь, отзыв всё равно что не приходил. */
+$head = mb_substr(preg_replace('/\s+/u', ' ', $message) ?? '', 0, 60, 'UTF-8');
+$body = $message . "\n\n"
+    . str_repeat('—', 20) . "\n"
+    . 'Обратный адрес: ' . ($email !== '' ? $email : 'не оставили, ответить некуда') . "\n"
+    . 'Страница: ' . (($in['lang'] ?? '') === 'en' ? 'английская' : 'русская') . "\n"
+    . 'Когда: ' . gmdate('d.m.Y H:i') . " UTC\n"
+    . 'Откуда: ' . $ip . "\n"
+    . 'Скриншотов: ' . count($shots)
+    . ($foul ? "\n\nФильтр отметил в тексте брань — письмо всё равно пришло." : '');
+
+mail_later('Scribla — отзыв: ' . $head, $body, $email, shots_for_mail($shots));
 
 say(200, ['message' => $foul
     ? pick($in, 'Отправлено. Это письмо посмотрят руками — так бывает.',

@@ -18,6 +18,11 @@ ini_set('display_errors', '0');
 ini_set('log_errors', '1');
 error_reporting(E_ALL);
 
+/* Ответ человеку уже ушёл, а письмо владельцу — ещё нет. Закрытая
+ * вкладка не должна отменять эту работу: заявка принята, значит она
+ * дойдёт. */
+ignore_user_abort(true);
+
 const SCRIBLA_MAX_BODY = 65536;
 
 function data_dir(): string
@@ -35,12 +40,35 @@ function say(int $code, array $payload): never
     header('Content-Type: application/json; charset=utf-8');
     header('X-Content-Type-Options: nosniff');
     echo json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+
+    /* Отпускаем человека сразу. Дальше через register_shutdown_function
+     * уходит письмо владельцу, а это разговор с чужим сервером на
+     * секунду-другую — ждать его кнопке «Отправляем…» незачем. */
+    if (function_exists('fastcgi_finish_request')) { fastcgi_finish_request(); }
     exit;
 }
 
-/** Тело запроса с потолком: без него любой желающий забьёт нам память. */
+/** Тело запроса с потолком: без него любой желающий забьёт нам память.
+ *
+ * Форма отзывов со скриншотами приходит как multipart/form-data —
+ * иначе картинки пришлось бы гнать в base64, а это плюс треть веса
+ * на ровном месте. Поля в обоих случаях называются одинаково, так что
+ * ручки разницы не замечают. */
 function body(): array
 {
+    $type = (string) ($_SERVER['CONTENT_TYPE'] ?? '');
+
+    if (str_starts_with($type, 'multipart/form-data')) {
+        /* Тело такого запроса PHP разобрал до нас. Если оно не влезло
+         * в post_max_size, разбор пуст, а сервер молчит — единственный
+         * след остаётся в CONTENT_LENGTH. Отвечаем понятно, иначе
+         * человек видит «не разобрали запрос» и не знает, что делать. */
+        if (!$_POST && (int) ($_SERVER['CONTENT_LENGTH'] ?? 0) > 0) {
+            say(413, ['error' => 'Слишком большой файл']);
+        }
+        return $_POST;
+    }
+
     $len = (int) ($_SERVER['CONTENT_LENGTH'] ?? 0);
     if ($len > SCRIBLA_MAX_BODY) { say(413, ['error' => 'Слишком длинно']); }
 
