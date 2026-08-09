@@ -13,7 +13,7 @@
   RewriteCond %{HTTP:X-Forwarded-Proto} =http
   RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
 
-  RewriteRule ^api/(notify|feedback|admin|selftest)/?$ api/$1.php [L]
+  RewriteRule ^api/(notify|feedback|admin|selftest|log)/?$ api/$1.php [L]
 </IfModule>
 
 # ---------------------------------------------------------------- закрытое

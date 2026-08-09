@@ -22,6 +22,7 @@ node test/run.js
 if command -v php >/dev/null; then
   php test/profanity.php
   php test/mail.php
+  php test/log.php
 fi
 
 # 2. Отправка в GitHub — сервер берёт файлы оттуда, так что без этого
