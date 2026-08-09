@@ -19,7 +19,10 @@ KEY=$(tr -d '[:space:]' < "$KEY_FILE")
 # 1. Проверки. Выкладывать сломанный фильтр незачем.
 echo "→ стенд"
 node test/run.js
-command -v php >/dev/null && php test/profanity.php
+if command -v php >/dev/null; then
+  php test/profanity.php
+  php test/mail.php
+fi
 
 # 2. Отправка в GitHub — сервер берёт файлы оттуда, так что без этого
 #    шага выкладка молча развернёт прежнюю версию.

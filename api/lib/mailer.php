@@ -38,10 +38,14 @@ final class Mail
             return $cache = null;
         }
 
+        /* secure: ssl (порт 465), tls (587, STARTTLS) или plain (25, 2525).
+         * Открытый канал Timeweb допускает, но это крайний случай: пароль
+         * от ящика идёт по проводу как есть. Годится, только если хостинг
+         * закрыл оба защищённых порта. */
         $cfg += [
             'host'      => 'smtp.timeweb.ru',
             'port'      => 465,
-            'secure'    => 'ssl',      // ssl (465) или tls (587, STARTTLS)
+            'secure'    => 'ssl',
             'from_name' => 'Scribla',
             'to'        => '',
         ];

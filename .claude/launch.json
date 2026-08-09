@@ -3,8 +3,8 @@
   "configurations": [
     {
       "name": "scribla-site",
-      "runtimeExecutable": "node",
-      "runtimeArgs": ["server.js"],
+      "runtimeExecutable": "bash",
+      "runtimeArgs": ["dev.sh"],
       "port": 4173
     }
   ]

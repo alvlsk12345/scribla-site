@@ -30,6 +30,9 @@
     demoStop: 'Stop the demo',
     demoPlay: 'Play the demo',
     quotes: ['“', '”'],
+    shotsMany: 'Kept the first three. Three is the limit.',
+    shotsBad: 'The browser could not open this image. PNG or JPEG works.',
+    shotOff: n => `Remove screenshot ${n}`,
   } : {
     sending:  'Отправляем…',
     badEmail: 'Проверьте адрес — похоже, в нём опечатка',
@@ -43,6 +46,9 @@
     demoStop: 'Остановить показ',
     demoPlay: 'Показать снова',
     quotes: ['«', '»'],
+    shotsMany: 'Взяли первые три — больше не нужно',
+    shotsBad: 'Эту картинку браузер не открыл. Подойдёт PNG или JPEG.',
+    shotOff: n => `Убрать скриншот ${n}`,
   };
 
   /* ---------------------------------------------------- шапка */
@@ -195,16 +201,21 @@
     btn.disabled = true; btn.textContent = T.sending;
     clear(box, field);
     try {
+      // Со скриншотами уходит FormData. Заголовок ей задаёт браузер
+      // сам — вписать свой значит потерять границу частей и получить
+      // на сервере пустой запрос.
+      const form_ = body instanceof FormData;
       const r = await fetch(url, {
         method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(body),
+        headers: form_ ? undefined : { 'content-type': 'application/json' },
+        body: form_ ? body : JSON.stringify(body),
       });
       const data = await r.json().catch(() => ({}));
       if (!r.ok) throw new Error(data.error || (EN ? 'Could not send' : 'Не получилось отправить'));
       say(box, 'ok', data.message || okText);
       form.reset();
       if (fbCount) fbCount.textContent = '0';
+      if (form === fb) shots.clear();
       return true;
     } catch (e) {
       say(box, 'err', e.message === 'Failed to fetch' ? T.offline : e.message, field);
@@ -228,13 +239,164 @@
   const fb = $('[data-feedback]');
   const fbText = $('#fb-text'), fbCount = $('[data-fb-count]');
   fbText?.addEventListener('input', () => fbCount.textContent = fbText.value.length);
+
+  /* ------------------------------------------------- скриншоты к отзыву
+
+     Картинку ужимаем здесь, до отправки, и на то три причины сразу.
+     Скриншот с телефона — это пять мегабайт, которые с мобильной связи
+     уходят полминуты. Такое же письмо потом падает владельцу в ящик.
+     И вместе с исходным файлом уезжают служебные поля: снято тогда-то,
+     там-то. Пересъёмка через canvas отрезает всё это заодно.
+
+     Ширина 1600 выбрана не наугад: это скриншот айфона в натуральную
+     величину. Мельче — текст на картинке перестаёт читаться, а именно
+     ради текста скриншот и присылают. */
+
+  const MAX_SHOTS = 3, MAX_SIDE = 1600;
+
+  const shots = (() => {
+    const zone = $('[data-drop]'), input = $('[data-shots]'), list = $('[data-shot-list]');
+    const items = [];
+    if (!zone || !input || !list) {
+      return { all: () => [], clear() {} };
+    }
+
+    const weigh = n => n < 1048576
+      ? Math.round(n / 1024) + (EN ? ' KB' : ' КБ')
+      : (n / 1048576).toFixed(1).replace('.', EN ? '.' : ',') + (EN ? ' MB' : ' МБ');
+
+    function draw() {
+      list.textContent = '';
+      items.forEach((it, i) => {
+        const li = document.createElement('li');
+
+        const img = document.createElement('img');
+        img.src = it.url; img.alt = '';
+
+        const who = document.createElement('div');
+        who.className = 'who';
+        const name = document.createElement('b');
+        name.textContent = it.name;
+        const size = document.createElement('span');
+        size.textContent = weigh(it.blob.size);
+        who.append(name, size);
+
+        const off = document.createElement('button');
+        off.type = 'button'; off.className = 'drop-x';
+        off.textContent = '×';
+        off.setAttribute('aria-label', T.shotOff(i + 1));
+        off.addEventListener('click', () => {
+          URL.revokeObjectURL(it.url);
+          items.splice(i, 1);
+          draw();
+          input.focus();
+        });
+
+        li.append(img, who, off);
+        list.append(li);
+      });
+      // Поле файлов очищаем всегда: список ведём мы, и выбранный второй
+      // раз тот же файл иначе не вызовет события change.
+      input.value = '';
+    }
+
+    /* Пересъёмка на canvas. WebP держит мелкий текст заметно лучше
+       JPEG при том же весе; где его нет — уходим на JPEG. */
+    async function shrink(file) {
+      const bmp = await createImageBitmap(file);
+      const k = Math.min(1, MAX_SIDE / Math.max(bmp.width, bmp.height));
+      const c = document.createElement('canvas');
+      c.width = Math.round(bmp.width * k);
+      c.height = Math.round(bmp.height * k);
+      const ctx = c.getContext('2d', { alpha: false });
+      ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(bmp, 0, 0, c.width, c.height);
+      bmp.close?.();
+
+      const shot = t => new Promise(r => c.toBlob(r, t, .82));
+      let blob = await shot('image/webp');
+      if (!blob || blob.type !== 'image/webp') { blob = await shot('image/jpeg'); }
+      return blob;
+    }
+
+    async function add(files) {
+      const box = $('[data-fb-msg]');
+      const room = MAX_SHOTS - items.length;
+      const pics = [...files].filter(f => f.type.startsWith('image/'));
+
+      // Лишнее отбрасываем вслух. Молча урезанный список выглядит так,
+      // будто картинка приложилась, — и человек узнаёт обратное никогда.
+      if (pics.length > room) { say(box, 'err', T.shotsMany); }
+      if (room <= 0) { return; }
+
+      for (const file of pics.slice(0, room)) {
+        try {
+          const blob = await shrink(file);
+          if (!blob) { throw new Error('пусто'); }
+          items.push({
+            blob,
+            url: URL.createObjectURL(blob),
+            name: (file.name || 'screenshot').replace(/\.[^.]+$/, '')
+                  + (blob.type === 'image/webp' ? '.webp' : '.jpg'),
+          });
+        } catch {
+          say(box, 'err', T.shotsBad);
+        }
+      }
+      draw();
+    }
+
+    input.addEventListener('change', () => add(input.files));
+
+    ['dragenter', 'dragover'].forEach(t => zone.addEventListener(t, e => {
+      e.preventDefault(); zone.classList.add('over');
+    }));
+    ['dragleave', 'drop'].forEach(t => zone.addEventListener(t, () => zone.classList.remove('over')));
+    zone.addEventListener('drop', e => {
+      e.preventDefault();
+      if (e.dataTransfer?.files.length) { add(e.dataTransfer.files); }
+    });
+
+    /* Вставка из буфера — главный способ приложить скриншот на настольном
+       компьютере: снял область, встал в форму, ⌘V. Слушаем всю форму,
+       а не рамку: попасть в неё курсором перед вставкой никто не станет. */
+    fb?.addEventListener('paste', e => {
+      const pics = [...(e.clipboardData?.items || [])]
+        .filter(i => i.kind === 'file' && i.type.startsWith('image/'))
+        .map(i => i.getAsFile())
+        .filter(Boolean);
+      if (!pics.length) { return; }
+      e.preventDefault();
+      add(pics);
+    });
+
+    return {
+      all: () => items,
+      clear() {
+        items.forEach(it => URL.revokeObjectURL(it.url));
+        items.length = 0;
+        draw();
+      },
+    };
+  })();
+
   fb?.addEventListener('submit', e => {
     e.preventDefault();
     const box = $('[data-fb-msg]');
     const message = fbText.value.trim();
     const email = $('input[name=email]', fb).value.trim();
     if (message.length < 10) return say(box, 'err', T.tooShort, fbText);
-    send(fb, '/api/feedback', { message, email, lang: LANG }, box, T.feedbackOk, fbText);
+
+    const pics = shots.all();
+    if (!pics.length) {
+      return send(fb, '/api/feedback', { message, email, lang: LANG }, box, T.feedbackOk, fbText);
+    }
+    const data = new FormData();
+    data.append('message', message);
+    data.append('email', email);
+    data.append('lang', LANG);
+    pics.forEach(p => data.append('shots[]', p.blob, p.name));
+    send(fb, '/api/feedback', data, box, T.feedbackOk, fbText);
   });
 
   /* ---------------------------------------------------- переводы */
