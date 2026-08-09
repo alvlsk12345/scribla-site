@@ -42,6 +42,38 @@ if ($want !== '') {
     exit;
 }
 
+/* Журнал диагностики за день: ?logs=ГГГГ-ММ-ДД, без даты — сегодняшний.
+ *
+ * Отдельным ответом, а не вместе с отзывами: записей за день бывают
+ * сотни, и подмешивать их к десятку отзывов значило бы сделать обычный
+ * ответ нечитаемым ради того, что смотрят раз в месяц.
+ *
+ * Список дней возвращается всегда: без него неоткуда узнать, за какие
+ * числа вообще что-то есть, и приходится гадать датами.
+ */
+if (array_key_exists('logs', $_GET)) {
+    $asked = (string) $_GET['logs'];
+    $day = preg_match('/^\d{4}-\d{2}-\d{2}$/', $asked) ? $asked : gmdate('Y-m-d');
+
+    $days = [];
+    foreach (glob(data_dir() . '/logs/*.jsonl') ?: [] as $f) {
+        $days[] = basename($f, '.jsonl');
+    }
+    sort($days);
+
+    $rows = [];
+    $path = data_dir() . '/logs/' . $day . '.jsonl';
+    if (is_file($path)) {
+        foreach (explode("\n", (string) file_get_contents($path)) as $line) {
+            if ($line === '') { continue; }
+            $row = json_decode($line, true);
+            if (is_array($row)) { $rows[] = $row; }
+        }
+    }
+
+    say(200, ['day' => $day, 'days' => $days, 'count' => count($rows), 'entries' => $rows]);
+}
+
 $read = static function (string $f): array {
     $p = data_dir() . '/' . $f;
     if (!is_file($p)) { return []; }
