@@ -29,7 +29,20 @@ $srv = proc_open(
     [PHP_BINARY, __DIR__ . '/fake-smtp.php', (string) $port, $got],
     [1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes
 );
-usleep(400000);
+/* Ждём слова от сервера, а не «примерно полсекунды».
+ *
+ * Фиксированной паузы хватало ровно до тех пор, пока машина была
+ * свободна. Под нагрузкой (рядом шла сборка Xcode) PHP не успевал
+ * подняться за 400 мс, стенд падал с «Connection refused» и выглядело
+ * это как поломка почты — то есть искать её начинали в MIME.
+ * Ошибка стенда, притворяющаяся ошибкой продукта, обходится дороже всех.
+ */
+stream_set_timeout($pipes[1], 10);
+$hello = fgets($pipes[1]);
+if (trim((string) $hello) !== 'готов') {
+    fwrite(STDERR, "поддельный сервер не поднялся\n");
+    exit(1);
+}
 
 $fail = 0;
 $ok = static function (string $what, bool $good) use (&$fail): void {
