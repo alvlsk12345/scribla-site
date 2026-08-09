@@ -46,17 +46,28 @@ $out = [
     ],
 ];
 
-/* Отдельно проверяем сам канал: на общем хостинге исходящий SMTP
- * иногда закрыт, и тогда всё остальное настроено верно, а писем нет. */
+/* Сам канал проверяем ВСЕГДА, даже до того, как заведён ящик: на общем
+ * хостинге исходящий SMTP бывает закрыт, и тогда всё остальное настроено
+ * верно, а писем нет. Лучше узнать это до, чем после. */
+$probe = [];
+$try = [['ssl://smtp.timeweb.ru:465', 'ssl'], ['tcp://smtp.timeweb.ru:587', 'tls']];
 if ($cfg !== null) {
-    $addr = ($cfg['secure'] === 'ssl' ? 'ssl://' : 'tcp://') . $cfg['host'] . ':' . $cfg['port'];
+    array_unshift($try, [
+        ($cfg['secure'] === 'ssl' ? 'ssl://' : 'tcp://') . $cfg['host'] . ':' . $cfg['port'],
+        $cfg['secure'],
+    ]);
+}
+foreach ($try as [$addr, $_]) {
+    if (isset($probe[$addr])) { continue; }
     $t = microtime(true);
     $s = @stream_socket_client($addr, $no, $err, 8);
-    $out['канал'] = $s
-        ? 'открыт за ' . round((microtime(true) - $t) * 1000) . ' мс'
+    $probe[$addr] = $s
+        ? 'открыт за ' . round((microtime(true) - $t) * 1000) . ' мс: '
+            . trim((string) fgets($s, 512))
         : 'закрыт: ' . $err;
     if ($s) { @fclose($s); }
 }
+$out['канал'] = $probe;
 
 if (($_GET['send'] ?? '') !== '' && $cfg !== null) {
     $r = Mail::send(
