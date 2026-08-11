@@ -3,3 +3,6 @@ data/
 *.log
 .DS_Store
 .local-data/
+
+# Промежуточные дорожки роликов — собираются из tools/film-audio.py
+tools/build/
