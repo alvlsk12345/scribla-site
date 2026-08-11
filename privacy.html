@@ -57,16 +57,24 @@
 
 <ul>
   <li><b>Полировка текста, ответы AI и запасной перевод.</b> Если они
-      включены, распознанный текст отправляется выбранному сервису:
-      встроенному провайдеру (<code>ollama.com</code>, на ключе разработчика)
-      либо OpenAI или DeepSeek — на вашем собственном ключе. Что эти
-      сервисы делают с полученным текстом, определяют их собственные
-      правила, а не наши.</li>
-  <li><b>Поиск в интернете.</b> Если он включён, ваш вопрос отправляется
-      поисковому сервису <code>ollama.com</code>, и найденные страницы
-      подкладываются модели вместе с вопросом. Когда вы нажали клавишу
-      «текст из поля», в поиск уходит не вопрос, а сам этот текст:
-      «ответь на это» искать было бы не по чему.</li>
+      включены, распознанный текст отправляется выбранному сервису.
+      У встроенного провайдера путь идёт через наш сервер: текст
+      приходит на <code>scribla.io</code>, а оттуда передаётся
+      в <code>ollama.com</code> на ключе разработчика. Промежуточный шаг
+      нужен затем, чтобы ключ не лежал внутри приложения, откуда его
+      достаёт любой желающий. Ни вопрос, ни ответ мы не храним:
+      в служебную запись попадают длина, название модели и код ответа —
+      этого хватает, чтобы видеть нагрузку, и не хватает, чтобы прочитать
+      написанное вами. Если вы выбрали OpenAI или DeepSeek на своём
+      ключе, текст уходит к ним напрямую, минуя нас. Что эти сервисы
+      делают с полученным текстом, определяют их собственные правила,
+      а не наши.</li>
+  <li><b>Поиск в интернете.</b> Если он включён, ваш вопрос уходит тем же
+      путём — через <code>scribla.io</code> в поисковый сервис
+      <code>ollama.com</code>, — и найденные страницы подкладываются
+      модели вместе с вопросом. Когда вы нажали клавишу «текст из поля»,
+      в поиск уходит не вопрос, а сам этот текст: «ответь на это» искать
+      было бы не по чему.</li>
   <li><b>Курсы валют.</b> Приложение запрашивает опубликованные курсы
       у Банка России (<code>cbr.ru</code>). Никаких ваших данных
       в запросе нет — это обращение за общедоступной таблицей.</li>
@@ -225,16 +233,23 @@ turn on.</p>
 
 <ul>
   <li><b>Text polishing, AI answers and fallback translation.</b> When
-      enabled, the recognised text is sent to the service you picked:
-      the built-in provider (<code>ollama.com</code>, on the developer's key),
-      or OpenAI or DeepSeek on your own key. What those services do with
-      the text is governed by their own terms, not ours.</li>
-  <li><b>Web search.</b> When enabled, your question is sent to the
-      <code>ollama.com</code> search service, and the pages found are given
-      to the model along with the question. When you have pressed the
-      «text from the field» key, it is that text rather than the question
-      that goes to the search: there would be nothing to search for in
-      «reply to this».</li>
+      enabled, the recognised text is sent to the service you picked.
+      With the built-in provider the path runs through our server: the
+      text arrives at <code>scribla.io</code> and is passed on to
+      <code>ollama.com</code> on the developer's key. That middle step
+      exists so the key does not sit inside the app, where anyone can
+      dig it out. We store neither the question nor the answer: the
+      service record keeps the length, the model name and the response
+      code — enough to see the load, not enough to read what you wrote.
+      If you picked OpenAI or DeepSeek on your own key, the text goes to
+      them directly, bypassing us. What those services do with the text
+      is governed by their own terms, not ours.</li>
+  <li><b>Web search.</b> When enabled, your question travels the same
+      way — through <code>scribla.io</code> to the <code>ollama.com</code>
+      search service — and the pages found are given to the model along
+      with the question. When you have pressed the «text from the field»
+      key, it is that text rather than the question that goes to the
+      search: there would be nothing to search for in «reply to this».</li>
   <li><b>Currency rates.</b> The app requests published rates from the Bank
       of Russia (<code>cbr.ru</code>). The request contains none of your data —
       it fetches a public table.</li>
