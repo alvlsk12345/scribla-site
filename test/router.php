@@ -12,7 +12,7 @@
 
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?: '/';
 
-if (preg_match('#^/api/(notify|feedback|admin|selftest|deploy|log|report)/?$#', $path, $m)) {
+if (preg_match('#^/api/(notify|feedback|admin|selftest|deploy|log|report|ai)/?$#', $path, $m)) {
     require __DIR__ . '/../api/' . $m[1] . '.php';
     return true;
 }
