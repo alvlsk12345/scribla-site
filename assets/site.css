@@ -172,18 +172,31 @@ input:focus-visible, textarea:focus-visible { outline-offset: 1px; }
 /* На телефоне навигация не исчезает, а переезжает в прокручиваемую
    ленту под шапкой: страница длинная, и оставлять человека без
    единого перехода нельзя. */
+/* Лента лежит ВНУТРИ коробки шапки: место под неё держит
+   `padding-bottom`, и потому её накрывают фон и размытие `.top`.
+   Прежде она стояла ниже коробки с `background: inherit`, а наследовать
+   было не от чего — у `.wrap` фона нет, — и вычислялось прозрачное.
+   Страница ехала прямо сквозь ссылки: заголовки и кнопки читались
+   поверх «Что умеет» и «Приватность» на всю телефонную ширину.
+   Высота ленты в rem, а не в пикселях: содержимое её тоже в rem,
+   и при увеличенном шрифте полоса растёт вместе с ним. Отсюда же
+   ушёл подпор `main { padding-top: 46px }` — он был на 4 px меньше
+   настоящей высоты ленты, а теперь она занимает место сама. */
 @media (max-width: 860px) {
+  :root { --nav-strip: 3.15rem; }
+  .top { padding-bottom: var(--nav-strip); }
   .top .wrap { gap: .5rem; }
   .nav {
     position: absolute; left: 0; right: 0; top: var(--header);
+    min-height: var(--nav-strip);
     gap: 0; overflow-x: auto; scrollbar-width: none;
-    background: inherit; border-top: 1px solid var(--line);
+    border-top: 1px solid var(--line);
     padding-inline: 1.5rem;
   }
   .nav::-webkit-scrollbar { display: none; }
   .nav a { white-space: nowrap; padding: .8rem .75rem; font-size: .9rem; }
   .nav a:first-child { padding-left: 0; }
-  main { padding-top: 46px; }
+  section { scroll-margin-top: calc(var(--header) + var(--nav-strip) + 12px); }
 }
 
 /* ---------------------------------------------------------- кнопки */
@@ -424,11 +437,16 @@ input:focus-visible, textarea:focus-visible { outline-offset: 1px; }
 
 /* ---------------------------------------------------------- карточки */
 
-.cards { display: grid; gap: 1rem; align-items: start; }
+/* Карточки в ряду тянутся до общей высоты, а примеры прижаты к их низу
+   (`margin-top: auto`). Прежний `align-items: start` оставлял ряд рваным:
+   у одних карточек примера нет, у других он в две строки, и разница
+   доходила до 130 px — сетка читалась как случайно рассыпанная. */
+.cards { display: grid; gap: 1rem; }
 @media (min-width: 700px) { .cards { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1000px) { .cards { grid-template-columns: repeat(3, 1fr); } }
 
 .card {
+  display: flex; flex-direction: column;
   background: var(--bg-card); border: 1px solid var(--line);
   border-radius: var(--r); padding: 1.5rem;
   box-shadow: var(--shadow);
@@ -446,9 +464,10 @@ input:focus-visible, textarea:focus-visible { outline-offset: 1px; }
   stroke-linecap: round; stroke-linejoin: round;
 }
 .card h3 { margin-bottom: .5rem; }
-.card p { color: var(--text-soft); font-size: .97rem; margin: 0; }
+.card p { color: var(--text-soft); font-size: .97rem; margin: 0 0 .9rem; }
+.card p:last-child { margin-bottom: 0; }
 .card .ex {
-  margin-top: .9rem; padding-top: .9rem; border-top: 1px dashed var(--line);
+  margin-top: auto; padding-top: .9rem; border-top: 1px dashed var(--line);
   font-family: var(--serif); font-style: italic; font-size: 1rem; color: var(--text-soft);
 }
 .card .ex b { display: block; font: 700 .95rem/1.4 var(--sans); font-style: normal; color: var(--text); margin-top: .3rem; }
@@ -460,8 +479,14 @@ input:focus-visible, textarea:focus-visible { outline-offset: 1px; }
 .privacy { background: var(--bg-sunk); border-block: 1px solid var(--line); }
 .privacy .wrap { display: grid; gap: 2.5rem; align-items: center; }
 @media (min-width: 900px) { .privacy .wrap { grid-template-columns: 1fr 15rem; } }
+/* `height: auto` обязателен: в разметке у картинки стоит height="240",
+   и одной CSS-ширины мало — высота из атрибута остаётся. Коробка
+   выходила 216×240 при квадратном рисунке, квадрат вставал по центру,
+   и внутри скругления оставалось по 12 px пустоты сверху и снизу.
+   Сверху её не видно, а снизу, над тенью, она читалась светлой
+   полосой поперёк Дьяка — это и было заметно на живом сайте. */
 .privacy img {
-  width: 100%; max-width: 13.5rem; margin-inline: auto; display: block;
+  width: 100%; height: auto; max-width: 13.5rem; margin-inline: auto; display: block;
   border-radius: 30px;
   box-shadow: 0 22px 48px -20px rgba(120, 55, 20, .55);
 }
