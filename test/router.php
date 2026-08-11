@@ -18,7 +18,25 @@ if (preg_match('#^/api/(notify|feedback|admin|selftest|deploy|log|report|ai)/?$#
 }
 
 $file = __DIR__ . '/..' . $path;
-if ($path !== '/' && is_file($file)) { return false; }   // отдаст сервер
+if ($path !== '/' && is_file($file)) {
+    /* Стиль и сценарий отдаём сами — только ради «не кэшировать».
+     * Браузер держал у себя вчерашний site.js, и стенд проверял код,
+     * которого на диске уже не было: правка не действовала, а выглядело
+     * это как ошибка в самой правке. На хостинге за свежесть отвечает
+     * штамп ?v=<md5>, который проставляет deploy.php; локально штампа
+     * нет, поэтому нужен заголовок.
+     *
+     * Остальное (картинки и особенно видео) оставляем встроенному
+     * серверу: он умеет отдавать куски по Range, а <video> без этого
+     * не перематывается. */
+    if (preg_match('#\.(css|js)$#', $path)) {
+        header('Cache-Control: no-store');
+        header('Content-Type: ' . (str_ends_with($path, '.css') ? 'text/css' : 'text/javascript') . '; charset=utf-8');
+        readfile($file);
+        return true;
+    }
+    return false;                                        // отдаст сервер
+}
 
 if (is_dir($file)) { $file = rtrim($file, '/') . '/index.html'; }
 if ($path === '/') { $file = __DIR__ . '/../index.html'; }
