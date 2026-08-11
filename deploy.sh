@@ -48,14 +48,41 @@ REF=$(git rev-parse HEAD)
 # самому, ни положить в репозиторий; телом запроса он не попадает
 # ни в историю команд, ни в журналы прокси. Нет файла — сервер оставляет
 # свои настройки как есть.
+#
+# Тем же путём едут два ключа ручки AI: настоящий ключ Ollama и наш
+# собственный, которым приложение подписывает обращения. Ни один из них
+# не может лежать в публичном репозитории, а SSH на этом хостинге нет
+# вовсе — остаётся тело запроса.
 MAIL_FILE=${SCRIBLA_MAIL_FILE:-$HOME/.scribla-mail.json}
+AI_KEY_FILE=${SCRIBLA_AI_KEY_FILE:-$HOME/.scribla-ai-app.key}
+OLLAMA_KEY_FILE=${SCRIBLA_OLLAMA_KEY_FILE:-$HOME/.scribla-ollama.key}
+
+# Через файл, а не через --data: тело в аргументах командной строки
+# видно всей машине в `ps`.
 BODY=""
+PARTS=""
 if [ -f "$MAIL_FILE" ]; then
-  # Через файл, а не через --data: тело в аргументах командной строки
-  # видно всей машине в `ps`.
-  BODY=$(umask 077; mktemp)
-  printf '{"mail":%s}' "$(cat "$MAIL_FILE")" > "$BODY"
+  PARTS="\"mail\":$(cat "$MAIL_FILE")"
   echo "  почта: настройки из $MAIL_FILE едут вместе с выкладкой"
+fi
+
+KEYS=""
+if [ -f "$AI_KEY_FILE" ]; then
+  KEYS="\"ai\":\"$(tr -d '[:space:]' < "$AI_KEY_FILE")\""
+fi
+if [ -f "$OLLAMA_KEY_FILE" ]; then
+  [ -n "$KEYS" ] && KEYS="$KEYS,"
+  KEYS="$KEYS\"ollama\":\"$(tr -d '[:space:]' < "$OLLAMA_KEY_FILE")\""
+fi
+if [ -n "$KEYS" ]; then
+  [ -n "$PARTS" ] && PARTS="$PARTS,"
+  PARTS="$PARTS\"keys\":{$KEYS}"
+  echo "  ключи AI: едут вместе с выкладкой"
+fi
+
+if [ -n "$PARTS" ]; then
+  BODY=$(umask 077; mktemp)
+  printf '{%s}' "$PARTS" > "$BODY"
 fi
 
 if [ -n "$BODY" ]; then
