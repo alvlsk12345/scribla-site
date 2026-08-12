@@ -32,7 +32,12 @@
 <header class="top">
   <div class="wrap">
     <a class="brand" href="/en/">
-      <img class="mark" src="../assets/brand/scribla-avatar.svg" alt="" width="32" height="32">
+      <!-- Дьяк с пером, и перо чуть ходит. Файл отдельный
+           (scribla-dyak-writing.svg): анимация лежит внутри SVG, поэтому
+           работает через img и не требует вставки разметки в страницы.
+           Именно эта версия, а не -alpha: у неё свой терракотовый кружок,
+           а перо пергаментное и на светлой шапке без кружка пропадает. -->
+      <img class="mark" src="../assets/brand/scribla-dyak-writing.svg" alt="" width="32" height="32">
       <picture>
         <source srcset="../assets/brand/scribla-wordmark-white.svg" media="(prefers-color-scheme: dark)">
         <img class="word" src="../assets/brand/scribla-wordmark.svg" alt="Scribla">
