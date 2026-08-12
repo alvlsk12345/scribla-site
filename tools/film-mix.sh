@@ -21,8 +21,8 @@ DUCK=${DUCK:-0.32}  # насколько музыка приседает под 
 # Окна, в которых звучит голос. Сняты не на слух, а silencedetect'ом
 # с чистых дорожек:
 #   ffmpeg -i tools/source/voice-ru.m4a -af silencedetect=noise=-45dB:d=0.2 -f null -
-WIN_ru="0.50 0.95 1.95 2.53 6.01 7.09"
-WIN_en="0.66 1.47 2.27 3.12 6.05 7.12"
+WIN_ru="0.50 0.91 1.94 2.61 6.02 6.61"
+WIN_en="0.59 1.12 2.25 2.88 6.05 6.68"
 
 [ -f "$BUILD/music.wav" ] || { echo "Нет $BUILD/music.wav — сперва python3 tools/film-audio.py"; exit 1; }
 
