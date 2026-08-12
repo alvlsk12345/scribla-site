@@ -96,7 +96,7 @@ if ($kind === 'chat') {
      * закрытый: те же имена, что в BuiltInAIClient (основная и запасные).
      * Новая модель в приложении требует строки здесь — это неудобно
      * ровно один раз и защищает от чужого выбора всегда. */
-    $allowed = ['gemma4:cloud', 'mistral-large-3:675b-cloud', 'qwen3.5:cloud'];
+    $allowed = ['gemma4:cloud', 'mistral-large-3:675b-cloud', 'gpt-oss:120b-cloud'];
     $model = (string) ($in['model'] ?? '');
     if (!in_array($model, $allowed, true)) {
         say(400, ['error' => 'Модель не поддерживается']);
