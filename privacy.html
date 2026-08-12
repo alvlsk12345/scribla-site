@@ -52,12 +52,20 @@
 
 <h2>Что уходит с устройства и когда</h2>
 
-<p>Ничего из перечисленного ниже не происходит само: каждый случай —
-это возможность, которую включаете вы.</p>
+<p>Звук не уходит с телефона никогда и ни в одном режиме. Текст —
+уходит, и в режимах с AI это работает <b>с первого запуска</b>:
+полировка, ответы и поиск включены сразу, через встроенный сервис.
+Что именно уходит наружу, сказано в знакомстве прямо над переключателем;
+отказаться можно там же или потом в настройках. Остальное из списка ниже
+ждёт вашей команды.</p>
+
+<p>Если вы поставили Scribla раньше и эти режимы не включали, они
+останутся выключенными: обновление не включает их задним числом.</p>
 
 <ul>
-  <li><b>Полировка текста, ответы AI и запасной перевод.</b> Если они
-      включены, распознанный текст отправляется выбранному сервису.
+  <li><b>Полировка текста, ответы AI и запасной перевод.</b> Включены
+      с первого запуска. Распознанный текст отправляется выбранному
+      сервису.
       У встроенного провайдера путь идёт через наш сервер: текст
       приходит на <code>scribla.io</code>, а оттуда передаётся
       в <code>ollama.com</code> на ключе разработчика. Промежуточный шаг
@@ -69,7 +77,8 @@
       ключе, текст уходит к ним напрямую, минуя нас. Что эти сервисы
       делают с полученным текстом, определяют их собственные правила,
       а не наши.</li>
-  <li><b>Поиск в интернете.</b> Если он включён, ваш вопрос уходит тем же
+  <li><b>Поиск в интернете.</b> Тоже включён с первого запуска: ваш
+      вопрос уходит тем же
       путём — через <code>scribla.io</code> в поисковый сервис
       <code>ollama.com</code>, — и найденные страницы подкладываются
       модели вместе с вопросом. Когда вы нажали клавишу «текст из поля»,
@@ -228,12 +237,20 @@ anywhere and never sent anywhere.</p>
 
 <h2>What leaves the device, and when</h2>
 
-<p>None of the following happens on its own: each one is a feature you
-turn on.</p>
+<p>Audio never leaves the phone, in any mode. Text does, and in the AI
+modes it works <b>from the first launch</b>: polishing, answers and
+search are on right away, through the built-in service. What goes out is
+spelled out in the intro, directly above the switch; you can decline
+there, or later in the settings. Everything else below waits for you to
+ask.</p>
+
+<p>If you installed Scribla earlier and never turned these modes on,
+they stay off: an update does not switch them on retroactively.</p>
 
 <ul>
-  <li><b>Text polishing, AI answers and fallback translation.</b> When
-      enabled, the recognised text is sent to the service you picked.
+  <li><b>Text polishing, AI answers and fallback translation.</b> On from
+      the first launch. The recognised text is sent to the service you
+      picked.
       With the built-in provider the path runs through our server: the
       text arrives at <code>scribla.io</code> and is passed on to
       <code>ollama.com</code> on the developer's key. That middle step
@@ -244,7 +261,8 @@ turn on.</p>
       If you picked OpenAI or DeepSeek on your own key, the text goes to
       them directly, bypassing us. What those services do with the text
       is governed by their own terms, not ours.</li>
-  <li><b>Web search.</b> When enabled, your question travels the same
+  <li><b>Web search.</b> On from the first launch as well: your question
+      travels the same
       way — through <code>scribla.io</code> to the <code>ollama.com</code>
       search service — and the pages found are given to the model along
       with the question. When you have pressed the «text from the field»
