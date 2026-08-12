@@ -23,8 +23,10 @@
   a { color: #c2410c; }
   @media (prefers-color-scheme: dark) { a { color: #fb923c; } }
 </style>
+<script src="assets/metrika.js" async></script>
 </head>
 <body>
+<noscript><div><img src="https://mc.yandex.ru/watch/111532968" style="position:absolute; left:-9999px;" alt=""></div></noscript>
 
 <h1>Scribla — политика приватности</h1>
 <p class="updated">Обновлено 9 августа 2026 года</p>
@@ -133,9 +135,11 @@
 в сеть не выходит ни при каких условиях: сетевого кода в ней нет.
 Она не читает и не передаёт то, что вы печатаете обычными клавишами.</p>
 
-<h2>Чего нет вовсе</h2>
+<h2>Чего нет в приложении</h2>
 <ul>
-  <li>Аналитики и счётчиков посещений.</li>
+  <li>Аналитики и счётчиков: приложение не считает ни запусков,
+      ни экранов. На сайте счётчик есть, и о нём сказано
+      <a href="#schyotchik">отдельно</a>.</li>
   <li>Рекламы и рекламных идентификаторов.</li>
   <li>Отслеживания между приложениями и сайтами.</li>
   <li>Передачи данных брокерам или третьим лицам ради их целей.</li>
@@ -192,6 +196,42 @@
 <p>Написать нам можно и обычной почтой, без всяких форм:
 <a href="mailto:dev@scribla.io">dev@scribla.io</a>. Чтобы удалить
 присланное, напишите туда же.</p>
+
+<h2 id="schyotchik">Счётчик посещений сайта</h2>
+
+<p>На страницах сайта стоит Яндекс.Метрика, счётчик 111532968. Нужна она
+для одного: видеть, сколько людей приходит и какие страницы читают.
+До 12 августа 2026 счётчика не было вовсе, и здесь так и было написано.
+Теперь он есть — и правильнее сказать прямо, что он собирает, чем
+оставить прежнюю строчку.</p>
+
+<p>Метрика ставит куки и передаёт Яндексу обычный для счётчиков набор:
+адрес страницы, откуда вы на неё пришли, язык и версию браузера,
+разрешение экрана, примерную область по адресу подключения. Ни имени,
+ни почты там нет. Написанное в формах туда не уходит: оно ложится
+на наш сервер и оттуда письмом разработчику, как сказано выше.</p>
+
+<p><b>Запись сеансов (Вебвизор) выключена.</b> Движения мыши, прокрутка
+и набранное в полях не пишутся — на странице с формой отзывов такая
+запись собирала бы ровно то, чего мы обещаем не собирать. Карта кликов
+включена: она считает нажатия по местам страницы, без содержимого полей.</p>
+
+<p>Ещё одно, что видно только в отладчике, и потому сказать надо самим:
+загружаясь, Метрика обращается к рекламному адресу Яндекса
+(<code>mc.yandex.ru/metrika/advert.gif</code>). Так устроен её счётчик.
+Рекламы на этом сайте нет, ретаргетинг мы не ведём и аудитории для
+показа объявлений не собираем — но обращение это происходит, и Яндекс
+на своей стороне волен им распорядиться по своим правилам.</p>
+
+<p>Что Яндекс делает с полученным, определяют его правила, а не наши:
+<a href="https://yandex.ru/legal/confidential/">политика
+конфиденциальности</a> и <a
+href="https://yandex.ru/legal/metrica_termsofuse/">условия Метрики</a>.
+Отказаться можно не спрашивая нас — Яндекс даёт для этого
+<a href="https://yandex.ru/support/metrica/general/opt-out.html">способ
+отключить Метрику</a>; годится и обычный блокировщик. Сайт от этого
+работать не перестанет: счётчик подключён отдельным файлом и ни на что
+на странице не влияет.</p>
 
 <h2>Дети</h2>
 
@@ -317,9 +357,11 @@ channel for delivering text into a keyboard. The keyboard itself never goes
 online under any circumstances — it contains no networking code. It does not
 read or transmit what you type on ordinary keys.</p>
 
-<h2>What there is none of</h2>
+<h2>What there is none of in the app</h2>
 <ul>
-  <li>Analytics or usage counters.</li>
+  <li>Analytics or counters: the app counts neither launches nor screens.
+      The site does have a counter, described
+      <a href="#counter">separately below</a>.</li>
   <li>Advertising or advertising identifiers.</li>
   <li>Tracking across apps and websites.</li>
   <li>Sharing data with brokers or third parties for their own purposes.</li>
@@ -373,6 +415,44 @@ attaching, look at what is on the screen.</p>
 <p>You can also write to us by plain email, with no form at all:
 <a href="mailto:dev@scribla.io">dev@scribla.io</a>. To have something deleted,
 write to the same address.</p>
+
+<h2 id="counter">The site's visit counter</h2>
+
+<p>The site's pages carry Yandex Metrica, counter 111532968. It is there
+for one thing: to see how many people come and which pages they read.
+Until 12 August 2026 there was no counter at all, and this page said so.
+Now there is one — and saying plainly what it collects beats leaving the
+old line in place.</p>
+
+<p>Metrica sets cookies and passes Yandex the usual set for a counter:
+the page address, where you came from, the browser language and version,
+the screen size, and an approximate region from your connection address.
+No name and no email are in that set. What you type into the forms does
+not go there: it lands on our server and goes to the developer by email,
+as described above.</p>
+
+<p><b>Session recording (Webvisor) is off.</b> Mouse movement, scrolling
+and what you type into fields are not recorded — on a page with a
+free-text feedback form such a recording would collect exactly what we
+promise not to collect. The click map is on: it counts taps by position
+on the page, with no field contents.</p>
+
+<p>One more thing, visible only in a debugger, which is why we say it
+ourselves: as it loads, Metrica calls Yandex's advertising endpoint
+(<code>mc.yandex.ru/metrika/advert.gif</code>). That is how their counter
+is built. There are no ads on this site, we run no retargeting and build
+no advertising audiences — but the call happens, and on their side Yandex
+is free to use it under their own terms.</p>
+
+<p>What Yandex does with what it receives is governed by their terms, not
+ours: the <a href="https://yandex.com/legal/confidential/">privacy
+policy</a> and the <a
+href="https://yandex.com/legal/metrica_termsofuse/">Metrica terms</a>.
+You can opt out without asking us — Yandex provides
+<a href="https://yandex.com/support/metrica/general/opt-out.html">a way to
+disable Metrica</a>, and an ordinary content blocker works too. The site
+will keep working either way: the counter is a separate file and affects
+nothing on the page.</p>
 
 <h2>Children</h2>
 

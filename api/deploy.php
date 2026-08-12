@@ -287,7 +287,8 @@ function fetch(string $url): ?string
 function stamp_assets(string $root): string
 {
     $marks = [];
-    foreach (['site.css', 'site.js', 'video/hero-ru.mp4', 'video/hero-en.mp4'] as $name) {
+    foreach (['site.css', 'site.js', 'metrika.js',
+              'video/hero-ru.mp4', 'video/hero-en.mp4'] as $name) {
         $f = $root . '/assets/' . $name;
         if (is_file($f)) { $marks[$name] = substr(md5_file($f) ?: '', 0, 8); }
     }
