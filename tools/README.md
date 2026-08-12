@@ -13,6 +13,51 @@ python3 tools/film-audio.py     # → tools/build/music.wav, pen-ru.wav, pen-en.
 `GM` музыка (0.26), `GP` перо (0.68), `DUCK` приседание музыки под
 голосом (0.32).
 
+## Звук со стороны — записанный или сгенерированный
+
+`film-audio.py` синтезирует звук из ничего, и это слышно: пианино
+не похоже на пианино, перо ближе к шипению, чем к перу. Оценка
+владельца, 12 августа 2026, — «музыка синтетическая, перо похоже
+на шум». Это заглушка, а не цель.
+
+Готовый материал ставится на его место одной командой на дорожку:
+
+```bash
+./tools/film-prep.sh music ~/Downloads/track.mp3
+./tools/film-prep.sh pen ru ~/Downloads/quill.wav
+./tools/film-prep.sh pen en ~/Downloads/quill.wav
+./tools/film-mix.sh
+```
+
+`film-prep.sh` приводит любой файл к 48 кГц стерео и 8,70 с (короткое
+зацикливает), музыке делает вход и уход, а **перу ставит ворота**:
+звук остаётся только в интервалах письма. Это не мелочь — непрерывный
+скрип на все девять секунд читается как шум в комнате, а не как
+пишущее перо. Громкость подгоняется по RMS к прежним величинам, так
+что `GM` и `GP` продолжают значить то же самое.
+
+Проверено на подставном материале: розовый шум и синус приходят
+к нужному формату, а вне интервалов письма в дорожке пера ровная
+тишина (−91 дБ).
+
+### Просьбы к генератору
+
+Музыка, около 10 секунд:
+
+> Warm intimate solo felt piano with soft sustained strings underneath,
+> slow and unhurried, candlelit letter-writing mood, warm major key,
+> gentle resolution at the end, no percussion, no synthesizers, close
+> recording with light natural room reverb.
+
+Перо, около 8 секунд:
+
+> Close-up foley recording: a fountain pen nib writing cursive on thick
+> paper. Fine dry scratching, changing pressure, short pauses between
+> letters. Quiet room, no music, no voice, no other sounds.
+
+Перо лучше просить непрерывным куском: ворота расставит `film-prep.sh`,
+и они встанут точно по кадру, чего от генератора ждать не приходится.
+
 ## Из чего собрана дорожка
 
 **Голос** — из съёмки, `tools/source/voice-*.m4a`. Уровень не тронут
