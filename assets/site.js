@@ -8,14 +8,36 @@
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const calm = matchMedia('(prefers-reduced-motion: reduce)');
 
-  /* Приём переводов — страница CloudTips. Предзаполнение суммы через
-     ?amount=N проверено живьём на 100 и 1000. */
-  const DONATE_URL = 'https://pay.cloudtips.ru/p/22f5ec26';
-
   /* Страниц две, скрипт один. Язык берём из <html lang>, а не из адреса:
      так строка остаётся верной, куда бы страницу ни переложили. */
   const LANG = document.documentElement.lang === 'en' ? 'en' : 'ru';
   const EN = LANG === 'en';
+
+  /* Приём переводов. Рельсы РАЗНЫЕ, и это не украшение: СБП работает
+     только из российских банков, а карта из США или Европы там не пройдёт
+     вовсе. Поэтому русская страница ведёт на CloudTips, английская —
+     на Gumroad. Gumroad выбран из проверенных по одной причине: Казахстан
+     стоит у него в официальной таблице выплат (валюта KZT, зачисление
+     на счёт), тогда как у Buy Me a Coffee, Ko-fi и GitHub Sponsors выплаты
+     идут через Stripe, а Stripe в Казахстане не работает. Он же merchant
+     of record — НДС и sales tax по всем странам считает и платит сам.
+
+     Предзаполнение суммы: у CloudTips ?amount=N (проверено живьём на 100
+     и 1000, хотя в документации описан только виджет), у Gumroad
+     ?price=N&wanted=true — второй параметр ведёт сразу на оплату, минуя
+     карточку товара.
+
+     Виджетов ни там, ни там: оба тянут чужой скрипт на страницу, где
+     написано, что ничего никуда не уходит. */
+  const DONATE = EN ? {
+    url:   'https://scribla.gumroad.com/l/thanks',   /* ← сюда адрес товара */
+    query: n => `?price=${n}&wanted=true`,
+    min: 3, max: 500,
+  } : {
+    url:   'https://pay.cloudtips.ru/p/22f5ec26',
+    query: n => `?amount=${n}`,
+    min: 10, max: 100000,
+  };
 
   const T = EN ? {
     sending:  'Sending…',
@@ -25,8 +47,8 @@
     notifyOk: 'Noted. We\'ll write once — when it ships.',
     feedbackOk: 'Thank you. Everything gets read.',
     pickAmount: 'Choose an amount',
-    outOfRange: 'From 10 to 100,000 ₽',
-    donate: n => `Send ${n} ₽ via SBP`,
+    outOfRange: 'From $3 to $500',
+    donate: n => `Send $${n}`,
     demoStop: 'Stop the demo',
     demoPlay: 'Play the demo',
     quotes: ['“', '”'],
@@ -497,9 +519,9 @@
 
   function refresh() {
     if (!donate) return;
-    const ok = Boolean(DONATE_URL) && amount > 0;
+    const ok = Boolean(DONATE.url) && amount > 0;
     donate.setAttribute('aria-disabled', String(!ok));
-    donate.href = ok ? DONATE_URL + '?amount=' + amount : '#';
+    donate.href = ok ? DONATE.url + DONATE.query(amount) : '#';
     donate.textContent = ok ? T.donate(amount)
       : (amtInput && amtInput.value.trim() !== '' ? T.outOfRange : T.pickAmount);
   }
@@ -515,7 +537,7 @@
 
   amtInput?.addEventListener('input', () => {
     const v = parseInt(amtInput.value, 10);
-    const ok = v >= 10 && v <= 100000;
+    const ok = v >= DONATE.min && v <= DONATE.max;
     amount = ok ? v : null;
     amtInput.setAttribute('aria-invalid', amtInput.value.trim() !== '' && !ok ? 'true' : 'false');
     refresh();

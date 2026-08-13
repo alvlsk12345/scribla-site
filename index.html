@@ -70,7 +70,7 @@
       <div>
         <img class="hero-word" src="assets/brand/scribla-wordmark-white.svg"
              alt="Scribla" width="420" height="76">
-        <p class="hero-status"><span class="dot"></span> Готовится к выходу · версия 0.9</p>
+        <p class="hero-status"><span class="dot"></span> Готовится к выходу · версия 1.0</p>
         <h1>Мысль быстрее пальцев</h1>
         <p class="lead">Диктовка для iPhone. Нажали на Дьяка — писца на кнопке
           записи, — сказали, и текст встал в поле любого приложения.
@@ -78,6 +78,16 @@
         <div class="hero-cta">
           <a class="btn btn-primary" href="#notify">Узнать о выходе</a>
           <a class="btn btn-ghost" href="#support">Поддержать разработку</a>
+        </div>
+
+        <!-- Плашка магазина. Ссылки нет, пока нет записи в App Store;
+             в тот день span меняется на <a href="…"> и снимается
+             is-soon вместе со строкой «Скоро». Подробности — в site.css. -->
+        <div class="hero-store">
+          <span class="appstore is-soon">
+            <span class="appstore-top">Скоро</span>
+            <span class="appstore-name">в App&nbsp;Store</span>
+          </span>
         </div>
       </div>
 
@@ -304,7 +314,7 @@
     </div>
     <div class="releases">
       <div class="rel">
-        <div class="rel-v">0.9<span class="rel-d">готовится</span></div>
+        <div class="rel-v">1.0<span class="rel-d">готовится</span></div>
         <div>
           <span class="status">Подаётся в App&nbsp;Store</span>
           <ul>
@@ -315,9 +325,9 @@
         </div>
       </div>
     </div>
-
-    <p class="note">Номер 0.9, а не 1.0 — намеренно: обещать законченность
-      пока рано. Единица будет у того выпуска, который её заслужит.</p>
+    <!-- Оговорки про «0.9, а не 1.0» здесь больше нет: номер поднят
+         до 1.0, а плашка «ранняя версия» на главном экране приложения
+         выключена. Довод исчез вместе с числом. -->
   </div>
 </section>
 

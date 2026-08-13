@@ -49,6 +49,7 @@
       <a href="#notify">Coming soon</a>
       <a href="#versions">Releases</a>
       <a href="#feedback">Write in</a>
+      <a href="#support">Support</a>
     </nav>
     <div class="lang">
       <a href="/" hreflang="ru">RU</a>
@@ -70,7 +71,7 @@
       <div>
         <img class="hero-word" src="../assets/brand/scribla-wordmark-white.svg"
              alt="Scribla" width="420" height="76">
-        <p class="hero-status"><span class="dot"></span> Not out yet · version 0.9</p>
+        <p class="hero-status"><span class="dot"></span> Not out yet · version 1.0</p>
         <h1>Faster than your fingers</h1>
         <p class="lead">Dictation for iPhone. Tap the scribe — the little clerk
           on the record key — speak, and the text is in the field of any app.
@@ -78,6 +79,16 @@
         <div class="hero-cta">
           <a class="btn btn-primary" href="#notify">Tell me when it ships</a>
           <a class="btn btn-ghost" href="#can">See what it does</a>
+        </div>
+
+        <!-- Плашка магазина. Ссылки нет, пока нет записи в App Store;
+             в тот день span меняется на <a href="…"> и снимается
+             is-soon вместе со строкой «Coming». Подробности — в site.css. -->
+        <div class="hero-store">
+          <span class="appstore is-soon">
+            <span class="appstore-top">Coming to the</span>
+            <span class="appstore-name">App&nbsp;Store</span>
+          </span>
         </div>
       </div>
 
@@ -302,7 +313,7 @@
     </div>
     <div class="releases">
       <div class="rel">
-        <div class="rel-v">0.9<span class="rel-d">in progress</span></div>
+        <div class="rel-v">1.0<span class="rel-d">in progress</span></div>
         <div>
           <span class="status">Going to the App&nbsp;Store</span>
           <ul>
@@ -313,9 +324,6 @@
         </div>
       </div>
     </div>
-
-    <p class="note">The number is 0.9 rather than 1.0 on purpose: it is too
-      early to claim finished. One will belong to the release that earns it.</p>
   </div>
 </section>
 
@@ -371,6 +379,40 @@
   </div>
 </section>
 
+<!-- ============================================ support -->
+<section id="support">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>If Scribla turned out useful</h2>
+      <p class="lead">The app is free and nobody funds the work on it. One
+        person does it in spare time. Sending something is not a purchase:
+        it unlocks nothing in the app and asks nothing of you afterwards.
+        Three wallpapers with the scribe come with the receipt.</p>
+    </div>
+
+    <div class="panel">
+      <div class="amounts" role="group" aria-label="Amount">
+        <button class="amount" type="button" data-amount="3" aria-pressed="false">$3</button>
+        <button class="amount" type="button" data-amount="10" aria-pressed="false">$10</button>
+        <button class="amount" type="button" data-amount="custom" aria-pressed="false">Other amount</button>
+      </div>
+      <div class="field" data-custom hidden>
+        <label for="amt">How much</label>
+        <input id="amt" type="number" min="3" max="500" step="1" placeholder="15"
+               inputmode="numeric" aria-describedby="amt-hint">
+        <span class="hint" id="amt-hint">From $3 to $500</span>
+      </div>
+      <a class="btn btn-primary" data-donate href="#" aria-disabled="true">Choose an amount</a>
+      <!-- Две фразы, не три: подсказка под кнопкой на узкой колонке
+           уезжает на четвёртую строку и отрывает кнопку от того, что она
+           делает. Про обои сказано выше, в лиде. -->
+      <p class="note">Opens Gumroad, which takes cards issued anywhere. The
+        card is entered there, on their side, and none of it reaches this
+        page.</p>
+    </div>
+  </div>
+</section>
+
 <!-- ============================================ faq -->
 <section id="faq">
   <div class="wrap">
@@ -409,11 +451,12 @@
       </details>
       <details>
         <summary>Can I support the work?</summary>
-        <p>Thank you for asking. For now transfers only go through the Russian
-          instant-payment system, so they work from Russian banks only — there
-          is no way to do it from elsewhere yet, and pretending otherwise would
-          waste your time. The most useful thing you can do instead is write in
-          above and tell me what to fix.</p>
+        <p>Yes — <a href="#support">just above</a>, with any card. For a long
+          time there was no honest way to say that: the only channel ran
+          through the Russian instant-payment system, which works from Russian
+          banks and nowhere else. There is a second one now. Writing in above
+          and telling me what is broken is still worth more, and it costs
+          nothing.</p>
       </details>
       <details>
         <summary>Something isn't working</summary>
@@ -439,8 +482,12 @@
       <a href="#privacy">Privacy</a>
       <a href="#notify">Coming soon</a>
       <a href="#feedback">Write in</a>
+      <a href="#support">Support</a>
       <a href="../privacy.html">Privacy policy</a>
-      <a href="../support.html">Support</a>
+      <!-- Не «Support»: этим словом уже назван блок переводов выше,
+           а здесь страница разбора поломок. Два одинаковых слова
+           в одном подвале ведут в разные места и путают. -->
+      <a href="../support.html">Help</a>
       <a href="/" hreflang="ru">Русский</a>
     </nav>
   </div>

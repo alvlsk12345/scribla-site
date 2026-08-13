@@ -284,6 +284,40 @@ input:focus-visible, textarea:focus-visible { outline-offset: 1px; }
 .hero-band .btn-ghost { color: #F5EDE3; border-color: rgba(245, 237, 227, .55); }
 .hero-band .btn-ghost:hover { border-color: rgba(245, 237, 227, .95); }
 
+/* ------------------------------------------------- плашка App Store
+
+   Ссылки пока нет — приложения в магазине нет. Официальный значок
+   Apple «Download on the App Store» сюда поставить нельзя: по их
+   правилам он обязан вести на страницу приложения, а вести некуда,
+   и человек нажал бы на обещание, которого никто не выполнит.
+   Поэтому плашка своя, в облике сайта, и в размер настоящей: когда
+   запись в магазине откроется, на её место встаёт официальный значок
+   со ссылкой, и первый экран не переедет.
+
+   Правка в тот день ровно одна на страницу: <span class="appstore">
+   меняется на <a class="appstore" href="…">, слово «Скоро» уходит.
+   Курсор и отсутствие наведения приходят от .is-soon — снять вместе
+   со span'ом. */
+.hero-store { margin-top: 1.1rem; }
+.appstore {
+  display: inline-flex; align-items: center; gap: .1rem;
+  flex-direction: column; align-items: flex-start;
+  min-height: 52px; padding: .6rem 1.2rem;
+  border-radius: 12px;
+  border: 1px solid rgba(245, 237, 227, .45);
+  background: rgba(20, 8, 2, .22);
+  color: #F5EDE3; text-decoration: none; line-height: 1;
+  transition: border-color .15s, background .15s;
+}
+.appstore-top {
+  font: 600 .68rem/1 var(--sans);
+  letter-spacing: .06em; text-transform: uppercase; opacity: .8;
+}
+.appstore-name { font: 700 1.15rem/1.2 var(--sans); letter-spacing: -0.01em; }
+/* Пока ссылки нет: плашка ничего не обещает пальцу. */
+.appstore.is-soon { cursor: default; }
+a.appstore:hover { border-color: rgba(245, 237, 227, .9); background: rgba(20, 8, 2, .34); }
+
 /* ------------------------------------------------- телефон с демонстрацией */
 
 /* Телефон закреплён светлым В ОБЕИХ темах: в тёмной теме демонстрация
