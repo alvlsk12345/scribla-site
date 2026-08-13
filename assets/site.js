@@ -86,6 +86,51 @@
   addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
+  /* ---------------------------------------------------- приход на раздел
+
+     Приложение зовёт на «/#support», а браузер оставлял человека
+     на первом экране: до раздела он не доезжал вовсе.
+
+     Виноваты две черты страницы вместе. Прокрутка объявлена плавной,
+     поэтому к якорю браузер не прыгает, а едет — и едет долго, шесть
+     с половиной тысяч точек. По дороге дозагружаются картинки, часть
+     из них без заранее объявленных размеров, высоты меняются, и поездка
+     обрывается там, где началась. Проверено: и Safari на телефоне,
+     и Chrome на столе остаются на нуле.
+
+     Отнимать плавность у ссылок в шапке ради этого незачем — там
+     она к месту. Поэтому доводим сами: когда страница собрана и высоты
+     больше не поедут, встаём на раздел разом. Отступ под шапку
+     `scrollIntoView` берёт из `scroll-margin-top` секции.
+
+     Если человек к этому времени тронул страницу сам — не трогаем:
+     его прокрутка старше нашей. */
+
+  let touched = false;
+  for (const evt of ['wheel', 'touchstart', 'pointerdown', 'keydown'])
+    addEventListener(evt, () => { touched = true; }, { passive: true, once: true });
+
+  const jumpToHash = () => {
+    if (touched) return;
+    const id = decodeURIComponent(location.hash.slice(1));
+    const target = id && document.getElementById(id);
+    if (!target) return;
+
+    const html = document.documentElement;
+    const smooth = html.style.scrollBehavior;
+    html.style.scrollBehavior = 'auto';
+    target.scrollIntoView();
+    html.style.scrollBehavior = smooth;
+  };
+
+  if (location.hash) {
+    /* Дважды: шрифты приходят раньше картинок и уже двигают текст,
+       а `load` — последняя точка, после которой высоты неизменны.
+       Второй прыжок с той же высоты ничего не делает и не виден. */
+    document.fonts?.ready.then(jumpToHash);
+    addEventListener('load', jumpToHash);
+  }
+
   /* ---------------------------------------------------- ролик
 
      Немой автозапуск — не осторожность, а единственный разрешённый:

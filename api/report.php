@@ -67,7 +67,36 @@ function shape(string $message): string
     return preg_replace('/\d+([.,]\d+)?/u', 'N', $message) ?? $message;
 }
 
-$rows = rows_for($day);
+/** Стенд это или живой телефон.
+ *
+ * Модель берётся из `uname`, и у настоящего железа она всегда вида
+ * «iPhone16,2» — буквы, число, запятая, число. Симулятор отдаёт
+ * разрядность процессора («arm64»), пробы с мака — что им написали.
+ *
+ * Считать их вместе с людьми нельзя, и это не придирка к чистоте цифр.
+ * 12 августа сводка вынесла наверх две беды суток, и обе оказались
+ * стендом: воронка «до клавиатуры дошла половина телефонов» — это
+ * симулятор владельца, который клавиатуру и не открывал никогда,
+ * а «шестнадцать раз не дал микрофон» — он же, без выданного
+ * разрешения, за пятьдесят пять секунд. Утро ушло на разбор двух
+ * несуществующих бед.
+ *
+ * Молча стенды не выбрасываем: их числа уходят отдельной парой полей.
+ * Пропавшая строка тревожит сильнее лишней.
+ */
+function is_bench(array $row): bool
+{
+    return preg_match('/^[A-Za-z]+\d+,\d+$/', (string) ($row['device'] ?? '')) !== 1;
+}
+
+$all = rows_for($day);
+$rows = array_values(array_filter($all, static fn(array $r): bool => !is_bench($r)));
+
+$benchRows = count($all) - count($rows);
+$benchInstalls = [];
+foreach ($all as $row) {
+    if (is_bench($row)) { $benchInstalls[(string) ($row['install'] ?? '')] = true; }
+}
 
 $installs = [];
 $byShape = [];
@@ -108,6 +137,10 @@ $before = [];
 for ($back = 1; $back <= 7; $back++) {
     $past = day_back($day, $back);
     foreach (rows_for($past) as $row) {
+        // Стенды и здесь не в счёт: иначе строка, которую всю неделю
+        // писал один симулятор, у первого живого телефона окажется
+        // «не новой» — то есть ровно тогда, когда она и важна.
+        if (is_bench($row)) { continue; }
         $before[shape((string) ($row['message'] ?? ''))] = true;
     }
 }
@@ -137,7 +170,8 @@ $messages = array_slice($messages, 0, 40);
 $week = [];
 for ($back = 6; $back >= 0; $back--) {
     $past = day_back($day, $back);
-    $pastRows = rows_for($past);
+    $pastRows = array_values(array_filter(rows_for($past),
+        static fn(array $r): bool => !is_bench($r)));
     $pastInstalls = [];
     foreach ($pastRows as $row) { $pastInstalls[(string) ($row['install'] ?? '')] = true; }
     $week[] = ['day' => $past, 'installs' => count($pastInstalls), 'entries' => count($pastRows)];
@@ -152,6 +186,10 @@ say(200, [
     'installs' => count($installs),
     'entries' => count($rows),
     'reached_keyboard' => count($keyboardInstalls),
+    // Стенды посчитаны, но в людей не записаны. Ноль здесь — обычное
+    // утро; заметное число означает, что владелец вчера что-то гонял.
+    'bench_installs' => count($benchInstalls),
+    'bench_entries' => $benchRows,
     'messages' => $messages,
     'new_shapes' => $fresh,
     'versions' => $byVersion,
