@@ -24,6 +24,7 @@ if command -v php >/dev/null; then
   php test/mail.php
   php test/log.php
   php test/report.php
+  php test/ask.php
 fi
 
 # 2. Отправка в GitHub — сервер берёт файлы оттуда, так что без этого
