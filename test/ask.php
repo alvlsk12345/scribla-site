@@ -153,13 +153,16 @@ $system = $lastSystem();
 $ok('нашлось — 200 с текстом', $code === 200 && ($json['text'] ?? '') !== '');
 $ok('нашлось — состояние found', ($json['trace']['state'] ?? '') === 'found');
 $ok('нашлось — инструкция велит отвечать по страницам',
-    str_contains($system, 'отвечай по ним'));
+    str_contains($system, 'страницы из интернета'));
 $ok('нашлось — про отсутствие интернета ни слова',
     !str_contains($system, 'Интернета у тебя нет'));
 $ok('нашлось — страницы приписаны к инструкции',
     str_contains($system, 'НАЙДЕНО В ИНТЕРНЕТЕ'));
 $ok('нашлось — источники вернулись наверх', count($json['sources'] ?? []) === 5);
-$ok('нашлось — редакция инструкции названа', ($json['trace']['prompt'] ?? 0) >= 3);
+/* Без файла с рабочими текстами редакция — ноль, и это не мелочь:
+ * по этому нулю в диагностике видно, что режим AI идёт на запасных
+ * формулировках из репозитория, а не на выкупленных провалами. */
+$ok('без файла текстов редакция — ноль', ($json['trace']['prompt'] ?? -1) === 0);
 
 $scene('search-fails');
 [$code, $json] = $post($base);
@@ -310,12 +313,28 @@ $ok('в журнале длины, а не содержимое',
 
 echo "— правка инструкции без выкладки\n";
 
-file_put_contents($tmp . '/prompt.json', json_encode(
-    ['knowledge_off_ru' => 'ЗАМЕНЁННЫЙ КУСОК ИНСТРУКЦИИ'], JSON_UNESCAPED_UNICODE));
+file_put_contents($tmp . '/prompt.json', json_encode([
+    'version' => 9,
+    'knowledge_off_ru' => 'ЗАМЕНЁННЫЙ КУСОК ИНСТРУКЦИИ',
+    'refine_ru' => 'ПРАВКА {question} → {answer}. {grounding}',
+], JSON_UNESCAPED_UNICODE));
 $scene('ok');
-$post(array_merge($base, ['search' => false]));
-$ok('override замещает кусок инструкции',
+[$code, $json] = $post(array_merge($base, ['search' => false]));
+$ok('рабочий текст замещает запасной',
     str_contains($lastSystem(), 'ЗАМЕНЁННЫЙ КУСОК ИНСТРУКЦИИ'));
+$ok('редакция рабочих текстов названа', ($json['trace']['prompt'] ?? 0) === 9);
+
+$scene('ok');
+$post(array_merge($base, [
+    'question' => 'а короче',
+    'previous' => ['question' => 'вопрос', 'answer' => 'ответ', 'sources' => []],
+]));
+$system = $lastSystem();
+$ok('метки в рабочем тексте подставляются',
+    str_contains($system, 'ПРАВКА вопрос → ответ')
+    && !str_contains($system, '{question}'));
+$ok('вложенная метка тоже подставлена',
+    str_contains($system, 'Не выдумывай чисел'));
 @unlink($tmp . '/prompt.json');
 
 // ------------------------------------------------------------- уборка

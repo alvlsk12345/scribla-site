@@ -81,6 +81,19 @@ if [ -n "$KEYS" ]; then
   echo "  ключи AI: едут вместе с выкладкой"
 fi
 
+# Рабочие тексты инструкции для модели. В репозитории лежат запасные,
+# короткие и общие; эти выкуплены живыми провалами и в публичный
+# репозиторий не поедут.
+PROMPT_FILE=${SCRIBLA_PROMPT_FILE:-$HOME/.scribla-prompt.json}
+if [ -f "$PROMPT_FILE" ]; then
+  if ! python3 -c "import json,sys; d=json.load(open(sys.argv[1])); sys.exit(0 if int(d.get('version',0))>0 else 1)" "$PROMPT_FILE"; then
+    echo "В $PROMPT_FILE нет поля version — выкладка остановлена."; exit 1
+  fi
+  [ -n "$PARTS" ] && PARTS="$PARTS,"
+  PARTS="$PARTS\"prompt\":$(cat "$PROMPT_FILE")"
+  echo "  инструкция модели: тексты из $PROMPT_FILE едут вместе с выкладкой"
+fi
+
 if [ -n "$PARTS" ]; then
   BODY=$(umask 077; mktemp)
   printf '{%s}' "$PARTS" > "$BODY"
