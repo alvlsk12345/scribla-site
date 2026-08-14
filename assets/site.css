@@ -194,6 +194,15 @@ input:focus-visible, textarea:focus-visible { outline-offset: 1px; }
     padding-inline: 1.5rem;
   }
   .nav::-webkit-scrollbar { display: none; }
+  /* Полоса шире экрана, а полосы прокрутки у неё нет — и последняя
+     ссылка обрывалась по краю ровно так, как выглядит сломанная
+     вёрстка. Растушёвка по правому краю говорит, что там продолжение.
+     Ширина растушёвки равна правому отступу полосы: докрутив до конца,
+     человек видит последнюю ссылку целиком, а не в дымке. */
+  .nav {
+    mask-image: linear-gradient(to right, #000 calc(100% - 1.5rem), transparent);
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 1.5rem), transparent);
+  }
   .nav a { white-space: nowrap; padding: .8rem .75rem; font-size: .9rem; }
   .nav a:first-child { padding-left: 0; }
   section { scroll-margin-top: calc(var(--header) + var(--nav-strip) + 12px); }
@@ -249,9 +258,14 @@ input:focus-visible, textarea:focus-visible { outline-offset: 1px; }
    светлом поле исчезает. Ниже 900px он уступает место телефону —
    демонстрация важнее портрета, — но не пропадает совсем: он же
    служит кнопкой микрофона внутри макета клавиатуры. */
+/* Верхний предел 200, а не 215: шире 1400 полоса первого экрана расти
+   уже некуда (68rem), а Дьяк по 15vw рос — и отбирал ширину у текста.
+   Выходило наоборот здравому смыслу: чем шире монитор, тем теснее
+   колонка с заголовком. Пятнадцать пикселей возвращены тексту, и в них
+   помещается вторая кнопка; на глаз портрет тот же. */
 .hero-dyak {
   display: none;
-  width: clamp(150px, 15vw, 215px); height: auto;
+  width: clamp(150px, 15vw, 200px); height: auto;
   filter: drop-shadow(0 14px 30px rgba(60, 25, 8, .35));
 }
 @media (min-width: 1080px) { .hero-dyak { display: block; } }
@@ -456,7 +470,22 @@ a.appstore:hover { border-color: rgba(245, 237, 227, .9); background: rgba(20, 8
 /* ---------------------------------------------------------- шаги */
 
 .steps { display: grid; gap: 1.5rem; counter-reset: s; }
-@media (min-width: 760px) { .steps { grid-template-columns: repeat(3, 1fr); gap: 2rem; } }
+
+/* Заголовки шагов разной длины, и в две строки уходит то один, то
+   другой — по-русски и по-английски в разных местах. Пока каждый шаг
+   был сам себе колонкой, из-за этого разъезжались абзацы под ними:
+   один начинался ниже соседей на строку. Подсетка держит три ряда
+   общими на все шаги — кружок, заголовок, текст, — и абзацы стоят
+   на одной линии независимо от длины заголовка.
+   Междурядье здесь обнулено: внутренние отступы шага держат поля
+   самих элементов, а 2rem между кружком и заголовком разорвали бы шаг. */
+@media (min-width: 760px) {
+  .steps { grid-template-columns: repeat(3, 1fr); column-gap: 2rem; row-gap: 0; }
+  @supports (grid-template-rows: subgrid) {
+    .steps { grid-template-rows: auto auto auto; }
+    .step { display: grid; grid-template-rows: subgrid; grid-row: span 3; }
+  }
+}
 .step { counter-increment: s; }
 /* Номера здесь несут смысл: это последовательность, и первый шаг
    делается один раз, а остальные каждый день. */

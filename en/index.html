@@ -4,10 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Scribla — dictation for iPhone: writes, counts, translates</title>
-<meta name="description" content="A dictation keyboard for iPhone. Tap the scribe, speak, and the text lands in any app's input field. Recognition runs inside the phone; audio never leaves it.">
+<meta name="description" content="A dictation keyboard for iPhone. Tap the scribe, speak, and the text lands in any app’s input field. Recognition runs inside the phone; audio never leaves it.">
 <link rel="canonical" href="https://scribla.io/en/">
 <link rel="alternate" hreflang="ru" href="https://scribla.io/">
 <link rel="alternate" hreflang="en" href="https://scribla.io/en/">
+<link rel="alternate" hreflang="x-default" href="https://scribla.io/">
 <link rel="icon" href="../assets/brand/scribla-appicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="../assets/brand/AppIcon-1024.png">
 <meta property="og:type" content="website">
@@ -73,12 +74,16 @@
              alt="Scribla" width="420" height="76">
         <p class="hero-status"><span class="dot"></span> Not out yet · version 1.0</p>
         <h1>Faster than your fingers</h1>
-        <p class="lead">Dictation for iPhone. Tap the scribe — the little clerk
-          on the record key — speak, and the text is in the field of any app.
-          The audio never leaves the phone.</p>
+        <p class="lead">Dictation for iPhone. Tap the scribe on the record key
+          of the Scribla keyboard, speak, and the text is in the field of any
+          app. The audio never leaves the phone.</p>
         <div class="hero-cta">
           <a class="btn btn-primary" href="#notify">Tell me when it ships</a>
-          <a class="btn btn-ghost" href="#can">See what it does</a>
+          <!-- Короче на 42 px: две кнопки должны стоять в строку даже
+               в самой узкой текстовой колонке первого экрана (364 px на
+               широком мониторе). «What it does» — 146 px — не помещалось
+               ровно на один пиксель. -->
+          <a class="btn btn-ghost" href="#can">Take a look</a>
         </div>
 
         <!-- Плашка магазина. Ссылки нет, пока нет записи в App Store;
@@ -176,7 +181,7 @@
           A minute, and you never come back to it.</p>
       </div>
       <div class="step">
-        <h3>Switch to it and tap the scribe</h3>
+        <h3>Switch to Scribla and tap the scribe</h3>
         <p>In any app with an input field: messenger, mail, notes, search.</p>
       </div>
       <div class="step">
@@ -192,8 +197,8 @@
 <section id="can">
   <div class="wrap">
     <div class="sec-head">
-      <h2>Text you don't have to tidy up</h2>
-      <p class="lead">Transcription hands you a stream of words with no
+      <h2>Text you don’t have to tidy up</h2>
+      <p class="lead">Voice input usually hands you a stream of words with no
         punctuation. Scribla hands you something you can send.</p>
     </div>
     <div class="cards">
@@ -257,7 +262,7 @@
     <div>
       <h2>The audio never leaves</h2>
       <p class="lead">There is simply nowhere to send a recording — that is
-        how the thing is built, not a line of small print in a policy.</p>
+        how the app is built, not a line of small print in a policy.</p>
       <ul class="facts">
         <li>Recognition happens <b>inside the iPhone</b>. Recordings are not
           sent to servers and are not stored anywhere.</li>
@@ -287,8 +292,8 @@
   <div class="wrap">
     <div class="notify-band">
       <div>
-        <h2>We'll write when it ships</h2>
-        <p class="lead">One letter per release, that's all. No newsletters,
+        <h2>We’ll write when it ships</h2>
+        <p class="lead">One letter per release, that’s all. No newsletters,
           the address goes to nobody, and replying unsubscribes you.</p>
       </div>
       <form data-notify novalidate>
@@ -331,9 +336,9 @@
 <section id="feedback">
   <div class="wrap">
     <div class="sec-head">
-      <h2>What to fix, what's missing</h2>
-      <p class="lead">One person makes Scribla, and nearly everything in it
-        came out of somebody's complaint. Don't be polite about it — short
+      <h2>What to fix, what’s missing</h2>
+      <p class="lead">A small team makes Scribla, and nearly everything in it
+        came out of somebody’s complaint. Don’t be polite about it — short
         and angry is more useful than kind and vague.</p>
     </div>
 
@@ -347,7 +352,7 @@
           <span class="counter" id="fb-count">10 characters minimum · <b data-fb-count>0</b> of 2,000</span>
         </div>
         <div class="field">
-          <span class="lbl" id="fb-shots-lbl">Screenshot <span class="hint">— if it's easier to show than to explain</span></span>
+          <span class="lbl" id="fb-shots-lbl">Screenshot <span class="hint">— if it’s easier to show than to explain</span></span>
           <div class="drop" data-drop>
             <input class="sr" id="fb-shots" type="file" accept="image/*" multiple
                    data-shots aria-describedby="fb-shots-hint">
@@ -384,8 +389,8 @@
   <div class="wrap">
     <div class="sec-head">
       <h2>If Scribla turned out useful</h2>
-      <p class="lead">The app is free and nobody funds the work on it. One
-        person does it in spare time. Sending something is not a purchase:
+      <p class="lead">The app is free and nobody funds the work on it. We do
+        it in our spare time. Sending something is not a purchase:
         it unlocks nothing in the app and asks nothing of you afterwards.
         Three wallpapers with the scribe come with the receipt.</p>
     </div>
@@ -424,9 +429,9 @@
         <summary>What does it cost?</summary>
         <p>Nothing at the moment — everything is open. Whether anything
           becomes paid will be decided later and on the evidence: first it
-          has to be clear that Scribla is useful to someone besides its
-          author. If that day comes, it will be announced in advance rather
-          than on the morning it happens.</p>
+          has to be clear that Scribla is useful to someone besides us.
+          If that day comes, we will say so in advance rather than on the
+          morning it happens.</p>
       </details>
       <details>
         <summary>The keyboard asks for Full Access — is that safe?</summary>
@@ -455,14 +460,14 @@
           time there was no honest way to say that: the only channel ran
           through the Russian instant-payment system, which works from Russian
           banks and nowhere else. There is a second one now. Writing in above
-          and telling me what is broken is still worth more, and it costs
+          and telling us what is broken is still worth more, and it costs
           nothing.</p>
       </details>
       <details>
-        <summary>Something isn't working</summary>
+        <summary>Something isn’t working</summary>
         <p>Common breakages — microphone, Full Access, an empty field — are
           collected on the <a href="../support.html">support page</a>. If yours
-          isn't there, write: <a href="mailto:dev@scribla.io">dev@scribla.io</a>.</p>
+          isn’t there, write: <a href="mailto:dev@scribla.io">dev@scribla.io</a>.</p>
       </details>
     </div>
   </div>
@@ -474,7 +479,7 @@
   <div class="wrap">
     <div>
       <p style="margin:0 0 .4rem">Scribla — dictation for iPhone.
-        Made by one person.</p>
+        Made by a small team.</p>
       <p style="margin:0">© 2026 <a href="mailto:dev@scribla.io">dev@scribla.io</a></p>
     </div>
     <nav class="f-links" aria-label="Sections and documents">

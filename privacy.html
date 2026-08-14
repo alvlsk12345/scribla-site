@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Scribla — политика приватности</title>
+<meta name="description" content="Политика приватности Scribla: распознавание идёт внутри телефона, звук не уходит никогда, текст — только в режимах с AI. The same policy in English on the same page.">
+<link rel="icon" href="assets/brand/scribla-appicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/brand/AppIcon-1024.png">
 <style>
   :root { color-scheme: light dark; }
   body {
@@ -29,12 +32,14 @@
 <noscript><div><img src="https://mc.yandex.ru/watch/111532968" style="position:absolute; left:-9999px;" alt=""></div></noscript>
 
 <h1>Scribla — политика приватности</h1>
-<p class="updated">Обновлено 9 августа 2026 года</p>
+<!-- Дата правится вместе с текстом, иначе она врёт. 12 августа
+     здесь появился раздел про счётчик — значит и дата эта. -->
+<p class="updated">Обновлено 12 августа 2026 года</p>
 
 <p>Scribla — приложение для диктовки на iPhone: клавиатура и приложение-движок,
 которое превращает речь в текст. Эта страница объясняет, что происходит
-с вашими данными. Коротко: распознавание идёт на самом телефоне, звук
-не сохраняется нигде и никуда не отправляется.</p>
+с вашими данными. Распознавание идёт на самом телефоне, звук не сохраняется
+нигде и никуда не отправляется.</p>
 
 <h2>Что остаётся на устройстве</h2>
 <ul>
@@ -70,7 +75,7 @@
       сервису.
       У встроенного провайдера путь идёт через наш сервер: текст
       приходит на <code>scribla.io</code>, а оттуда передаётся
-      в <code>ollama.com</code> на ключе разработчика. Промежуточный шаг
+      в <code>ollama.com</code> на нашем ключе. Промежуточный шаг
       нужен затем, чтобы ключ не лежал внутри приложения, откуда его
       достаёт любой желающий. Ни вопрос, ни ответ мы не храним:
       в служебную запись попадают длина, название модели и код ответа —
@@ -182,8 +187,8 @@
 адрес, с которого пришёл запрос: он нужен, чтобы форму нельзя было
 забить автоматом, и других применений у него нет.</p>
 
-<p>Всё это ложится на сервер сайта и оттуда же уходит письмом
-разработчику. Больше никуда: ни в аналитику, ни в рассылочный сервис,
+<p>Всё это ложится на сервер сайта и оттуда же уходит письмом нам.
+Больше никуда: ни в аналитику, ни в рассылочный сервис,
 ни третьим лицам. Скриншоты лежат вне общедоступной части сервера —
 по ссылке их не открыть.</p>
 
@@ -209,7 +214,7 @@
 адрес страницы, откуда вы на неё пришли, язык и версию браузера,
 разрешение экрана, примерную область по адресу подключения. Ни имени,
 ни почты там нет. Написанное в формах туда не уходит: оно ложится
-на наш сервер и оттуда письмом разработчику, как сказано выше.</p>
+на наш сервер и оттуда письмом нам, как сказано выше.</p>
 
 <p><b>Запись сеансов (Вебвизор) выключена.</b> Движения мыши, прокрутка
 и набранное в полях не пишутся — на странице с формой отзывов такая
@@ -250,14 +255,14 @@ href="https://yandex.ru/legal/metrica_termsofuse/">условия Метрики
 <hr>
 
 <h1 lang="en">Scribla — Privacy Policy</h1>
-<p class="updated" lang="en">Updated 9 August 2026</p>
+<p class="updated" lang="en">Updated 12 August 2026</p>
 
 <div lang="en">
 
 <p>Scribla is a dictation app for iPhone: a keyboard plus an engine app that
 turns speech into text. This page explains what happens to your data.
-In short: recognition runs on the phone itself, and audio is never stored
-anywhere and never sent anywhere.</p>
+Recognition runs on the phone itself, and audio is never stored anywhere
+and never sent anywhere.</p>
 
 <h2>What stays on the device</h2>
 <ul>
@@ -266,11 +271,11 @@ anywhere and never sent anywhere.</p>
       temporarily, and never leaves the phone — in any mode.</li>
   <li><b>Speech recognition.</b> Runs entirely on the device, with a model
       inside the app. There is no network in that path at all.</li>
-  <li><b>Transcript history.</b> Text only, in the phone's protected app
+  <li><b>Transcript history.</b> Text only, in the phone’s protected app
       container. How many entries to keep is your setting; any entry and
       the whole history can be deleted.</li>
   <li><b>Third-party service keys</b>, if you enter any, live in the Keychain
-      with the "this device only, after first unlock" class. They do not
+      with the “this device only, after first unlock” class. They do not
       appear in backups in the clear and are never written to the
       diagnostics log.</li>
 </ul>
@@ -293,7 +298,7 @@ they stay off: an update does not switch them on retroactively.</p>
       picked.
       With the built-in provider the path runs through our server: the
       text arrives at <code>scribla.io</code> and is passed on to
-      <code>ollama.com</code> on the developer's key. That middle step
+      <code>ollama.com</code> on our key. That middle step
       exists so the key does not sit inside the app, where anyone can
       dig it out. We store neither the question nor the answer: the
       service record keeps the length, the model name and the response
@@ -305,28 +310,28 @@ they stay off: an update does not switch them on retroactively.</p>
       travels the same
       way — through <code>scribla.io</code> to the <code>ollama.com</code>
       search service — and the pages found are given to the model along
-      with the question. When you have pressed the «text from the field»
+      with the question. When you have pressed the “text from the field”
       key, it is that text rather than the question that goes to the
-      search: there would be nothing to search for in «reply to this».</li>
+      search: there would be nothing to search for in “reply to this”.</li>
   <li><b>Currency rates.</b> The app requests published rates from the Bank
       of Russia (<code>cbr.ru</code>). The request contains none of your data —
       it fetches a public table.</li>
   <li><b>English model download.</b> On your command, model files are
       downloaded from <code>github.com</code>. The request contains none of
       your data.</li>
-  <li><b>The app's own log.</b> If the «Help with bugs» switch is on
+  <li><b>The app’s own log.</b> If the “Help with bugs” switch is on
       (it is off by default), the app sends us service notes about its
       own work: which button was pressed, where it failed, how long it
       took, the build version and the phone model. No audio, no
       transcripts, nothing you typed. Entries that could contain your
       text are marked inside the app and are never sent — you can see
-      them on the log screen labelled «stays here».</li>
+      them on the log screen labelled “stays here”.</li>
 </ul>
 
-<h2>The app's own log</h2>
+<h2>The app’s own log</h2>
 
-<p>Sending is off until you turn it on. The «Help with bugs» switch is on
-the last page of the intro and in the app's settings; turning it off also
+<p>Sending is off until you turn it on. The “Help with bugs” switch is on
+the last page of the intro and in the app’s settings; turning it off also
 erases whatever had piled up to be sent.</p>
 
 <p>A random install marker travels with the entries — enough to tell that
@@ -376,14 +381,14 @@ the phone takes the history, the settings, the diagnostics log and the model
 files with it.</p>
 
 <p>Third-party service keys are a separate case, and it deserves to be said
-plainly. iOS keeps them in the Keychain, and the Keychain outlives the app's
+plainly. iOS keeps them in the Keychain, and the Keychain outlives the app’s
 deletion: an app has no code that runs at the moment it is deleted — that is
 how the system works, not a choice of ours. So Scribla erases the keys on the
 first launch after a new install. If you want them gone right away, clear the
 key field in the settings before deleting the app.</p>
 
-<p>We keep exactly one thing, and only if you allowed it: the app's own log.
-It deletes itself after 60 days, and turning the «Help with bugs» switch off
+<p>We keep exactly one thing, and only if you allowed it: the app’s own log.
+It deletes itself after 60 days, and turning the “Help with bugs” switch off
 stops the sending at once and erases what had piled up on the phone. If you
 want what was already sent removed sooner, write to us with your install
 marker; there is nowhere to look it up, so it is easier to give us a rough
@@ -395,7 +400,7 @@ transcripts, no account.</p>
 <p>Everything above is about the app. The site itself is simpler, but it does
 receive a few things, and those deserve their own section.</p>
 
-<p>The "we'll write when it ships" form keeps an email address. We will write
+<p>The “we’ll write when it ships” form keeps an email address. We will write
 to it once — on release day — and that is the end of the list.</p>
 
 <p>The feedback form keeps the message, the email address if you gave one, and
@@ -403,22 +408,22 @@ any screenshots you attached. The address the request came from is stored with
 them: it exists so the form cannot be hammered by a script, and it has no other
 use.</p>
 
-<p>All of it lands on the site's server and goes from there to the developer by
-email. Nowhere else: no analytics, no mailing service, no third parties. The
+<p>All of it lands on the site’s server and goes from there to us by email.
+Nowhere else: no analytics, no mailing service, no third parties. The
 screenshots sit outside the public part of the server — no link opens them.</p>
 
 <p>Before it is sent, a screenshot is resized and re-encoded inside your
-browser. As a side effect that strips the original file's metadata: capture time
-and coordinates never reach us. What's in the picture itself stays — before
+browser. As a side effect that strips the original file’s metadata: capture time
+and coordinates never reach us. What’s in the picture itself stays — before
 attaching, look at what is on the screen.</p>
 
 <p>You can also write to us by plain email, with no form at all:
 <a href="mailto:dev@scribla.io">dev@scribla.io</a>. To have something deleted,
 write to the same address.</p>
 
-<h2 id="counter">The site's visit counter</h2>
+<h2 id="counter">The site’s visit counter</h2>
 
-<p>The site's pages carry Yandex Metrica, counter 111532968. It is there
+<p>The site’s pages carry Yandex Metrica, counter 111532968. It is there
 for one thing: to see how many people come and which pages they read.
 Until 12 August 2026 there was no counter at all, and this page said so.
 Now there is one — and saying plainly what it collects beats leaving the
@@ -428,8 +433,8 @@ old line in place.</p>
 the page address, where you came from, the browser language and version,
 the screen size, and an approximate region from your connection address.
 No name and no email are in that set. What you type into the forms does
-not go there: it lands on our server and goes to the developer by email,
-as described above.</p>
+not go there: it lands on our server and comes to us by email, as
+described above.</p>
 
 <p><b>Session recording (Webvisor) is off.</b> Mouse movement, scrolling
 and what you type into fields are not recorded — on a page with a
@@ -438,7 +443,7 @@ promise not to collect. The click map is on: it counts taps by position
 on the page, with no field contents.</p>
 
 <p>One more thing, visible only in a debugger, which is why we say it
-ourselves: as it loads, Metrica calls Yandex's advertising endpoint
+ourselves: as it loads, Metrica calls Yandex’s advertising endpoint
 (<code>mc.yandex.ru/metrika/advert.gif</code>). That is how their counter
 is built. There are no ads on this site, we run no retargeting and build
 no advertising audiences — but the call happens, and on their side Yandex
