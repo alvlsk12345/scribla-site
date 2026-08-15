@@ -80,7 +80,7 @@ say(200, ['message' => $foul
     ? pick($in, [
         'ru' => 'Отправлено. Это письмо посмотрят руками — так бывает.',
         'en' => 'Sent. This one gets read by hand — it happens.',
-        'es' => 'Enviado. Esta la mirará una persona — a veces pasa.',
+        'es' => 'Enviado. Este mensaje lo mirará una persona — a veces pasa.',
         'zh' => '已发送。这一条会有人手工看一遍——有时会这样。',
     ])
     : pick($in, [
