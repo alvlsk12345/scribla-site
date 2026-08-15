@@ -334,6 +334,7 @@ function stamp_assets(string $root): string
     $marks = [];
     foreach (['site.css', 'site.js', 'metrika.js',
               'video/hero-ru.mp4', 'video/hero-en.mp4',
+              'video/hero-es.mp4', 'video/hero-zh.mp4',
               'brand/scribla-dyak-writing.svg',
               'brand/scribla-dyak-alpha-writing.svg'] as $name) {
         $f = $root . '/assets/' . $name;

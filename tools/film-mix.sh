@@ -23,6 +23,8 @@ DUCK=${DUCK:-0.32}  # насколько музыка приседает под 
 #   ffmpeg -i tools/source/voice-ru.m4a -af silencedetect=noise=-45dB:d=0.2 -f null -
 WIN_ru="0.50 0.91 1.94 2.61 6.02 6.61"
 WIN_en="0.59 1.12 2.25 2.88 6.05 6.68"
+WIN_es="1.50 1.87 4.10 4.58 7.70 8.34"
+WIN_zh="1.00 1.48 3.00 3.62 7.40 8.04"
 
 [ -f "$BUILD/music.wav" ] || { echo "Нет $BUILD/music.wav — сперва python3 tools/film-audio.py"; exit 1; }
 
@@ -37,7 +39,7 @@ ducker () {
   echo "$expr"
 }
 
-for LANG in ru en; do
+for LANG in ru en es zh; do
   eval "WIN=\$WIN_$LANG"
   MVOL="$GM*(1-$DUCK*($(ducker "$WIN")))"
   TMP="$VIDEO/.hero-$LANG.new.mp4"

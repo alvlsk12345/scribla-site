@@ -134,6 +134,46 @@
      а сборка описана в tools/README.md. -->
 
 <!-- ============================================ 怎么用 -->
+<!-- ============================================ ролик
+
+     Отдельной полосой под первым экраном, а не фоном под заголовком:
+     текст поверх движения читается хуже, а ролик здесь и есть то,
+     ради чего человек задержится.
+
+     Звук выключен не по нашей воле — браузеры не дают включить его
+     сами, и видео со звуком просто не запустилось бы. Поэтому кнопка:
+     нажали — и ролик начинается заново, уже с голосом, музыкой
+     и пером по бумаге. Дорожка сведена своя: голос ведёт, музыка тише
+     всех и приседает под ним, перо звучит ровно там, где оно пишет.
+     Разбор и пересборка — tools/README.md. -->
+<section id="film" class="film">
+  <div class="wrap">
+    <figure class="film-frame">
+      <div class="film-media">
+        <video data-film
+               poster="../assets/img/hero-film-zh.jpg"
+               width="1280" height="720"
+               muted playsinline loop preload="metadata"
+               aria-label="一个声音说“你好！你好吗？”，钢笔把这句话写在纸上">
+          <source src="../assets/video/hero-zh.mp4" type="video/mp4">
+        </video>
+        <button class="film-sound" type="button" data-film-sound aria-pressed="false">
+          <svg viewBox="0 0 16 16" aria-hidden="true" data-film-icon>
+            <path d="M7 2.5 3.8 5.2H1.6v5.6h2.2L7 13.5z"/>
+            <path d="M10.2 5.4a3.4 3.4 0 0 1 0 5.2" fill="none"
+                  stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M12.3 3.4a6.2 6.2 0 0 1 0 9.2" fill="none"
+                  stroke="currentColor" stroke-width="1.4" stroke-linecap="round"
+                  data-film-wave/>
+          </svg>
+          <span data-film-label>带声音</span>
+        </button>
+      </div>
+      <figcaption>说出来的话——用笔写下。</figcaption>
+    </figure>
+  </div>
+</section>
+
 <section id="how">
   <div class="wrap">
     <div class="sec-head">
