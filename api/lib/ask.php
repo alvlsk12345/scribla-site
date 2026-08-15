@@ -30,6 +30,17 @@ function ask_upstream(): string
     return is_string($env) && $env !== '' ? rtrim($env, '/') : 'https://ollama.com';
 }
 
+/** Языки приложения. На каждый — своя строка «отвечай на этом языке».
+ *
+ * Половин инструкции по-прежнему две (русская и английская): её язык
+ * решает, на каком языке модель читает правила, а не на каком отвечает.
+ * Замер это подтвердил — при русской половине испанский и китайский
+ * вопросы получали испанский и китайский ответы. Поэтому четырёх строк
+ * про язык ответа хватает там, где четыре полных половины стоили бы
+ * пятидесяти двух кусков текста.
+ */
+const ASK_LANGUAGES = ['ru', 'en', 'es', 'zh'];
+
 // --------------------------------------------------------------- даты
 
 const ASK_MONTHS_RU = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
@@ -250,6 +261,11 @@ function ask_defaults(): array
         'head_ru' => "Ты отвечаешь на вопрос, продиктованный голосом. Ответ вставят прямо в поле ввода — в письмо, заметку или документ.\n\nОтвечай на языке вопроса. Коротко и по делу, без вступлений и без предложений помочь ещё.",
         'head_en' => "You are answering a question that was dictated aloud. The answer goes straight into an input field — an email, a note or a document.\n\nAnswer in the language of the question. Short and to the point, no openers and no offers to help more.",
 
+        'reply_ru' => "\n\nОТВЕТ ПИШИ ПО-РУССКИ — целиком, включая обращение и подпись. Приложенный текст и найденные страницы могут быть на любом другом языке; это ничего не решает и не делает работу переводом. Не переходи на их язык и не смешивай два языка в одном ответе.",
+        'reply_en' => "\n\nWRITE THE ANSWER IN ENGLISH — every word of it, the greeting and the sign-off included. The attached text and the pages found may be in any other language; that decides nothing and does not make it a translation job. Do not switch to their language and do not mix two languages in one answer.",
+        'reply_es' => "\n\nESCRIBE LA RESPUESTA EN ESPAÑOL — toda ella, incluidos el saludo y la despedida. El texto adjunto y las páginas encontradas pueden estar en cualquier otro idioma; eso no decide nada ni convierte la tarea en una traducción. No cambies a su idioma ni mezcles dos idiomas en una misma respuesta.",
+        'reply_zh' => "\n\n请用中文写答案——全文都用中文，包括称呼和落款。附带的文字和搜索到的网页可能是任何其他语言；这不起决定作用，也不意味着要做翻译。不要改用它们的语言，也不要在一个答案里混用两种语言。",
+
         'knowledge_found_ru' => "Сегодня {today}. Ниже приложены страницы из интернета — изменчивое бери из них, а неизменное отвечай своими знаниями. Называй число вместе с моментом, к которому оно относится.",
         'knowledge_found_en' => "Today is {today}. Pages from the web are attached below — take changing things from them and answer unchanging ones from your own knowledge. Give a number together with the moment it belongs to.",
 
@@ -423,9 +439,23 @@ function ask_refinement_block(array $previous, bool $hadSources, bool $ru): stri
  * с ним делать (правка прошлого ответа), последним — найденное.
  * Последнее сказанное модель держит крепче.
  *
+ * А самой последней — строка про язык ответа, и стоит она там не для
+ * красоты. Слова «отвечай на языке вопроса» в начале инструкции хватает,
+ * пока к вопросу ничего не приложено: замер 15 августа 2026 на четырёх
+ * языках дал двенадцать попаданий из двенадцати. Но стоит приложить
+ * к вопросу русское письмо из поля — и ответ на английскую диктовку
+ * приходит по-русски: язык материала перетягивает правило. По той же
+ * причине уточнение «а короче» к русскому прошлому ответу отвечало
+ * по-русски на английское «make it shorter». Из пятнадцати таких
+ * случаев без этой строки правильными были восемь, с ней — все
+ * пятнадцать.
+ *
+ * `reply` — язык диктовки, один из четырёх. Его может не быть: старые
+ * сборки про это поле не знают, и им остаётся прежнее поведение.
+ *
  * @param array{question:string,lang:string,today:string,markdown:bool,
  *              state:string,findings:array,search_query:string,
- *              field:?array,previous:?array} $o
+ *              field:?array,previous:?array,reply?:?string} $o
  */
 function ask_prompt(array $o): string
 {
@@ -445,6 +475,9 @@ function ask_prompt(array $o): string
     if ($o['findings']) {
         $prompt .= ask_findings_block($o['findings'], $o['search_query'], $ru);
     }
+
+    $reply = $o['reply'] ?? null;
+    if (in_array($reply, ASK_LANGUAGES, true)) { $prompt .= ask_text('reply_' . $reply); }
 
     return $prompt;
 }
@@ -557,6 +590,13 @@ function ask_handle(array $in, string $key, callable $charge): never
     $lang = ($in['lang'] ?? 'ru') === 'en' ? 'en' : 'ru';
     $markdown = (bool) ($in['markdown'] ?? false);
 
+    /* Язык диктовки — тот, на котором человек говорил, один из четырёх.
+     * От `lang` он отличается тем, что `lang` выбирает половину
+     * инструкции, а этот — язык самого ответа. Поля может не быть:
+     * сборки старше 15 августа 2026 про него не знают. */
+    $reply = $in['reply'] ?? null;
+    if (!in_array($reply, ASK_LANGUAGES, true)) { $reply = null; }
+
     /* Дата приходит с телефона, а не берётся здесь: сервер живёт по UTC,
      * и во Владивостоке в девять утра он ещё во вчера. Инструкция
      * с чужим числом — это неверные «сегодня» и «вчера» в ответе
@@ -624,6 +664,7 @@ function ask_handle(array $in, string $key, callable $charge): never
         'search_query' => $searchQuery,
         'field' => $field,
         'previous' => $previous,
+        'reply' => $reply,
     ]);
 
     $models = ['gemma4:cloud', 'mistral-large-3:675b-cloud', 'gpt-oss:120b-cloud'];
@@ -642,6 +683,7 @@ function ask_handle(array $in, string $key, callable $charge): never
      * день 14 августа. */
     $trace = [
         'state' => $state,
+        'reply' => $reply ?? '—',
         'pages' => count($findings),
         'asked' => $counts[0] ?? 0,
         'dated' => $counts[1] ?? 0,
