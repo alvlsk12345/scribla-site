@@ -39,7 +39,7 @@ const REPO = 'https://codeload.github.com/alvlsk12345/scribla-site/tar.gz/';
  * такого файла проходила мимо истории, а чистая раскатка сайта унесла бы
  * их совсем. */
 const TAKE = ['index.html', 'privacy.html', 'support.html', 'robots.txt',
-              'sitemap.xml', '.htaccess', 'assets', 'api', 'en'];
+              'sitemap.xml', '.htaccess', 'assets', 'api', 'en', 'es', 'zh'];
 
 /* Каталоги, которые заменяются целиком. Иначе удалённый в репозитории
  * файл остался бы на сервере навсегда. `api` сюда не входит намеренно:

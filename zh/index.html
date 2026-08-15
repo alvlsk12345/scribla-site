@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scribla — iPhone 语音输入：会写、会算、会翻译</title>
+<meta name="description" content="iPhone 上的语音输入键盘。点一下书吏，说话，文字就落进任何应用的输入框。识别在手机里完成，声音不会离开手机。">
+<link rel="canonical" href="https://scribla.io/zh/">
+<link rel="alternate" hreflang="ru" href="https://scribla.io/">
+<link rel="alternate" hreflang="en" href="https://scribla.io/en/">
+<link rel="alternate" hreflang="es" href="https://scribla.io/es/">
+<link rel="alternate" hreflang="zh-Hans" href="https://scribla.io/zh/">
+<link rel="alternate" hreflang="x-default" href="https://scribla.io/">
+<link rel="icon" href="../assets/brand/scribla-appicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../assets/brand/AppIcon-1024.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Scribla — 比手指更快">
+<meta property="og:description" content="iPhone 语音输入。点一下书吏，说话，文字就在输入框里。识别在手机里完成。">
+<meta property="og:url" content="https://scribla.io/zh/">
+<meta property="og:image" content="https://scribla.io/assets/img/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://scribla.io/assets/img/og.jpg">
+<meta name="theme-color" content="#F5EDE3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#17100D" media="(prefers-color-scheme: dark)">
+<link rel="stylesheet" href="../assets/site.css">
+<script src="../assets/metrika.js" async></script>
+</head>
+<body>
+<noscript><div><img src="https://mc.yandex.ru/watch/111532968" style="position:absolute; left:-9999px;" alt=""></div></noscript>
+
+<a class="sr skip" href="#main">跳到正文</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/zh/">
+      <!-- Дьяк с пером, и перо чуть ходит. Файл отдельный
+           (scribla-dyak-writing.svg): анимация лежит внутри SVG, поэтому
+           работает через img и не требует вставки разметки в страницы.
+           Именно эта версия, а не -alpha: у неё свой терракотовый кружок,
+           а перо пергаментное и на светлой шапке без кружка пропадает. -->
+      <img class="mark" src="../assets/brand/scribla-dyak-writing.svg" alt="" width="32" height="32">
+      <picture>
+        <source srcset="../assets/brand/scribla-wordmark-white.svg" media="(prefers-color-scheme: dark)">
+        <img class="word" src="../assets/brand/scribla-wordmark.svg" alt="Scribla">
+      </picture>
+    </a>
+    <nav class="nav" aria-label="页面栏目">
+      <a href="#can">能做什么</a>
+      <a href="#privacy">隐私</a>
+      <a href="#notify">即将发布</a>
+      <a href="#versions">版本</a>
+      <a href="#feedback">写信给我们</a>
+      <a href="#support">支持我们</a>
+    </nav>
+    <div class="lang">
+      <a href="/" hreflang="ru">RU</a>
+      <a href="/en/" hreflang="en">EN</a>
+      <a href="/es/" hreflang="es">ES</a>
+      <a href="/zh/" aria-current="page">中文</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ============================================ 首屏 -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-band">
+      <!-- 拿着羽毛笔的书吏：笔是羊皮纸色的，只在赤陶底色上出现。 -->
+      <img class="hero-dyak" src="../assets/brand/scribla-dyak-alpha-writing.svg" alt=""
+           width="215" height="215">
+      <div>
+        <img class="hero-word" src="../assets/brand/scribla-wordmark-white.svg"
+             alt="Scribla" width="420" height="76">
+        <p class="hero-status"><span class="dot"></span> 尚未发布 · 版本 1.1</p>
+        <h1>比手指更快</h1>
+        <p class="lead">iPhone 上的语音输入。点一下 Scribla 键盘录音键上的书吏，
+          说话，文字就落进任何应用的输入框。声音始终留在手机里。</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#notify">发布时通知我</a>
+          <a class="btn btn-ghost" href="#can">看看能做什么</a>
+        </div>
+
+        <!-- Плашка магазина. Ссылки нет, пока нет записи в App Store;
+             в тот день span меняется на <a href="…"> и снимается
+             is-soon вместе со строкой «即将上架». Подробности — в site.css. -->
+        <div class="hero-store">
+          <span class="appstore is-soon">
+            <span class="appstore-top">即将上架</span>
+            <span class="appstore-name">App&nbsp;Store</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- 演示不靠描述，直接看。第一组写在 HTML 里，
+           这样打开页面时手机屏幕不会是空的。 -->
+      <div>
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="chat" data-chat aria-live="off">
+              <div class="pair">
+                <div class="said">「周二上午十点半的会议你能确认一下吗」</div>
+                <div class="became on"><span class="tag">听写</span><span class="txt">周二上午十点半的会议，你能确认一下吗？</span></div>
+              </div>
+            </div>
+            <div class="kbd" aria-hidden="true">
+              <div class="kbd-row"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+              <div class="kbd-row"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+              <div class="kbd-row"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+              <div class="kbd-mic" data-mic><img src="../assets/brand/scribla-dyak-writing.svg" alt="" width="52" height="52"></div>
+            </div>
+          </div>
+        </div>
+        <div class="demo-ctl">
+          <button type="button" data-demo-toggle aria-pressed="false">
+            <svg viewBox="0 0 12 12" aria-hidden="true" data-demo-icon><rect x="1.5" y="1" width="3" height="10" rx="1"/><rect x="7.5" y="1" width="3" height="10" rx="1"/></svg>
+            <span data-demo-label>停止演示</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Блока с роликом здесь нет намеренно. Ролик языковой насквозь:
+     голос произносит фразу, и перо ПИШЕТ её на бумаге — надпись внутри
+     самого видео, переводом страницы она не меняется. Показывать
+     китайскому читателю английскую надпись значит показывать чужой
+     ролик. Появится китайская дорожка со своей фразой — блок встанет
+     сюда без единой правки вокруг: разметка его лежит в en/index.html,
+     а сборка описана в tools/README.md. -->
+
+<!-- ============================================ 怎么用 -->
+<section id="how">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>三步，而第一步只做一次</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <h3>打开键盘</h3>
+        <p>设置 → 通用 → 键盘 → 键盘 → Scribla。
+          花一分钟，以后再也不用回来。</p>
+      </div>
+      <div class="step">
+        <h3>切换到&nbsp;Scribla，点一下书吏</h3>
+        <p>在任何有输入框的应用里：聊天、邮件、备忘录、搜索。</p>
+      </div>
+      <div class="step">
+        <h3>说话</h3>
+        <p>文字自己落进输入框。哪个词识别错了，修改条就在旁边——
+          改的是那个词，不是整句话。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ 能做什么 -->
+<section id="can">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>不用再收拾的文字</h2>
+      <p class="lead">语音输入通常给你一串没有标点的词。
+        Scribla 给你的是可以直接发出去的东西。</p>
+    </div>
+    <div class="cards">
+
+      <div class="card">
+        <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3.2c1.9 1.5 2.9 3.6 2.9 6.3 0 2-.5 3.7-1.4 5.2H10.5c-.9-1.5-1.4-3.2-1.4-5.2 0-2.7 1-4.8 2.9-6.3z"/><path d="M12 14.7V21"/><path d="M6.4 10.6a5.6 5.6 0 0 0 2.4 4.3M17.6 10.6a5.6 5.6 0 0 1-2.4 4.3"/></svg></div>
+        <h3>在手机上完成的语音输入</h3>
+        <p>中文、英语、俄语、西班牙语。识别在 iPhone 内部完成——
+          所以没有网络也一样能用。</p>
+      </div>
+
+      <div class="card">
+        <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 17.5c2.8.6 5.2.3 7.2-.9 2-1.2 3.4-2.9 4.2-5"/><path d="M8.2 13.4 19 3.4c.6-.5 1.4-.5 1.9.1.5.6.4 1.4-.1 1.9L10.6 15.6"/><path d="M4.6 20.4h6"/></svg></div>
+        <h3>整理口语</h3>
+        <p>「嗯」「那个」和重复的话会去掉。中文识别本身不出标点，
+          标点和分句由单独一层按语言规则补上，不是靠猜。</p>
+        <div class="ex">周二上午十点半的会议你能确认一下吗
+          <b>周二上午十点半的会议，你能确认一下吗？</b></div>
+      </div>
+
+      <div class="card">
+        <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4.5 5.2c2.6-1.1 5.1-1.1 7.5 0v13.6c-2.4-1.1-4.9-1.1-7.5 0z"/><path d="M19.5 5.2c-2.6-1.1-5.1-1.1-7.5 0v13.6c2.4-1.1 4.9-1.1 7.5 0z"/><path d="M12 5.2v13.6"/></svg></div>
+        <h3>「听到&nbsp;→&nbsp;写成」词典</h3>
+        <p>人名、术语和缩写每次都错在同一个地方，同音字尤其如此。
+          按该有的样子写一次，以后就一直是那样。</p>
+        <div class="ex">请把方案发给张伟
+          <b>请把方案发给章玮。</b></div>
+      </div>
+
+      <div class="card">
+        <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M19 5 5 19"/><circle cx="7.3" cy="7.3" r="2.6"/><circle cx="16.7" cy="16.7" r="2.6"/></svg></div>
+        <h3>算数和百分比</h3>
+        <p>在手机上算完，不需要网络。</p>
+        <div class="ex">两千四百的百分之十五
+          <b>360</b></div>
+      </div>
+
+      <div class="card">
+        <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3.4 8.6h7.2M6.6 5.6v3M8.4 8.6c-.5 4-2.3 6.6-5 7.9M6 11.8c1 1.9 2.6 3.2 4.6 3.9"/><path d="m12.6 20 4-9.4 4 9.4M14.2 16.6h4.8"/></svg></div>
+        <h3>翻译</h3>
+        <p>你说中文，输入框里出现英文。当用外语想比用母语说更费劲的时候，
+          这一条很管用。</p>
+        <div class="ex">文件已收到，我们会在周五之前回复
+          <b lang="en">The documents have been received, we will reply by Friday.</b></div>
+      </div>
+
+      <div class="card">
+        <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20.3 3.7c-3.4.5-6.2 2-8.4 4.6-1.7 2-2.7 4.3-3 6.9l3.6 3.6c2.6-.3 4.9-1.3 6.9-3 2.6-2.2 4.1-5 4.6-8.4"/><path d="M3.6 20.4 8.9 15.1"/><path d="M4.4 12.5 8 13.2M11.5 16l.7 3.6"/></svg></div>
+        <h3>回复和润色</h3>
+        <p>不只是录下自己要说的，还能回复别人的消息。
+          也能把说出口的一长段想法，变成分好段落的书面文字。</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ 隐私 -->
+<section id="privacy" class="privacy">
+  <div class="wrap">
+    <div>
+      <h2>声音不会离开手机</h2>
+      <p class="lead">录音根本无处可送——这是应用的做法，
+        不是隐私政策里的一行小字。</p>
+      <ul class="facts">
+        <li>识别在 <b>iPhone 内部</b>完成。录音不会送到服务器，
+          也不会保存在任何地方。</li>
+        <li>键盘<b>不联网</b>，也不会读你用普通按键打的字。</li>
+        <li>完全访问权限只用于一件事：从共享容器里取出识别好的文字，
+          那是 Scribla 应用自己放进去的。<b>iOS 没有别的办法。</b></li>
+        <li>橙色小点亮着，是因为麦克风提前打开了：iOS 不允许从后台开始录音。
+          <b>在你按下按钮之前，声音哪里也不去。</b></li>
+        <li class="caveat">只有一条例外，也只有这一条：<b>声音永远不外传，
+          但在 AI 模式下文字会外传</b>。这些模式从第一次启动起就是开着的。
+          回复和润色由外部的模型计算，没有网络就用不了。哪些内容会送出去，
+          在开关正上方的介绍里写得很清楚。你可以在那里关掉，
+          也可以之后在设置里关掉。</li>
+      </ul>
+      <p class="note"><a href="../privacy.html#en">完整的隐私政策</a>
+        <span class="hint">— 英文</span></p>
+    </div>
+    <img src="../assets/brand/scribla-dyak-writing.svg" alt="" width="240" height="240">
+  </div>
+</section>
+
+<!-- ============================================ 即将发布 -->
+<section id="notify">
+  <div class="wrap">
+    <div class="notify-band">
+      <div>
+        <h2>发布时我们写信告诉你</h2>
+        <p class="lead">每个版本一封信，就这样。没有订阅推送，
+          地址不会给任何人，回信即可退订。</p>
+      </div>
+      <form data-notify novalidate>
+        <div class="field">
+          <label for="nt-email">邮箱</label>
+          <input id="nt-email" type="email" name="email" required autocomplete="email"
+                 placeholder="you@mail.com" spellcheck="false"
+                 aria-describedby="nt-msg">
+        </div>
+        <button class="btn btn-primary" type="submit">通知我</button>
+        <div class="msg" id="nt-msg" data-notify-msg role="alert"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ 版本 -->
+<section id="versions">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>第一个版本里有什么</h2>
+    </div>
+    <div class="releases">
+      <div class="rel">
+        <div class="rel-v">1.1<span class="rel-d">准备中</span></div>
+        <div>
+          <span class="status">正在提交 App&nbsp;Store</span>
+          <ul>
+            <li>四种语言的本机语音输入：中文、英语、俄语、西班牙语</li>
+            <li>整理口语，按语言规则补标点和大小写</li>
+            <li>「听到 → 写成」词典和修改条：改一个词，不用重写整句</li>
+            <li>算数、翻译、回复和文字润色</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ 写信给我们 -->
+<section id="feedback">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>哪里要改，缺了什么</h2>
+      <p class="lead">Scribla 由一个小团队做，里面几乎每一样东西
+        都是从某个人的抱怨里来的。不用客气——
+        简短而带火气的意见，比礼貌而笼统的有用得多。</p>
+    </div>
+
+    <div class="panel">
+      <form data-feedback novalidate>
+        <div class="field">
+          <label for="fb-text">留言</label>
+          <textarea id="fb-text" name="message" required maxlength="2000"
+                    aria-describedby="fb-count fb-msg"
+                    placeholder="发生了什么，你期待的是什么，实际得到的又是什么。"></textarea>
+          <span class="counter" id="fb-count">至少 10 个字 · 已写 <b data-fb-count>0</b> / 2000</span>
+        </div>
+        <div class="field">
+          <span class="lbl" id="fb-shots-lbl">截图 <span class="hint">— 如果给我们看比讲清楚更容易</span></span>
+          <div class="drop" data-drop>
+            <input class="sr" id="fb-shots" type="file" accept="image/*" multiple
+                   data-shots aria-describedby="fb-shots-hint">
+            <label class="drop-face" for="fb-shots">
+              <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                <path d="M3 17.5V6.5A2.5 2.5 0 0 1 5.5 4h13A2.5 2.5 0 0 1 21 6.5v11a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5Z"
+                      fill="none" stroke="currentColor" stroke-width="1.6"/>
+                <path d="m4 16 4.6-4.2a1.6 1.6 0 0 1 2.2 0L15 16m-1.6-1.5 1.9-1.7a1.6 1.6 0 0 1 2.2 0L20 15"
+                      fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                <circle cx="9" cy="8.6" r="1.3" fill="currentColor"/>
+              </svg>
+              <span><b>选一张图片</b>，或者拖到这里</span>
+            </label>
+          </div>
+          <span class="hint" id="fb-shots-hint">最多三张。剪贴板里的截图可以直接粘贴（⌘V）。
+            我们在你的浏览器里把它压小：拍摄时间和地点不会跟着走。</span>
+          <ul class="shots" data-shot-list></ul>
+        </div>
+        <div class="field">
+          <label for="fb-email">邮箱 <span class="hint">— 如果你想要回复</span></label>
+          <input id="fb-email" type="email" name="email" autocomplete="email"
+                 placeholder="可不填" spellcheck="false">
+        </div>
+        <button class="btn btn-primary" type="submit">发送</button>
+        <div class="msg" id="fb-msg" data-fb-msg role="alert"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ 支持我们 -->
+<section id="support">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>如果 Scribla 帮到了你</h2>
+      <p class="lead">应用是免费的，也没有人出钱支持这项工作，
+        我们利用业余时间在做。给我们打赏不是购买：
+        它不会在应用里解锁任何东西，之后也不要求你做任何事。
+        收据里附三张书吏主题的手机壁纸。</p>
+    </div>
+
+    <div class="panel">
+      <div class="amounts" role="group" aria-label="金额">
+        <button class="amount" type="button" data-amount="3" aria-pressed="false">3&nbsp;美元</button>
+        <button class="amount" type="button" data-amount="10" aria-pressed="false">10&nbsp;美元</button>
+        <button class="amount" type="button" data-amount="custom" aria-pressed="false">其他金额</button>
+      </div>
+      <div class="field" data-custom hidden>
+        <label for="amt">多少</label>
+        <input id="amt" type="number" min="3" max="500" step="1" placeholder="15"
+               inputmode="numeric" aria-describedby="amt-hint">
+        <span class="hint" id="amt-hint">3 到 500 美元</span>
+      </div>
+      <a class="btn btn-primary" data-donate href="#" aria-disabled="true">请选择金额</a>
+      <p class="note">会打开 Gumroad，它接受任何国家发行的银行卡。
+        卡号在他们那边输入，这些信息不会到达本页面。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ 常见问题 -->
+<section id="faq">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>问得最多的问题</h2>
+    </div>
+    <div class="faq">
+      <details>
+        <summary>要多少钱？</summary>
+        <p>目前一分不要，全部开放。以后会不会有收费的部分，
+          之后再看实际情况决定：首先得弄清楚，除了我们自己，
+          Scribla 对别人是不是真的有用。真到了那一天，
+          我们会提前说，而不是在开始收费的那天早上才说。</p>
+      </details>
+      <details>
+        <summary>键盘要求完全访问权限，这安全吗？</summary>
+        <p>完全访问权限只用于一件事：从共享容器里读取识别好的文字，
+          那是 Scribla 应用自己放进去的。iOS 没有别的办法把文字送进键盘。
+          键盘本身不联网，也不会读你用普通按键打的字。</p>
+      </details>
+      <details>
+        <summary>橙色小点为什么亮着？</summary>
+        <p>麦克风是提前打开的：iOS 不允许从后台开始录音，
+          而麦克风没打开的话，按一下按钮也没法开始听写。
+          在你按下之前，声音哪里也不去，也不会保存。
+          什么时候释放麦克风由你在设置里决定：从五分钟到「永不」。</p>
+      </details>
+      <details>
+        <summary>需要联网吗？</summary>
+        <p>语音输入、整理口语、替换词典和算数都不需要，
+          这些全在手机上完成。只有 AI 模式需要联网：回复和文字润色。</p>
+      </details>
+      <details>
+        <summary>我可以支持这项工作吗？</summary>
+        <p>可以——<a href="#support">就在上面</a>，用任何银行卡都行。
+          不过在上面写信告诉我们哪里坏了，价值更大，而且一分钱不花。</p>
+      </details>
+      <details>
+        <summary>有些功能用不了</summary>
+        <p>常见故障——麦克风、完全访问权限、输入框是空的——
+          都收在<a href="../support.html#en">帮助页</a>（英文）。
+          如果那里没有你的情况，请写信：
+          <a href="mailto:dev@scribla.io">dev@scribla.io</a>。</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <p style="margin:0 0 .4rem">Scribla — iPhone 语音输入。
+        由一个小团队制作。</p>
+      <p style="margin:0">© 2026 <a href="mailto:dev@scribla.io">dev@scribla.io</a></p>
+    </div>
+    <nav class="f-links" aria-label="栏目与文档">
+      <a href="#can">能做什么</a>
+      <a href="#privacy">隐私</a>
+      <a href="#notify">即将发布</a>
+      <a href="#feedback">写信给我们</a>
+      <a href="#support">支持我们</a>
+      <a href="../privacy.html#en">隐私政策</a>
+      <a href="../support.html#en">帮助</a>
+      <a href="/" hreflang="ru">Русский</a>
+      <a href="/en/" hreflang="en">English</a>
+      <a href="/es/" hreflang="es">Español</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/site.js"></script>
+</body>
+</html>

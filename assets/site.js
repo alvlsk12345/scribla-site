@@ -8,19 +8,26 @@
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const calm = matchMedia('(prefers-reduced-motion: reduce)');
 
-  /* Страниц две, скрипт один. Язык берём из <html lang>, а не из адреса:
-     так строка остаётся верной, куда бы страницу ни переложили. */
-  const LANG = document.documentElement.lang === 'en' ? 'en' : 'ru';
-  const EN = LANG === 'en';
+  /* Страниц четыре, скрипт один. Язык берём из <html lang>, а не из
+     адреса: так строка остаётся верной, куда бы страницу ни переложили.
+     Обрезаем до двух букв — у китайской страницы объявлено `zh-Hans`
+     (упрощённое письмо), и сравнение целой строки промахнулось бы. */
+  const LANG = (document.documentElement.lang || 'ru').slice(0, 2);
+  const RU = LANG === 'ru';
 
   /* Приём переводов. Рельсы РАЗНЫЕ, и это не украшение: СБП работает
      только из российских банков, а карта из США или Европы там не пройдёт
-     вовсе. Поэтому русская страница ведёт на CloudTips, английская —
+     вовсе. Поэтому русская страница ведёт на CloudTips, а все остальные —
      на Gumroad. Gumroad выбран из проверенных по одной причине: Казахстан
      стоит у него в официальной таблице выплат (валюта KZT, зачисление
      на счёт), тогда как у Buy Me a Coffee, Ko-fi и GitHub Sponsors выплаты
      идут через Stripe, а Stripe в Казахстане не работает. Он же merchant
      of record — НДС и sales tax по всем странам считает и платит сам.
+
+     Испанская и китайская страницы идут той же рельсой, что английская,
+     и по той же причине: карта у человека выпущена не в России, а Gumroad
+     принимает карты откуда угодно. Разделение здесь одно — «Россия или
+     не Россия», языков это не касается вовсе.
 
      Предзаполнение суммы: у CloudTips ?amount=N (проверено живьём на 100
      и 1000, хотя в документации описан только виджет), у Gumroad
@@ -29,17 +36,20 @@
 
      Виджетов ни там, ни там: оба тянут чужой скрипт на страницу, где
      написано, что ничего никуда не уходит. */
-  const DONATE = EN ? {
-    url:   'https://scribla.gumroad.com/l/thanks',   /* ← сюда адрес товара */
-    query: n => `?price=${n}&wanted=true`,
-    min: 3, max: 500,
-  } : {
+  const DONATE = RU ? {
     url:   'https://pay.cloudtips.ru/p/22f5ec26',
     query: n => `?amount=${n}`,
     min: 10, max: 100000,
+  } : {
+    url:   'https://scribla.gumroad.com/l/thanks',   /* ← сюда адрес товара */
+    query: n => `?price=${n}&wanted=true`,
+    min: 3, max: 500,
   };
 
-  const T = EN ? {
+  /* Строки скрипта. Ключ — двухбуквенный язык страницы; чего нет,
+     то берётся из английского, а не молчит пустотой. */
+  const TEXTS = {};
+  TEXTS.en = {
     sending:  'Sending…',
     badEmail: 'Check the address — looks like a typo',
     tooShort: 'Too short — two words don\'t say what happened',
@@ -58,7 +68,10 @@
     soundOn:  'With sound',
     soundOff: 'Mute',
     filmPlay: 'Play with sound',
-  } : {
+    cantSend: 'Could not send',
+    kb: ' KB', mb: ' MB', dot: '.',
+  };
+  TEXTS.ru = {
     sending:  'Отправляем…',
     badEmail: 'Проверьте адрес — похоже, в нём опечатка',
     tooShort: 'Слишком коротко — из двух слов не понять, что случилось',
@@ -77,7 +90,58 @@
     soundOn:  'Со звуком',
     soundOff: 'Без звука',
     filmPlay: 'Смотреть со звуком',
+    cantSend: 'Не получилось отправить',
+    kb: ' КБ', mb: ' МБ', dot: ',',
   };
+  TEXTS.es = {
+    sending:  'Enviando…',
+    badEmail: 'Revisa la dirección — parece que tiene una errata',
+    tooShort: 'Demasiado corto — con dos palabras no se entiende qué pasó',
+    offline:  'El servidor no responde. Inténtalo más tarde o escribe a dev@scribla.io',
+    notifyOk: 'Apuntado. Escribiremos una vez: cuando salga.',
+    feedbackOk: 'Gracias. Lo leemos todo.',
+    pickAmount: 'Elige una cantidad',
+    outOfRange: 'De 3 a 500 $',
+    donate: n => `Enviar ${n} $`,
+    demoStop: 'Parar la demostración',
+    demoPlay: 'Ver otra vez',
+    quotes: ['«', '»'],
+    shotsMany: 'Nos quedamos con las tres primeras. Tres es el límite.',
+    shotsBad: 'El navegador no pudo abrir esta imagen. Sirve PNG o JPEG.',
+    shotOff: n => `Quitar la captura ${n}`,
+    soundOn:  'Con sonido',
+    soundOff: 'Sin sonido',
+    filmPlay: 'Ver con sonido',
+    cantSend: 'No se pudo enviar',
+    kb: ' kB', mb: ' MB', dot: ',',
+  };
+  /* Китайский набор. Две мелочи, которых нет у остальных: кавычки здесь
+     свои («книжные» 「」 против европейских), а пробела перед единицей
+     размера в китайском не ставят вовсе. */
+  TEXTS.zh = {
+    sending:  '正在发送…',
+    badEmail: '请检查邮箱地址，看起来有笔误',
+    tooShort: '太短了——两个词说不清发生了什么',
+    offline:  '服务器没有响应。请稍后再试，或写信到 dev@scribla.io',
+    notifyOk: '已记下。发布的时候我们只写一封信。',
+    feedbackOk: '谢谢。每一条我们都会读。',
+    pickAmount: '请选择金额',
+    outOfRange: '3 到 500 美元',
+    donate: n => `发送 ${n} 美元`,
+    demoStop: '停止演示',
+    demoPlay: '再看一遍',
+    quotes: ['「', '」'],
+    shotsMany: '只保留前三张，三张是上限。',
+    shotsBad: '浏览器打不开这张图片。PNG 或 JPEG 可以。',
+    shotOff: n => `移除第 ${n} 张截图`,
+    soundOn:  '带声音',
+    soundOff: '静音',
+    filmPlay: '带声音观看',
+    cantSend: '没能发送',
+    kb: 'KB', mb: 'MB', dot: '.',
+  };
+
+  const T = TEXTS[LANG] || TEXTS.en;
 
   /* ---------------------------------------------------- шапка */
 
@@ -225,7 +289,8 @@
      читался как несработавшая картинка, и это было последнее, что
      видел человек на телефоне над сгибом. */
 
-  const DEMO = EN ? [
+  const DEMOS = {};
+  DEMOS.en = [
     { tag: 'Dictation',   said: 'um so anna good morning thanks a lot',
       text: 'Anna, good morning! Thanks a lot.' },
     { tag: 'Dictionary',  said: 'send the en dee ay by friday',
@@ -236,7 +301,8 @@
        говорят по-русски, в поле встаёт по-английски. */
     { tag: 'Translation', said: 'документы получены ответим до пятницы', saidLang: 'ru',
       text: 'The documents have been received, we will reply by Friday.' },
-  ] : [
+  ];
+  DEMOS.ru = [
     { tag: 'Диктовка', said: 'ну э-э аида доброе утро спасибо большое',
       text: 'Аида, доброе утро! Спасибо большое.' },
     { tag: 'Словарь',  said: 'пришлите эн-ди-эй до пятницы',
@@ -246,6 +312,34 @@
     { tag: 'Перевод',  said: 'документы получены ответим до пятницы',
       text: 'The documents have been received, we will reply by Friday.', textLang: 'en' },
   ];
+  DEMOS.es = [
+    { tag: 'Dictado',     said: 'eh bueno ana buenos días muchas gracias',
+      text: 'Ana, buenos días. ¡Muchas gracias!' },
+    { tag: 'Diccionario', said: 'manda el ene de a antes del viernes',
+      text: 'Manda el NDA antes del viernes.' },
+    { tag: 'Cálculo',     said: 'el quince por ciento de dos mil cuatrocientos',
+      text: '360' },
+    { tag: 'Traducción',  said: 'documentos recibidos responderemos antes del viernes',
+      text: 'The documents have been received, we will reply by Friday.', textLang: 'en' },
+  ];
+  /* Китайские примеры взяты со стенда распознавания, а не сочинены.
+     Знаков препинания китайская модель не ставит вовсе — их дописывает
+     отдельная модель пунктуации, и первая строка выглядит именно так:
+     сплошная лента иероглифов без запятых и без вопросительного знака.
+     Словарь замен показан на однозвучных именах: 张伟 и 章玮 читаются
+     одинаково (zhāng wěi), и распознавание берёт частое написание. */
+  DEMOS.zh = [
+    { tag: '听写',   said: '周二上午十点半的会议你能确认一下吗',
+      text: '周二上午十点半的会议，你能确认一下吗？' },
+    { tag: '词典',   said: '请把方案发给张伟',
+      text: '请把方案发给章玮。' },
+    { tag: '计算',   said: '两千四百的百分之十五',
+      text: '360' },
+    { tag: '翻译',   said: '文件已收到我们会在周五之前回复',
+      text: 'The documents have been received, we will reply by Friday.', textLang: 'en' },
+  ];
+
+  const DEMO = DEMOS[LANG] || DEMOS.en;
 
   const chat = $('[data-chat]'), mic = $('[data-mic]');
   const toggle = $('[data-demo-toggle]');
@@ -369,7 +463,7 @@
         body: form_ ? body : JSON.stringify(body),
       });
       const data = await r.json().catch(() => ({}));
-      if (!r.ok) throw new Error(data.error || (EN ? 'Could not send' : 'Не получилось отправить'));
+      if (!r.ok) throw new Error(data.error || T.cantSend);
       say(box, 'ok', data.message || okText);
       form.reset();
       if (fbCount) fbCount.textContent = '0';
@@ -420,8 +514,8 @@
     }
 
     const weigh = n => n < 1048576
-      ? Math.round(n / 1024) + (EN ? ' KB' : ' КБ')
-      : (n / 1048576).toFixed(1).replace('.', EN ? '.' : ',') + (EN ? ' MB' : ' МБ');
+      ? Math.round(n / 1024) + T.kb
+      : (n / 1048576).toFixed(1).replace('.', T.dot) + T.mb;
 
     function draw() {
       list.textContent = '';

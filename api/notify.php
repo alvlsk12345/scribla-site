@@ -9,14 +9,22 @@ $in = body();
 
 $ip = client_ip();
 if (too_often($ip)) {
-    say(429, ['error' => pick($in, 'Слишком часто. Попробуйте попозже.',
-                                  'Too often. Try again later.')]);
+    say(429, ['error' => pick($in, [
+        'ru' => 'Слишком часто. Попробуйте попозже.',
+        'en' => 'Too often. Try again later.',
+        'es' => 'Demasiado a menudo. Inténtalo más tarde.',
+        'zh' => '太频繁了，请稍后再试。',
+    ])]);
 }
 $email = mb_strtolower(trim((string) ($in['email'] ?? '')), 'UTF-8');
 
 if (!looks_like_email($email)) {
-    say(400, ['error' => pick($in, 'Проверьте адрес — похоже, в нём опечатка',
-                                   'Check the address — looks like a typo')]);
+    say(400, ['error' => pick($in, [
+        'ru' => 'Проверьте адрес — похоже, в нём опечатка',
+        'en' => 'Check the address — looks like a typo',
+        'es' => 'Revisa la dirección — parece que tiene una errata',
+        'zh' => '请检查邮箱地址，看起来有笔误',
+    ])]);
 }
 
 store('notify.jsonl', [
@@ -28,8 +36,12 @@ store('notify.jsonl', [
 mail_later('Scribla — ждут выхода: ' . $email,
     'В список подписки добавился адрес.' . "\n\n"
     . $email . "\n\n"
-    . 'Страница: ' . (($in['lang'] ?? '') === 'en' ? 'английская' : 'русская') . "\n"
+    . 'Страница: ' . lang_name($in) . "\n"
     . 'Когда: ' . gmdate('d.m.Y H:i') . ' UTC');
 
-say(200, ['message' => pick($in, 'Записали. Напишем один раз — когда выйдет.',
-                                   "Noted. We'll write once — when it ships.")]);
+say(200, ['message' => pick($in, [
+    'ru' => 'Записали. Напишем один раз — когда выйдет.',
+    'en' => "Noted. We'll write once — when it ships.",
+    'es' => 'Apuntado. Escribiremos una vez: cuando salga.',
+    'zh' => '已记下。发布的时候我们只写一封信。',
+])]);

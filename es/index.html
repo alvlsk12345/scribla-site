@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scribla — dictado para iPhone: escribe, calcula, traduce</title>
+<meta name="description" content="Un teclado de dictado para iPhone. Toca al escriba, habla, y el texto aparece en el campo de cualquier app. El reconocimiento ocurre dentro del teléfono; el audio nunca sale de él.">
+<link rel="canonical" href="https://scribla.io/es/">
+<link rel="alternate" hreflang="ru" href="https://scribla.io/">
+<link rel="alternate" hreflang="en" href="https://scribla.io/en/">
+<link rel="alternate" hreflang="es" href="https://scribla.io/es/">
+<link rel="alternate" hreflang="zh-Hans" href="https://scribla.io/zh/">
+<link rel="alternate" hreflang="x-default" href="https://scribla.io/">
+<link rel="icon" href="../assets/brand/scribla-appicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../assets/brand/AppIcon-1024.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Scribla — más rápido que tus dedos">
+<meta property="og:description" content="Dictado para iPhone. Toca al escriba, habla, y el texto está en el campo. El reconocimiento ocurre dentro del teléfono.">
+<meta property="og:url" content="https://scribla.io/es/">
+<meta property="og:image" content="https://scribla.io/assets/img/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://scribla.io/assets/img/og.jpg">
+<meta name="theme-color" content="#F5EDE3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#17100D" media="(prefers-color-scheme: dark)">
+<link rel="stylesheet" href="../assets/site.css">
+<script src="../assets/metrika.js" async></script>
+</head>
+<body>
+<noscript><div><img src="https://mc.yandex.ru/watch/111532968" style="position:absolute; left:-9999px;" alt=""></div></noscript>
+
+<a class="sr skip" href="#main">Ir al contenido</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/es/">
+      <!-- Дьяк с пером, и перо чуть ходит. Файл отдельный
+           (scribla-dyak-writing.svg): анимация лежит внутри SVG, поэтому
+           работает через img и не требует вставки разметки в страницы.
+           Именно эта версия, а не -alpha: у неё свой терракотовый кружок,
+           а перо пергаментное и на светлой шапке без кружка пропадает. -->
+      <img class="mark" src="../assets/brand/scribla-dyak-writing.svg" alt="" width="32" height="32">
+      <picture>
+        <source srcset="../assets/brand/scribla-wordmark-white.svg" media="(prefers-color-scheme: dark)">
+        <img class="word" src="../assets/brand/scribla-wordmark.svg" alt="Scribla">
+      </picture>
+    </a>
+    <nav class="nav" aria-label="Secciones de la página">
+      <a href="#can">Qué hace</a>
+      <a href="#privacy">Privacidad</a>
+      <a href="#notify">Pronto</a>
+      <a href="#versions">Versiones</a>
+      <a href="#feedback">Escríbenos</a>
+      <a href="#support">Apoyar</a>
+    </nav>
+    <div class="lang">
+      <a href="/" hreflang="ru">RU</a>
+      <a href="/en/" hreflang="en">EN</a>
+      <a href="/es/" aria-current="page">ES</a>
+      <a href="/zh/" hreflang="zh-Hans">中文</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ============================================ primera pantalla -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-band">
+      <!-- El escriba con su pluma: la pluma es de color pergamino
+           y solo vive sobre la terracota. -->
+      <img class="hero-dyak" src="../assets/brand/scribla-dyak-alpha-writing.svg" alt=""
+           width="215" height="215">
+      <div>
+        <img class="hero-word" src="../assets/brand/scribla-wordmark-white.svg"
+             alt="Scribla" width="420" height="76">
+        <p class="hero-status"><span class="dot"></span> Aún no ha salido · versión 1.1</p>
+        <h1>Más rápido que tus dedos</h1>
+        <p class="lead">Dictado para iPhone. Toca al escriba en la tecla de
+          grabación del teclado Scribla, habla, y el texto está en el campo
+          de cualquier app. El audio nunca sale del teléfono.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#notify">Avísame cuando salga</a>
+          <a class="btn btn-ghost" href="#can">Ver qué hace</a>
+        </div>
+
+        <!-- Плашка магазина. Ссылки нет, пока нет записи в App Store;
+             в тот день span меняется на <a href="…"> и снимается
+             is-soon вместе со строкой «Pronto». Подробности — в site.css. -->
+        <div class="hero-store">
+          <span class="appstore is-soon">
+            <span class="appstore-top">Pronto en la</span>
+            <span class="appstore-name">App&nbsp;Store</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- La demostración muestra en vez de contar. El primer par va
+           escrito en el HTML para que el teléfono nunca aparezca vacío. -->
+      <div>
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="chat" data-chat aria-live="off">
+              <div class="pair">
+                <div class="said">«eh bueno ana buenos días muchas gracias»</div>
+                <div class="became on"><span class="tag">Dictado</span><span class="txt">Ana, buenos días. ¡Muchas gracias!</span></div>
+              </div>
+            </div>
+            <div class="kbd" aria-hidden="true">
+              <div class="kbd-row"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+              <div class="kbd-row"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+              <div class="kbd-row"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+              <div class="kbd-mic" data-mic><img src="../assets/brand/scribla-dyak-writing.svg" alt="" width="52" height="52"></div>
+            </div>
+          </div>
+        </div>
+        <div class="demo-ctl">
+          <button type="button" data-demo-toggle aria-pressed="false">
+            <svg viewBox="0 0 12 12" aria-hidden="true" data-demo-icon><rect x="1.5" y="1" width="3" height="10" rx="1"/><rect x="7.5" y="1" width="3" height="10" rx="1"/></svg>
+            <span data-demo-label>Parar la demostración</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Блока с роликом здесь нет намеренно. Ролик языковой насквозь:
+     голос произносит фразу, и перо ПИШЕТ её на бумаге — надпись внутри
+     самого видео, переводом страницы она не меняется. Показывать
+     испаноязычному человеку английскую надпись значит показывать чужой
+     ролик. Появится испанская дорожка со своей фразой — блок встанет
+     сюда без единой правки вокруг: разметка его лежит в en/index.html,
+     а сборка описана в tools/README.md. -->
+
+<!-- ============================================ cómo funciona -->
+<section id="how">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Tres pasos, y el primero es una sola vez</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <h3>Activa el teclado</h3>
+        <p>Ajustes → General → Teclado → Teclados → Scribla.
+          Un minuto, y no vuelves a ello nunca más.</p>
+      </div>
+      <div class="step">
+        <h3>Cambia a&nbsp;Scribla y toca al escriba</h3>
+        <p>En cualquier app con campo de texto: mensajería, correo, notas,
+          búsqueda.</p>
+      </div>
+      <div class="step">
+        <h3>Habla</h3>
+        <p>El texto aparece solo en el campo. Si una palabra salió mal, la
+          barra de corrección está ahí mismo: cambias la palabra, no la frase.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ qué hace -->
+<section id="can">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Texto que no hay que arreglar después</h2>
+      <p class="lead">La entrada por voz suele devolver un chorro de palabras
+        sin puntuación. Scribla devuelve algo que ya se puede enviar.</p>
+    </div>
+    <div class="cards">
+
+      <div class="card">
+        <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3.2c1.9 1.5 2.9 3.6 2.9 6.3 0 2-.5 3.7-1.4 5.2H10.5c-.9-1.5-1.4-3.2-1.4-5.2 0-2.7 1-4.8 2.9-6.3z"/><path d="M12 14.7V21"/><path d="M6.4 10.6a5.6 5.6 0 0 0 2.4 4.3M17.6 10.6a5.6 5.6 0 0 1-2.4 4.3"/></svg></div>
+        <h3>Dictado en el dispositivo</h3>
+        <p>Español, inglés, ruso y chino. El reconocimiento ocurre dentro del
+          iPhone, y por eso funciona también sin conexión.</p>
+      </div>
+
+      <div class="card">
+        <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 17.5c2.8.6 5.2.3 7.2-.9 2-1.2 3.4-2.9 4.2-5"/><path d="M8.2 13.4 19 3.4c.6-.5 1.4-.5 1.9.1.5.6.4 1.4-.1 1.9L10.6 15.6"/><path d="M4.6 20.4h6"/></svg></div>
+        <h3>Limpieza del habla</h3>
+        <p>Los «eh», los «bueno» y las repeticiones se caen. La puntuación
+          y las mayúsculas siguen las reglas del idioma, no una corazonada.</p>
+        <div class="ex">eh bueno ana buenos días muchas gracias
+          <b>Ana, buenos días. ¡Muchas gracias!</b></div>
+      </div>
+
+      <div class="card">
+        <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4.5 5.2c2.6-1.1 5.1-1.1 7.5 0v13.6c-2.4-1.1-4.9-1.1-7.5 0z"/><path d="M19.5 5.2c-2.6-1.1-5.1-1.1-7.5 0v13.6c2.4-1.1 4.9-1.1 7.5 0z"/><path d="M12 5.2v13.6"/></svg></div>
+        <h3>Un diccionario «se&nbsp;oye&nbsp;→&nbsp;se&nbsp;escribe»</h3>
+        <p>Los nombres, los términos y las siglas se rompen igual cada vez.
+          Escríbelo una vez como debe ser, y así se queda.</p>
+        <div class="ex">manda el ene de a antes del viernes
+          <b>Manda el <span lang="en">NDA</span> antes del viernes.</b></div>
+      </div>
+
+      <div class="card">
+        <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M19 5 5 19"/><circle cx="7.3" cy="7.3" r="2.6"/><circle cx="16.7" cy="16.7" r="2.6"/></svg></div>
+        <h3>Cuentas y porcentajes</h3>
+        <p>Se calculan en el dispositivo. No hace falta conexión.</p>
+        <div class="ex">el quince por ciento de dos mil cuatrocientos
+          <b>360</b></div>
+      </div>
+
+      <div class="card">
+        <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3.4 8.6h7.2M6.6 5.6v3M8.4 8.6c-.5 4-2.3 6.6-5 7.9M6 11.8c1 1.9 2.6 3.2 4.6 3.9"/><path d="m12.6 20 4-9.4 4 9.4M14.2 16.6h4.8"/></svg></div>
+        <h3>Traducción</h3>
+        <p>Hablas en español y en el campo aparece el inglés. Útil cuando
+          pensar en el otro idioma tarda más que decirlo en el tuyo.</p>
+        <div class="ex">documentos recibidos, responderemos antes del viernes
+          <b lang="en">The documents have been received, we will reply by Friday.</b></div>
+      </div>
+
+      <div class="card">
+        <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20.3 3.7c-3.4.5-6.2 2-8.4 4.6-1.7 2-2.7 4.3-3 6.9l3.6 3.6c2.6-.3 4.9-1.3 6.9-3 2.6-2.2 4.1-5 4.6-8.4"/><path d="M3.6 20.4 8.9 15.1"/><path d="M4.4 12.5 8 13.2M11.5 16l.7 3.6"/></svg></div>
+        <h3>Respuestas y pulido</h3>
+        <p>Contestar a un mensaje, no solo grabar el tuyo. Y convertir una
+          idea larga dicha en voz alta en un texto escrito con párrafos.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ privacidad -->
+<section id="privacy" class="privacy">
+  <div class="wrap">
+    <div>
+      <h2>El audio no sale de aquí</h2>
+      <p class="lead">Sencillamente no hay adónde mandar una grabación: así
+        está hecha la app, no es una línea en letra pequeña de una política.</p>
+      <ul class="facts">
+        <li>El reconocimiento ocurre <b>dentro del iPhone</b>. Las grabaciones
+          no se envían a ningún servidor y no se guardan en ninguna parte.</li>
+        <li>El teclado <b>no sale a la red</b> y no lee lo que escribes con las
+          teclas normales.</li>
+        <li>El acceso completo hace falta para una sola cosa: recoger el texto
+          reconocido del contenedor compartido, donde lo dejó la propia app
+          Scribla. <b>iOS no ofrece otra manera.</b></li>
+        <li>El punto naranja está encendido porque el micrófono se abre por
+          adelantado: iOS no permite empezar una grabación desde segundo plano.
+          <b>Hasta que no tocas el botón, el audio no va a ninguna parte.</b></li>
+        <li class="caveat">Una salvedad, y solo una: <b>el audio nunca sale,
+          pero el texto sí en los modos con IA</b>. Esos modos vienen activados
+          desde el primer arranque. Las respuestas y el pulido los calcula un
+          modelo de fuera, y sin conexión no funcionan. La presentación dice
+          qué sale, justo encima del interruptor. Puedes desactivarlos ahí
+          mismo, o después en los ajustes.</li>
+      </ul>
+      <p class="note"><a href="../privacy.html#en">La política de privacidad
+        completa</a> <span class="hint">— en inglés</span></p>
+    </div>
+    <img src="../assets/brand/scribla-dyak-writing.svg" alt="" width="240" height="240">
+  </div>
+</section>
+
+<!-- ============================================ pronto -->
+<section id="notify">
+  <div class="wrap">
+    <div class="notify-band">
+      <div>
+        <h2>Te escribimos cuando salga</h2>
+        <p class="lead">Una carta por versión, y ya está. Sin boletines, la
+          dirección no se la damos a nadie, y para darte de baja basta con
+          responder.</p>
+      </div>
+      <form data-notify novalidate>
+        <div class="field">
+          <label for="nt-email">Correo</label>
+          <input id="nt-email" type="email" name="email" required autocomplete="email"
+                 placeholder="tu@correo.com" spellcheck="false"
+                 aria-describedby="nt-msg">
+        </div>
+        <button class="btn btn-primary" type="submit">Avísame</button>
+        <div class="msg" id="nt-msg" data-notify-msg role="alert"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ versiones -->
+<section id="versions">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Qué entra en la primera versión</h2>
+    </div>
+    <div class="releases">
+      <div class="rel">
+        <div class="rel-v">1.1<span class="rel-d">en camino</span></div>
+        <div>
+          <span class="status">Va a la App&nbsp;Store</span>
+          <ul>
+            <li>Dictado en el dispositivo en cuatro idiomas: español, inglés, ruso y chino</li>
+            <li>Limpieza del habla, puntuación y mayúsculas por las reglas del idioma</li>
+            <li>El diccionario «se oye → se escribe» y la barra de corrección: cambias una palabra sin reescribir la frase</li>
+            <li>Cuentas, traducción, respuestas y pulido del texto</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ escríbenos -->
+<section id="feedback">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Qué arreglar, qué falta</h2>
+      <p class="lead">Scribla la hace un equipo pequeño, y casi todo lo que
+        tiene salió de la queja de alguien. No seas amable: corto y enfadado
+        sirve más que cortés y vago.</p>
+    </div>
+
+    <div class="panel">
+      <form data-feedback novalidate>
+        <div class="field">
+          <label for="fb-text">Mensaje</label>
+          <textarea id="fb-text" name="message" required maxlength="2000"
+                    aria-describedby="fb-count fb-msg"
+                    placeholder="Qué pasó, qué esperabas y qué salió en su lugar."></textarea>
+          <span class="counter" id="fb-count">10 caracteres como mínimo · <b data-fb-count>0</b> de 2000</span>
+        </div>
+        <div class="field">
+          <span class="lbl" id="fb-shots-lbl">Captura <span class="hint">— si es más fácil enseñarlo que contarlo</span></span>
+          <div class="drop" data-drop>
+            <input class="sr" id="fb-shots" type="file" accept="image/*" multiple
+                   data-shots aria-describedby="fb-shots-hint">
+            <label class="drop-face" for="fb-shots">
+              <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                <path d="M3 17.5V6.5A2.5 2.5 0 0 1 5.5 4h13A2.5 2.5 0 0 1 21 6.5v11a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5Z"
+                      fill="none" stroke="currentColor" stroke-width="1.6"/>
+                <path d="m4 16 4.6-4.2a1.6 1.6 0 0 1 2.2 0L15 16m-1.6-1.5 1.9-1.7a1.6 1.6 0 0 1 2.2 0L20 15"
+                      fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                <circle cx="9" cy="8.6" r="1.3" fill="currentColor"/>
+              </svg>
+              <span><b>Elige una imagen</b> o suéltala aquí</span>
+            </label>
+          </div>
+          <span class="hint" id="fb-shots-hint">Tres como mucho. Una captura del
+            portapapeles entra directamente (⌘V). La encogemos en tu navegador:
+            la hora y el lugar de la captura se quedan fuera.</span>
+          <ul class="shots" data-shot-list></ul>
+        </div>
+        <div class="field">
+          <label for="fb-email">Correo <span class="hint">— si quieres respuesta</span></label>
+          <input id="fb-email" type="email" name="email" autocomplete="email"
+                 placeholder="opcional" spellcheck="false">
+        </div>
+        <button class="btn btn-primary" type="submit">Enviar</button>
+        <div class="msg" id="fb-msg" data-fb-msg role="alert"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ apoyar -->
+<section id="support">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Si Scribla te ha servido</h2>
+      <p class="lead">La app es gratis y nadie financia el trabajo. Lo hacemos
+        en nuestro tiempo libre. Enviar algo no es una compra: no desbloquea
+        nada en la app y no te compromete a nada después. Con el recibo van
+        tres fondos de pantalla con el escriba.</p>
+    </div>
+
+    <div class="panel">
+      <div class="amounts" role="group" aria-label="Cantidad">
+        <button class="amount" type="button" data-amount="3" aria-pressed="false">3&nbsp;$</button>
+        <button class="amount" type="button" data-amount="10" aria-pressed="false">10&nbsp;$</button>
+        <button class="amount" type="button" data-amount="custom" aria-pressed="false">Otra cantidad</button>
+      </div>
+      <div class="field" data-custom hidden>
+        <label for="amt">Cuánto</label>
+        <input id="amt" type="number" min="3" max="500" step="1" placeholder="15"
+               inputmode="numeric" aria-describedby="amt-hint">
+        <span class="hint" id="amt-hint">De 3 a 500 $</span>
+      </div>
+      <a class="btn btn-primary" data-donate href="#" aria-disabled="true">Elige una cantidad</a>
+      <p class="note">Se abre Gumroad, que acepta tarjetas emitidas en
+        cualquier país. La tarjeta se introduce allí, en su lado, y nada de
+        eso llega a esta página.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ preguntas -->
+<section id="faq">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Lo que más se pregunta</h2>
+    </div>
+    <div class="faq">
+      <details>
+        <summary>¿Cuánto cuesta?</summary>
+        <p>Por ahora nada: está todo abierto. Si algo pasa a ser de pago se
+          decidirá más adelante y con pruebas: primero tiene que quedar claro
+          que Scribla le sirve a alguien además de a nosotros. Si llega ese
+          día, lo diremos con antelación y no la mañana en que ocurra.</p>
+      </details>
+      <details>
+        <summary>El teclado pide acceso completo. ¿Es seguro?</summary>
+        <p>El acceso completo hace falta para una sola cosa: leer el texto
+          reconocido del contenedor compartido, donde lo dejó la propia app
+          Scribla. iOS no ofrece otra manera de meter texto en un teclado.
+          El teclado no sale a la red y no lee lo que escribes con las teclas
+          normales.</p>
+      </details>
+      <details>
+        <summary>¿Por qué está encendido el punto naranja?</summary>
+        <p>El micrófono se abre por adelantado: iOS no permite empezar una
+          grabación desde segundo plano, y sin el micrófono abierto un toque
+          no podría arrancar el dictado. Hasta que no tocas, el audio no va a
+          ninguna parte y no se guarda nada. Cuándo soltar el micrófono lo
+          decides tú en los ajustes: de cinco minutos a nunca.</p>
+      </details>
+      <details>
+        <summary>¿Hace falta conexión?</summary>
+        <p>Para el dictado, la limpieza del habla, el diccionario de
+          sustituciones y las cuentas, no: todo eso funciona en el dispositivo.
+          La conexión solo hace falta para los modos con IA: respuestas y
+          pulido del texto.</p>
+      </details>
+      <details>
+        <summary>¿Puedo apoyar el trabajo?</summary>
+        <p>Sí — <a href="#support">justo arriba</a>, con cualquier tarjeta.
+          Aun así, escribirnos y contarnos qué está roto vale más, y no cuesta
+          nada.</p>
+      </details>
+      <details>
+        <summary>Algo no funciona</summary>
+        <p>Las averías habituales —micrófono, acceso completo, campo vacío—
+          están recogidas en la <a href="../support.html#en">página de
+          ayuda</a>, en inglés. Si la tuya no está, escribe:
+          <a href="mailto:dev@scribla.io">dev@scribla.io</a>.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <p style="margin:0 0 .4rem">Scribla — dictado para iPhone.
+        Lo hace un equipo pequeño.</p>
+      <p style="margin:0">© 2026 <a href="mailto:dev@scribla.io">dev@scribla.io</a></p>
+    </div>
+    <nav class="f-links" aria-label="Secciones y documentos">
+      <a href="#can">Qué hace</a>
+      <a href="#privacy">Privacidad</a>
+      <a href="#notify">Pronto</a>
+      <a href="#feedback">Escríbenos</a>
+      <a href="#support">Apoyar</a>
+      <a href="../privacy.html#en">Política</a>
+      <a href="../support.html#en">Ayuda</a>
+      <a href="/" hreflang="ru">Русский</a>
+      <a href="/en/" hreflang="en">English</a>
+      <a href="/zh/" hreflang="zh-Hans">中文</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="../assets/site.js"></script>
+</body>
+</html>
