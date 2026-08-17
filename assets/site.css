@@ -620,6 +620,11 @@ a.appstore:hover { border-color: rgba(245, 237, 227, .9); background: rgba(20, 8
   align-items: baseline; padding: .95rem 0; border-top: 1px solid var(--line);
 }
 .mode:first-child { border-top: 0; padding-top: 0; }
+/* Подзаголовок над списком: у первой строки верхний отступ снят вместе
+   с линией, и без этого правила заголовок сидит к ней встык. Проверено
+   на разделе «Клавиатура, а не отдельное окно», где список режимов
+   впервые получил заголовок. */
+h3 + .modes { margin-top: 1.1rem; }
 @media (max-width: 620px) { .mode { grid-template-columns: 1fr; gap: .45rem; } }
 .mode-keys { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem; color: var(--text-soft); font-size: .95rem; }
 .mode-what { color: var(--text); font-weight: 700; }

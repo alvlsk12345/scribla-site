@@ -56,6 +56,7 @@
       </picture>
     </a>
     <nav class="nav" aria-label="Page sections">
+      <a href="#what">What it is</a>
       <a href="#can">What it does</a>
       <a href="#mac">For Mac</a>
       <a href="#privacy">Privacy</a>
@@ -184,6 +185,72 @@
   </div>
 </section>
 
+<!-- ============================================ what it is
+
+     Раздел появился 17 августа 2026. Записи в App Store ещё нет, значит
+     прочитать про приложение человеку негде: сайт говорил, что Scribla
+     умеет, но не говорил, чем она является. Здесь лежит то, что
+     в магазине лежало бы в описании. Стоит до «трёх шагов»: сперва
+     что это, потом как включить. -->
+<section id="what">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>A keyboard, not a separate window</h2>
+      <p class="lead">Scribla doesn’t ask you to come over, dictate, and carry
+        the result back. It takes the place of your ordinary keyboard: in a
+        messenger, an email, a note, a search box, someone else’s form. Tap the
+        scribe, speak, tap again, and the text is already in the field.</p>
+    </div>
+
+    <div class="mac-band">
+      <div>
+        <h3>Four modes, and the mode decides what lands in the field</h3>
+        <ul class="modes">
+          <li class="mode">
+            <span class="mode-keys">Text</span>
+            <span class="mode-what">what you said, with punctuation and capitals</span>
+          </li>
+          <li class="mode">
+            <span class="mode-keys">Math</span>
+            <span class="mode-what">the answer instead of the sum: say “fifteen
+              percent of two thousand four hundred” and 360 lands</span>
+          </li>
+          <li class="mode">
+            <span class="mode-keys">Translate</span>
+            <span class="mode-what">said in one language, written in another</span>
+          </li>
+          <li class="mode">
+            <span class="mode-keys">AI</span>
+            <span class="mode-what">an answer to your question, not a record of it</span>
+          </li>
+        </ul>
+        <p class="note">The modes sit in a row of their own and they are large:
+          you aim at them with your eyes, not blindly. The one you pick holds
+          until you change it, so there is nothing to say out loud — no
+          “calculate”, no “translate”. Next to them is the language key: it
+          shows which language we are listening in, and a tap moves to the next
+          one downloaded.</p>
+      </div>
+
+      <div class="get">
+        <h3>What you do once</h3>
+        <ul class="get-meta">
+          <li>System <b>iOS 17 and newer</b></li>
+          <li>Languages <b>EN, RU, ES, 中文</b></li>
+          <li>Model per language <b>137–326 MB</b></li>
+          <li>Price <b>nothing so far</b></li>
+        </ul>
+        <p class="note">No model ships inside the app: it downloads for the
+          languages you choose, and two of them do — the main one and the
+          additional one. The rest wait until you pick them and take up no
+          space. You also turn the keyboard on in iOS settings and give it Full
+          Access, or it cannot see the recognised text even from its own
+          app.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============================================ how -->
 <section id="how">
   <div class="wrap">
@@ -230,8 +297,10 @@
       <div class="card">
         <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 17.5c2.8.6 5.2.3 7.2-.9 2-1.2 3.4-2.9 4.2-5"/><path d="M8.2 13.4 19 3.4c.6-.5 1.4-.5 1.9.1.5.6.4 1.4-.1 1.9L10.6 15.6"/><path d="M4.6 20.4h6"/></svg></div>
         <h3>Cleaning up speech</h3>
-        <p>“Um”, “so” and repeats drop out. Punctuation and capitals follow
-          the rules of the language rather than guesswork.</p>
+        <p>Hesitations, stumbles and repeats drop out, and punctuation and
+          capitals follow the rules of the language rather than guesswork.
+          Real words are not cut blindly: “actually”, “right”, “so” stay
+          where they carry meaning.</p>
         <div class="ex">um so anna good morning thanks a lot
           <b>Anna, good morning! Thanks a lot.</b></div>
       </div>
@@ -240,7 +309,9 @@
         <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4.5 5.2c2.6-1.1 5.1-1.1 7.5 0v13.6c-2.4-1.1-4.9-1.1-7.5 0z"/><path d="M19.5 5.2c-2.6-1.1-5.1-1.1-7.5 0v13.6c2.4-1.1 4.9-1.1 7.5 0z"/><path d="M12 5.2v13.6"/></svg></div>
         <h3>A “heard&nbsp;→&nbsp;written” dictionary</h3>
         <p>Names, terms and abbreviations break the same way every time.
-          Write it once the way it should be, and it stays that way.</p>
+          Write it once the way it should be, and it stays that way. It also
+          fills up from the keyboard: the edit strip has a “remember the
+          spelling” key.</p>
         <div class="ex">send the en dee ay by friday
           <b>Send the NDA by Friday.</b></div>
       </div>
@@ -248,7 +319,8 @@
       <div class="card">
         <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M19 5 5 19"/><circle cx="7.3" cy="7.3" r="2.6"/><circle cx="16.7" cy="16.7" r="2.6"/></svg></div>
         <h3>Arithmetic and percentages</h3>
-        <p>Counted on the device. No connection needed.</p>
+        <p>Counted by the phone itself, no connection needed. Currencies go by
+          the Russian Central Bank rate, and that part does need the network.</p>
         <div class="ex">fifteen percent of two thousand four hundred
           <b>360</b></div>
       </div>
@@ -257,7 +329,9 @@
         <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3.4 8.6h7.2M6.6 5.6v3M8.4 8.6c-.5 4-2.3 6.6-5 7.9M6 11.8c1 1.9 2.6 3.2 4.6 3.9"/><path d="m12.6 20 4-9.4 4 9.4M14.2 16.6h4.8"/></svg></div>
         <h3>Translation</h3>
         <p>Speak Russian and English comes out in the field. Useful when
-          thinking in the other language takes longer than saying it in yours.</p>
+          thinking in the other language takes longer than saying it in yours.
+          Which language it goes into is asked by the same key when you hold
+          it: there are four.</p>
         <div class="ex" lang="ru">документы получены, ответим до пятницы
           <b lang="en">The documents have been received, we will reply by Friday.</b></div>
       </div>
@@ -266,10 +340,147 @@
         <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20.3 3.7c-3.4.5-6.2 2-8.4 4.6-1.7 2-2.7 4.3-3 6.9l3.6 3.6c2.6-.3 4.9-1.3 6.9-3 2.6-2.2 4.1-5 4.6-8.4"/><path d="M3.6 20.4 8.9 15.1"/><path d="M4.4 12.5 8 13.2M11.5 16l.7 3.6"/></svg></div>
         <h3>Replies and polish</h3>
         <p>Answer a message instead of only recording your own. And turn
-          a long thought said out loud into written text with paragraphs.</p>
+          a long thought said out loud into written text with paragraphs.
+          If the answer misses, say “shorter” or “in Russian” straight after
+          and it is rewritten in place.</p>
       </div>
 
     </div>
+  </div>
+</section>
+
+<!-- ============================================ on the keyboard
+
+     Список, а не карточки: слева клавиша, справа то, что она делает, —
+     та же пара, что в маковом разделе, и класс переиспользован оттуда.
+     Порядок по тому, как клавиши стоят на экране. -->
+<section id="keyboard">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>What else is on the keyboard</h2>
+      <p class="lead">There aren’t many keys, and each one covers the case that
+        would otherwise send you off to another keyboard and out of sight of
+        the field.</p>
+    </div>
+    <ul class="modes">
+      <li class="mode">
+        <span class="mode-keys">the scribe, the record key</span>
+        <span class="mode-what">tap, speak, tap again. The ring around him says
+          whether we are listening or already working it out, and the badge
+          says which mode is on</span>
+      </li>
+      <li class="mode">
+        <span class="mode-keys">the edit strip</span>
+        <span class="mode-what">it comes up above the keys by itself: first the
+          sentences you spoke, tap a sentence and it opens into words, tap a
+          word and you get its cases, number and capitalisation. One wrong form
+          is no longer a reason to retype the phrase</span>
+      </li>
+      <li class="mode">
+        <span class="mode-keys">“remember the spelling”</span>
+        <span class="mode-what">the word goes from the edit strip into your own
+          dictionary and is written your way from then on</span>
+      </li>
+      <li class="mode">
+        <span class="mode-keys">the row of marks and digits</span>
+        <span class="mode-what">without leaving for another layout. The row is
+          deliberately shorter than the others: commas and periods the model
+          places itself, while question and exclamation marks depend on
+          intonation and come out worse, so those you add by hand</span>
+      </li>
+      <li class="mode">
+        <span class="mode-keys">the space bar</span>
+        <span class="mode-what">hold it and slide: sideways the cursor walks
+          letter by letter, up and down it moves whole words. You can’t land a
+          finger between two letters; this way you can</span>
+      </li>
+      <li class="mode">
+        <span class="mode-keys">the two arrows</span>
+        <span class="mode-what">the left one removes the whole last insertion,
+          the right one brings it back. Hold them and it goes one sentence at a
+          time: the one the cursor sits in leaves whole, with no holding down
+          backspace</span>
+      </li>
+      <li class="mode">
+        <span class="mode-keys">emoji</span>
+        <span class="mode-what">our own panel: a keyboard extension cannot
+          summon the system one. Hold the key and the model places emoji by
+          meaning across the whole phrase you just spoke</span>
+      </li>
+      <li class="mode">
+        <span class="mode-keys">ABC and АБВ</span>
+        <span class="mode-what">ordinary letters, to finish a word by hand
+          without leaving the scribe</span>
+      </li>
+      <li class="mode">
+        <span class="mode-keys">the arrow leaving a square</span>
+        <span class="mode-what">your apps as tiles with their real icons: tap
+          one and you are there, and the field stays open. The set is assembled
+          in settings beforehand, because iOS tells no one which apps are open
+          right now</span>
+      </li>
+      <li class="mode">
+        <span class="mode-keys">the gear</span>
+        <span class="mode-what">Scribla settings</span>
+      </li>
+    </ul>
+    <p class="note">There are places where no third-party keyboard appears at
+      all: banks and government apps block them entirely, and no one can get
+      around that. For those, dictate on Scribla’s own main screen — the text
+      lands in the clipboard and the buttons below take you to the app, where a
+      long press pastes it.</p>
+  </div>
+</section>
+
+<!-- ============================================ inside the app
+
+     Клавиатура — половина Scribla. Без второй половины непонятно, почему
+     приложение нельзя смахивать и где живут настройки. -->
+<section id="app">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>The app listens, the keyboard writes</h2>
+      <p class="lead">Recognition is done by the app, not the keyboard: iOS
+        doesn’t allow an extension that much. So don’t swipe Scribla away in
+        the app switcher — swipe it away and the scribe falls asleep, and your
+        first tap goes on waking him. Everything else lives in the app’s
+        settings.</p>
+    </div>
+    <ul class="facts">
+      <li><b>Languages.</b> A pair works at a time: the main one and the
+        additional one. The language key moves between them, translation runs
+        between them, and the “you seem to have switched language” hint compares
+        exactly this pair.</li>
+      <li><b>Your own dictionary.</b> On the left, what gets heard; on the
+        right, what should be written. Case on the left doesn’t matter.</li>
+      <li><b>Polish.</b> It breaks a wall of dictation into paragraphs, fixes
+        agreement, removes stumbles. A model elsewhere computes it, as it does
+        the answers in AI mode: without a connection neither works, and both
+        switch off in one place.</li>
+      <li><b>Markup delivery.</b> Where the text is going: asterisks and hashes
+        for Obsidian, Notion and Bear; an underline instead of bold for
+        ordinary fields, which have no typeface at all; plain text for
+        anywhere.</li>
+      <li><b>Translation.</b> The system downloads language packs only while
+        the app is open — from a keyboard it won’t even show the prompt. With
+        the pack, the phone translates by itself and offline; without it, the
+        translation goes over the network.</li>
+      <li><b>History.</b> The text only, and only the latest entries. Audio is
+        never stored: it lives in memory and gets overwritten by the next
+        take.</li>
+      <li><b>Your numbers.</b> How many words you said and how much time that
+        saved. It is an estimate rather than a measurement, and the whole
+        arithmetic is shown right there, including what doesn’t count.</li>
+      <li><b>Microphone.</b> When to release it is yours to set, from five
+        minutes to never. Auto-stop on silence is a separate switch, with the
+        limit for a single recording next to it.</li>
+      <li><b>Diagnostics.</b> Service notes about the app’s own work: what you
+        pressed, where it stumbled. No audio, none of your words, and it
+        switches off.</li>
+    </ul>
+    <p class="note">There is a longer walkthrough inside the app — “How it
+      works”: what sits where on the keyboard, and why it was done that
+      way.</p>
   </div>
 </section>
 
@@ -413,10 +624,13 @@
         <div>
           <span class="status">In review at the App&nbsp;Store</span>
           <ul>
-            <li>On-device dictation in four languages: English, Russian, Spanish and Chinese</li>
-            <li>Speech cleanup, punctuation and capitals by the rules of the language</li>
-            <li>The “heard → written” dictionary and the edit strip: change a word without retyping the sentence</li>
-            <li>Arithmetic, translation, replies and text polish</li>
+            <li>Four recognition languages on the device; the pair is chosen by slot — main and additional</li>
+            <li>Translation into any of the four: hold the Translate key and pick the language</li>
+            <li>The edit strip: sentences, words, forms — and “remember the spelling” straight from there</li>
+            <li>Switching to another app from a grid of tiles, with real icons</li>
+            <li>An app that blocks the keyboard: the text lands in the clipboard, and the buttons below lead there</li>
+            <li>An AI answer is edited by what you say next: “shorter”, “in Russian”, “no, I meant Kazan”</li>
+            <li>A six-page introduction: the dictionary, the microphone and the keyboard, step by step</li>
           </ul>
         </div>
       </div>
@@ -561,9 +775,25 @@
       </details>
       <details>
         <summary>Do I need a connection?</summary>
-        <p>For dictation, speech cleanup, the replacement dictionary and
-          arithmetic — no, all of that runs on the device. A connection is
-          only needed for the AI modes: replies and text polish.</p>
+        <p>Dictation, speech cleanup, the replacement dictionary and arithmetic
+          run on the device. So does translation, once the language pack is
+          downloaded; without it, translation goes over the network. That leaves
+          currency rates, AI answers and text polish.</p>
+      </details>
+      <details>
+        <summary>How much space does it take?</summary>
+        <p>A recognition model weighs between 137 and 326 MB, depending on the
+          language. None ships inside the app: it downloads for the languages
+          you choose, and two of them do — the main one and the additional one.
+          The rest take up nothing until you pick them.</p>
+      </details>
+      <details>
+        <summary>My bank’s app doesn’t list Scribla among the keyboards</summary>
+        <p>Banks and government apps block third-party keyboards entirely, not
+          just ours. That is their right, and no one can get around it. Dictate
+          on Scribla’s own main screen instead: the text lands in the clipboard
+          by itself, and the buttons below take you to the app, where a long
+          press pastes it.</p>
       </details>
       <details>
         <summary>Can I support the work?</summary>
@@ -594,7 +824,10 @@
       <p style="margin:0">© 2026 <a href="mailto:dev@scribla.io">dev@scribla.io</a></p>
     </div>
     <nav class="f-links" aria-label="Sections and documents">
+      <a href="#what">What it is</a>
       <a href="#can">What it does</a>
+      <a href="#keyboard">On the keyboard</a>
+      <a href="#app">Inside the app</a>
       <a href="#mac">For Mac</a>
       <a href="#privacy">Privacy</a>
       <a href="#notify">Coming soon</a>
