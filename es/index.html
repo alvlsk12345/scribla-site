@@ -11,7 +11,15 @@
 <link rel="alternate" hreflang="es" href="https://scribla.io/es/">
 <link rel="alternate" hreflang="zh-Hans" href="https://scribla.io/zh/">
 <link rel="alternate" hreflang="x-default" href="https://scribla.io/">
-<link rel="icon" href="../assets/brand/scribla-appicon.svg" type="image/svg+xml">
+<!-- Иконка сайта объявлена из корня, и это требование Яндекса: он ищет
+     файл с именем favicon именно в корневом каталоге. Прежде она была
+     объявлена из глубины (assets/brand/), а по адресу /favicon.ico сервер
+     отвечал 404 — то есть у робота, который ходит туда по умолчанию,
+     иконки не было вовсе, и в выдаче стоял серый глобус.
+     .ico идёт первым для тех, кто не умеет SVG; собирается всё
+     скриптом tools/build-favicon.py. -->
+<link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" type="image/x-icon">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="../assets/brand/AppIcon-1024.png">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Scribla — más rápido que tus dedos">
