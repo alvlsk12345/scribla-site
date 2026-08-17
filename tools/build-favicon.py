@@ -24,6 +24,7 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 SRC = ROOT / "assets/brand/AppIcon-1024.png"
 SVG_SRC = ROOT / "assets/brand/scribla-appicon.svg"
 SIZES = [16, 32, 48]
+PNG_SIZES = [192]
 RADIUS = 229 / 1024
 
 
@@ -53,6 +54,15 @@ def main() -> None:
 
     svg = ROOT / "favicon.svg"
     svg.write_bytes(SVG_SRC.read_bytes())
+
+    # Растр крупнее 48 — ради Google. Он корня не требует, но просит
+    # квадрат «больше 48×48», а в .ico крупные кадры класть незачем:
+    # там они нужны системе, а не поиску. SVG у него в списке форматов
+    # прямо не назван, поэтому одним вектором закрываться не стоит.
+    for size in PNG_SIZES:
+        out = ROOT / f"favicon-{size}.png"
+        rounded(src, size).save(out, format="PNG", optimize=True)
+        print(f"{out.relative_to(ROOT)}  {out.stat().st_size} Б  {size}×{size}")
 
     print(f"{ico.relative_to(ROOT)}  {ico.stat().st_size} Б  "
           f"({', '.join(f'{s}×{s}' for s in SIZES)})")
