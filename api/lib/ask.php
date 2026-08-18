@@ -276,6 +276,8 @@ function ask_defaults(): array
         'knowledge_off_en' => "Today is {today}. You have no internet: everything else you know is as of your training time. If the answer could have changed since, say so in one line instead of answering.",
 
         'knowledge_refine_ru' => "Сегодня {today}. Сейчас ты правишь свой прошлый ответ — он приложен ниже.",
+        'knowledge_refine_found_ru' => "Сегодня {today}. Ты правишь свой прошлый ответ — он приложен ниже, — и для этого мы заново поискали в интернете. Свежие страницы тоже приложены.",
+        'knowledge_refine_found_en' => "Today is {today}. You are editing your previous answer — attached below — and we searched the web again for it. The fresh pages are attached too.",
         'knowledge_refine_en' => "Today is {today}. You are editing your previous answer — it is attached below.",
 
         'findings_ru' => "\n\nНАЙДЕНО В ИНТЕРНЕТЕ по запросу «{query}»:\n\n{pages}\n\nОтвечай по найденному, а не по памяти. Ссылки в ответ не вставляй — текст пойдёт прямо в документ.",
@@ -290,6 +292,8 @@ function ask_defaults(): array
         'grounding_sourced_ru' => "Прошлый ответ собран по страницам из интернета. Заново мы их не искали, других у тебя нет: НЕ ВЫДУМЫВАЙ новых чисел, дат и названий.",
         'grounding_sourced_en' => "The previous answer was built from web pages. We did not search again and you have no others: DO NOT INVENT new numbers, dates or names.",
         'grounding_plain_ru' => "Новых страниц мы не искали. Не выдумывай чисел, дат и названий, которых в прошлом ответе не было.",
+        'grounding_fresh_ru' => "Мы поискали заново — свежие страницы приложены ниже. Отвечай по ним, а не по памяти; чего в них нет, того не выдумывай.",
+        'grounding_fresh_en' => "We searched again — the fresh pages are attached below. Answer from them, not from memory; do not invent what is not there.",
         'grounding_plain_en' => "We did not search for new pages. Do not invent numbers, dates or names that were not in the previous answer.",
 
         'format_plain_ru' => "Пиши обычным текстом. Никакой markdown-разметки: ни звёздочек, ни решёток, ни обратных кавычек. Списки — тире с новой строки.",
@@ -398,6 +402,7 @@ function ask_knowledge_block(string $state, string $today, bool $ru): string
         'found' => 'knowledge_found',
         'failed' => 'knowledge_failed',
         'refine' => 'knowledge_refine',
+        'refine_found' => 'knowledge_refine_found',
         default => 'knowledge_off',
     };
     return ask_text($name . ($ru ? '_ru' : '_en'), ['today' => $today]);
@@ -423,14 +428,83 @@ function ask_field_block(array $field, bool $ru): string
  * «Официальный курс ЦБ на 14 августа 2026 года — 88,15 рубля».
  * Выдуманное число хуже отказа: оно уедет в документ.
  */
-function ask_refinement_block(array $previous, bool $hadSources, bool $ru): string
+function ask_refinement_block(array $previous, bool $hadSources, bool $ru,
+                             bool $searchedAgain = false): string
 {
     $suffix = $ru ? '_ru' : '_en';
+    /* Три положения, а не два. Третье — «искали заново» — появилось
+     * 17 августа 2026 по живой жалобе: на уточнение приходил ответ
+     * «Для ответа на этот вопрос нужен новый поиск». Модель была права,
+     * поиска действительно не было, а запрет выдумывать не оставлял
+     * ей ничего другого. Теперь поиск бывает (см. ask_needs_search),
+     * и в этом случае заземление обязано говорить противоположное:
+     * страницы есть, отвечай по ним. */
+    $grounding = $searchedAgain
+        ? 'grounding_fresh'
+        : ($hadSources ? 'grounding_sourced' : 'grounding_plain');
     return ask_text('refine' . $suffix, [
         'question' => (string) ($previous['question'] ?? ''),
         'answer' => (string) ($previous['answer'] ?? ''),
-        'grounding' => ask_text(($hadSources ? 'grounding_sourced' : 'grounding_plain') . $suffix),
+        'grounding' => ask_text($grounding . $suffix),
     ]);
+}
+
+/** Уточнение просит новых сведений — или только правит форму?
+ *
+ * Это единственное место, где решается, идти ли в интернет на уточнении.
+ * Раньше ответ был «никогда»: довод в пользу этого верен ровно наполовину.
+ * «Сделай короче», «по-русски», «без воды» — правки формы, и поиск по ним
+ * бессмысленный. Но «а кто автор?», «а сколько это стоило?», «а что там
+ * в этом году?» — это новые вопросы по существу, и без поиска модель
+ * может только честно сказать, что ей нечем отвечать. Именно это
+ * и увидел человек.
+ *
+ * Сначала отсеиваем правки формы по списку — он короткий и почти
+ * не растёт, потому что этих команд в языке немного. Всё остальное,
+ * что похоже на вопрос, отправляем искать: лишний поиск стоит секунду,
+ * отказ отвечать стоит доверия.
+ */
+function ask_needs_search(string $refinement): bool
+{
+    $text = mb_strtolower(trim($refinement));
+    if ($text === '') { return false; }
+
+    /* Правки формы: коротко, длиннее, иначе, на другом языке, без воды.
+     * Список нарочно про ФОРМУ, а не про темы — тему угадать нельзя. */
+    $edits = [
+        'корот', 'сократ', 'длинн', 'подробн', 'проще', 'попроще', 'официальн',
+        'формальн', 'мягче', 'жёстче', 'жестче', 'вежлив', 'перепиш', 'переформул',
+        'по-русски', 'по-английски', 'на русском', 'на английском', 'на испанском',
+        'по-испански', 'на китайском', 'по-китайски', 'без воды', 'списком',
+        'в одно предложение', 'одним предложением', 'убери', 'удали', 'замени',
+        'добавь пункт', 'разбей', 'абзац', 'тезис',
+        'shorter', 'longer', 'simpler', 'formal', 'polite', 'rewrite', 'rephrase',
+        'in russian', 'in english', 'in spanish', 'in chinese', 'bullet', 'list',
+        'one sentence', 'remove', 'delete', 'replace', 'shorten', 'expand',
+    ];
+    foreach ($edits as $needle) {
+        if (mb_strpos($text, $needle) !== false) { return false; }
+    }
+
+    /* Похоже на вопрос по существу: знак вопроса или вопросительное
+     * слово ГДЕ УГОДНО в строке, а не только в начале.
+     *
+     * Именно «где угодно» — на этом попался стенд: «а в евро сколько»
+     * начинается не с вопросительного слова, кончается им, и проверка
+     * по началу строки честно отвечала «правка формы». А это новый
+     * вопрос: курса евро в прошлом ответе не было вовсе.
+     * Границы слова заданы через \p{L}, потому что \b в PCRE
+     * с кириллицей не работает. */
+    if (mb_strpos($text, '?') !== false) { return true; }
+    $words = [
+        'кто', 'что', 'где', 'когда', 'почему', 'зачем', 'сколько', 'какой',
+        'какая', 'какое', 'какие', 'каков', 'чей', 'чья', 'куда', 'откуда',
+        'найди', 'проверь', 'уточни', 'расскажи', 'напомни', 'посмотри',
+        'who', 'whom', 'what', 'where', 'when', 'why', 'which', 'whose',
+        'find', 'check', 'tell', 'look', 'many', 'much',
+    ];
+    $pattern = '/(?<!\p{L})(' . implode('|', $words) . ')(?!\p{L})/u';
+    return (bool) preg_match($pattern, $text);
 }
 
 /** Вся инструкция целиком.
@@ -470,7 +544,8 @@ function ask_prompt(array $o): string
 
     if (!empty($o['field'])) { $prompt .= ask_field_block($o['field'], $ru); }
     if (!empty($o['previous'])) {
-        $prompt .= ask_refinement_block($o['previous'], !empty($o['previous']['sources']), $ru);
+        $prompt .= ask_refinement_block($o['previous'], !empty($o['previous']['sources']), $ru,
+                                        ($o['state'] ?? '') === 'refine_found');
     }
     if ($o['findings']) {
         $prompt .= ask_findings_block($o['findings'], $o['search_query'], $ru);
@@ -645,6 +720,20 @@ function ask_handle(array $in, string $key, callable $charge): never
 
     if ($previous) {
         $state = 'refine';
+        /* Уточнение по существу ищет заново, правка формы — нет.
+         * Запрос строим из ПРОШЛОГО вопроса вместе с уточнением:
+         * по одному «а кто автор?» не найдётся ничего, потому что
+         * в нём нет предмета — он остался в прошлом вопросе. */
+        if ($wantSearch && ask_needs_search($question)) {
+            $searchQuery = trim(mb_substr((string) ($previous['question'] ?? ''), 0, 300)
+                                . ' ' . $question);
+            [$findings, $counts] = ask_search(
+                [$searchQuery, ask_dated($searchQuery, $today)],
+                $key
+            );
+            $charge(2);
+            if ($findings) { $state = 'refine_found'; }
+        }
     } elseif ($wantSearch) {
         [$findings, $counts] = ask_search(
             [$searchQuery, ask_dated($searchQuery, $today)],
@@ -674,7 +763,10 @@ function ask_handle(array $in, string $key, callable $charge): never
     foreach ($findings as $f) {
         $sources[] = ['title' => $f['title'] !== '' ? $f['title'] : $f['url'], 'url' => $f['url']];
     }
-    if ($previous) { $sources = $previous['sources']; }
+    /* Источники: свежие, если искали заново; иначе — прошлые.
+     * Показывать старые страницы под ответом, собранным по новым, —
+     * это обещать не то, по чему отвечали. */
+    if ($previous && !$findings) { $sources = $previous['sources']; }
 
     /* Что и как отработало — наверх числами. Приложение кладёт это
      * в диагностику строкой, и по журналу видно, какая редакция
