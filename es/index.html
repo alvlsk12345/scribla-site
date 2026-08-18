@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Scribla — dictado para iPhone y Mac: escribe, calcula, traduce</title>
-<meta name="description" content="Dictado para iPhone y Mac. Pulsa, habla, y el texto aparece en el campo de cualquier app. El reconocimiento ocurre en el propio equipo; el audio nunca sale de él. La versión para Mac ya se puede descargar.">
+<title>Scribla — dictado para iPhone y Mac: escribe, calcula, traduce, responde</title>
+<meta name="description" content="Dictado para iPhone y Mac. Habla y el texto aparece en el campo de cualquier app; pregunta y responde un modelo que antes busca en internet. Los modos con IA están incluidos y no cuestan nada. El reconocimiento ocurre en el propio equipo; el audio nunca sale de él.">
 <link rel="canonical" href="https://scribla.io/es/">
 <link rel="alternate" hreflang="ru" href="https://scribla.io/">
 <link rel="alternate" hreflang="en" href="https://scribla.io/en/">
@@ -24,7 +24,7 @@
 <link rel="apple-touch-icon" href="../assets/brand/AppIcon-1024.png">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Scribla — más rápido que tus dedos">
-<meta property="og:description" content="Dictado para iPhone y Mac. Pulsa, habla, y el texto está en el campo. El reconocimiento ocurre en el propio equipo. La versión para Mac ya está fuera.">
+<meta property="og:description" content="Dictado para iPhone y Mac. Habla y el texto está en el campo; pregunta y responde un modelo que busca en internet. Los modos con IA no cuestan nada. La versión para Mac ya está fuera.">
 <meta property="og:url" content="https://scribla.io/es/">
 <meta property="og:image" content="https://scribla.io/assets/img/og.jpg">
 <meta property="og:image:width" content="1200">
@@ -89,9 +89,10 @@
         <p class="hero-status"><span class="dot"></span> La versión para Mac ya está · iPhone, en revisión</p>
         <h1>Más rápido que tus dedos</h1>
         <p class="lead">Dictado para iPhone y Mac. Pulsa, habla, y el texto
-          aparece en el campo de cualquier app. En el teléfono se toca al
-          escriba de la tecla de grabación; en el Mac se mantiene pulsado
-          el ⌘ derecho. El audio nunca sale del equipo.</p>
+          aparece en el campo de cualquier app; pregunta y aparece la respuesta
+          de un modelo que antes busca en internet, y sin suscripción por ello.
+          En el teléfono se toca al escriba de la tecla de grabación; en el Mac
+          se mantiene pulsado el ⌘ derecho. El audio nunca sale del equipo.</p>
         <div class="hero-cta">
           <!-- Первая кнопка ведёт туда, где что-то можно получить сегодня:
                образ для мака собран, а телефонная версия ещё ждёт проверки. -->
@@ -225,7 +226,8 @@
           <li class="mode">
             <span class="mode-keys">IA</span>
             <span class="mode-what">la respuesta a tu pregunta, no la
-              transcripción de la pregunta</span>
+              transcripción de la pregunta: el modelo busca en internet
+              y contesta por lo encontrado</span>
           </li>
         </ul>
         <p class="note">Los modos están en una fila propia y son grandes: se
@@ -241,7 +243,7 @@
           <li>Sistema <b>iOS 17 o posterior</b></li>
           <li>Idiomas <b>ES, EN, RU, 中文</b></li>
           <li>Modelo por idioma <b>137–326 MB</b></li>
-          <li>Precio <b>por ahora nada</b></li>
+          <li>Precio <b>nada, con IA</b></li>
         </ul>
         <p class="note">Dentro de la app no viene ningún modelo: se descarga
           para los idiomas que elijas, y se descargan dos — el principal y el
@@ -341,14 +343,116 @@
 
       <div class="card">
         <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20.3 3.7c-3.4.5-6.2 2-8.4 4.6-1.7 2-2.7 4.3-3 6.9l3.6 3.6c2.6-.3 4.9-1.3 6.9-3 2.6-2.2 4.1-5 4.6-8.4"/><path d="M3.6 20.4 8.9 15.1"/><path d="M4.4 12.5 8 13.2M11.5 16l.7 3.6"/></svg></div>
-        <h3>Respuestas y pulido</h3>
-        <p>Contestar a un mensaje, no solo dictar el tuyo. Y convertir una
-          idea larga dicha en voz alta en un texto escrito con párrafos.
-          Si la respuesta no da en el clavo, di después «más corto» o «en
-          inglés» y se reescribe en el sitio.</p>
+        <h3>Respuestas del modelo</h3>
+        <p>Contestar a un mensaje, no solo dictar el tuyo: preguntas en voz
+          alta y en el campo queda la respuesta, armada con páginas buscadas
+          en ese momento. El mismo modelo convierte una idea larga dicha en voz
+          alta en un texto escrito con párrafos. <a href="#ai">Qué hace el
+          modelo</a>, más abajo.</p>
       </div>
 
     </div>
+  </div>
+</section>
+
+<!-- ============================================ los modos con IA
+
+     Añadido el 18 de agosto de 2026. La página hablaba de la IA en cuatro
+     líneas sueltas — una fila en la lista de modos, una tarjeta, la salvedad
+     de privacidad y una pregunta al final —, así que quien venía por las
+     respuestas y el pulido no las encontraba juntas en ninguna parte, aunque
+     entre las dos son la mitad de Scribla.
+
+     La caja «qué sale del equipo» está aquí, no solo en privacidad: alabar
+     los modos con IA y callar adónde va el texto es lo mismo que esconderlo.
+     La salvedad de privacidad se queda donde está: aquí se cuenta el
+     mecanismo, allí se hace la promesa. -->
+<section id="ai">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Preguntaste y en el campo quedó la respuesta, no la pregunta</h2>
+      <p class="lead">El modo IA no es un chat aparte al que hay que irse para
+        volver con algo en el portapapeles. El mismo escriba, el mismo teclado:
+        dices la pregunta en voz alta y la respuesta cae en el correo, el
+        mensaje o la nota donde ya estabas.</p>
+    </div>
+
+    <div class="mac-band">
+      <div>
+        <ul class="modes">
+          <li class="mode">
+            <span class="mode-keys">una pregunta en voz alta</span>
+            <span class="mode-what">antes de responder buscamos en internet y
+              contestamos por las páginas encontradas: así un cambio, una fecha
+              o la noticia de ayer salen de hoy y no de la memoria del modelo.
+              De dónde viene la respuesta se ve en el historial de la app,
+              en la línea «Respondió por estas páginas», con enlaces</span>
+          </li>
+          <li class="mode">
+            <span class="mode-keys">una matización después</span>
+            <span class="mode-what">«más corto», «en inglés», «no, hablo de
+              Kazán»: la respuesta se reescribe en el sitio y no hay que volver
+              a preguntar. Cambiar la forma no necesita red; si la matización
+              pide datos nuevos («¿y en euros?»), buscamos otra vez</span>
+          </li>
+          <li class="mode">
+            <span class="mode-keys">el texto del campo</span>
+            <span class="mode-what">una tecla propia adjunta a tu pregunta lo
+              que ya está escrito en el campo: contestar un correo, entender el
+              mensaje de otro, seguir un párrafo empezado</span>
+          </li>
+          <li class="mode">
+            <span class="mode-keys">el pulido</span>
+            <span class="mode-what">una idea larga dicha en voz alta se vuelve
+              texto escrito: párrafos, concordancia, sin titubeos. El formato lo
+              pone el modelo según adónde va el texto: asteriscos y almohadillas
+              para Obsidian, texto limpio para un campo corriente</span>
+          </li>
+          <li class="mode">
+            <span class="mode-keys">emojis con pulsación larga</span>
+            <span class="mode-what">los coloca el modelo por el sentido de toda
+              la frase, no por la última palabra</span>
+          </li>
+        </ul>
+        <p class="note">En el Mac son los mismos modos y las mismas respuestas,
+          solo que se llaman con teclas: <kbd>⌘</kbd><kbd>⌥</kbd> derechos para
+          la respuesta, y esos dos más <kbd>/</kbd> para la traducción. No hay
+          nada que aprender dos veces.</p>
+      </div>
+
+      <div class="get">
+        <h3>Qué sale del equipo</h3>
+        <ul class="get-meta">
+          <li>El audio <b>nunca</b></li>
+          <li>La pregunta <b>en los modos con IA</b></li>
+          <li>El camino <b>por scribla.io</b></li>
+          <li>Tu propia clave <b>OpenAI, DeepSeek</b></li>
+        </ul>
+        <p class="note">La clave del servicio integrado está en nuestro
+          servidor, no dentro de la app: desde dentro de la app la saca
+          cualquiera que quiera. Ni la pregunta ni la respuesta se guardan:
+          en el registro de servicio quedan la longitud y el código de
+          respuesta. Con tu propia clave el texto va directo al servicio que
+          hayas elegido, sin pasar por nosotros.</p>
+        <p class="note">Los modos con IA vienen activados desde la primera vez
+          que abres la app, y la pantalla de bienvenida lo dice justo encima
+          del interruptor. Puedes desactivarlos ahí mismo o después en los
+          ajustes.</p>
+      </div>
+    </div>
+
+    <p class="lead ai-free">Ni suscripción, ni registro, ni tarjeta: los modos
+      con IA están incluidos y la factura del modelo nos llega a nosotros,
+      no a ti.</p>
+    <p class="note">Cuánto durará así no podemos decirlo con honestidad:
+      primero hay que saber si Scribla le sirve a alguien además de a nosotros.
+      Si algún día llega algo de pago, lo diremos con antelación y no la mañana
+      en que se active.</p>
+    <p class="note">Todo lo demás no toca el modelo en absoluto: el
+      reconocimiento, la limpieza del habla, el diccionario de sustituciones
+      y las cuentas los hace el propio equipo y no necesitan conexión. Al
+      modelo se le llama solo donde no hay otra forma, y por eso Scribla sigue
+      escribiendo en un avión.</p>
   </div>
 </section>
 
@@ -519,7 +623,7 @@
           añades ⌥ y eso mismo sale como pregunta.</p>
         <p class="note">El dictado y el diccionario funcionan sin conexión.
           La respuesta y la traducción las calcula un modelo fuera: son los
-          mismos modos con IA que en el teléfono, y se apagan en el mismo
+          mismos <a href="#ai">modos con IA</a> que en el teléfono, y se apagan en el mismo
           sitio.</p>
       </div>
 
@@ -560,7 +664,7 @@
           adelantado: iOS no permite empezar una grabación desde segundo plano.
           <b>Hasta que no tocas el botón, el audio no va a ninguna parte.</b></li>
         <li class="caveat">Una salvedad, y solo una: <b>el audio nunca sale,
-          pero el texto sí en los modos con IA</b>. Esos modos vienen activados
+          pero el texto sí en los <a href="#ai">modos con IA</a></b>. Esos modos vienen activados
           desde la primera vez que abres la app. Las respuestas y el pulido los
           calcula un modelo que no está en el teléfono, y sin conexión no
           funcionan. La pantalla de bienvenida dice qué sale, justo encima
@@ -729,11 +833,33 @@
     <div class="faq">
       <details>
         <summary>¿Cuánto cuesta?</summary>
-        <p>Por ahora nada: está todo abierto. Si algo llega a ser de pago, se
-          decidirá más adelante y con pruebas en la mano: primero tiene que
-          quedar claro
+        <p>Por ahora nada: está todo abierto, y los modos con IA también:
+          respuestas, búsqueda en internet y pulido. La clave es nuestra y la
+          factura del modelo nos llega a nosotros; ni suscripción, ni registro,
+          ni tarjeta. Si algo llega a ser de pago, se decidirá más adelante y
+          con pruebas en la mano: primero tiene que quedar claro
           que Scribla le sirve a alguien además de a nosotros. Si llega ese
           día, lo diremos con antelación y no la mañana en que ocurra.</p>
+      </details>
+      <details>
+        <summary>¿Qué modelo responde y puedo poner el mío?</summary>
+        <p>Por defecto responde el servicio integrado, y el camino es este: la
+          pregunta llega a nuestro servidor scribla.io, desde ahí buscamos
+          páginas en internet y preguntamos al modelo con nuestra clave. La
+          clave está en el servidor y no dentro de la app: desde dentro de la
+          app la saca cualquiera que quiera. Ni la pregunta ni la respuesta se
+          guardan. Si tienes tu propia clave de OpenAI o DeepSeek, ponla en los
+          ajustes: el texto irá directo a ellos, sin pasar por nosotros.</p>
+      </details>
+      <details>
+        <summary>¿Se puede usar sin IA?</summary>
+        <p>Sí. Los modos con IA vienen activados desde la primera vez que abres
+          la app, y la pantalla de bienvenida lo dice justo encima del
+          interruptor: puedes negarte ahí mismo o después en los ajustes. Sin
+          ellos quedan el dictado, la limpieza del habla, el diccionario de
+          sustituciones, las cuentas y la traducción con el paquete de idioma
+          descargado: todo eso lo calcula el propio equipo y no necesita
+          conexión.</p>
       </details>
       <details>
         <summary>El teclado pide acceso completo. ¿Es seguro?</summary>
@@ -821,6 +947,7 @@
     <nav class="f-links" aria-label="Secciones y documentos">
       <a href="#what">Qué es</a>
       <a href="#can">Qué hace</a>
+      <a href="#ai">Modos con IA</a>
       <a href="#keyboard">En el teclado</a>
       <a href="#app">Dentro de la app</a>
       <a href="#mac">Para Mac</a>

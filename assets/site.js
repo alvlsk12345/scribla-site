@@ -287,12 +287,22 @@
 
      Первая пара уже отрисована в HTML: пустой телефон при загрузке
      читался как несработавшая картинка, и это было последнее, что
-     видел человек на телефоне над сгибом. */
+     видел человек на телефоне над сгибом.
+
+     Пара с ответом модели стоит второй, а не последней: режим AI —
+     половина продукта, и увидеть его должен даже тот, кто закрыл
+     страницу через полминуты. Ответы в ней спрошены у боевого сервера
+     18 августа 2026: в поле лежало «подтвердите встречу в четверг
+     в 15:00», вопрос сказан вслух. Оттуда же и длина — модель отвечает
+     так, как отвечает, и подрезать её здесь нельзя: тогда демонстрация
+     обещала бы короче, чем выходит на самом деле. */
 
   const DEMOS = {};
   DEMOS.en = [
     { tag: 'Dictation',   said: 'um so anna good morning thanks a lot',
       text: 'Anna, good morning! Thanks a lot.' },
+    { tag: 'AI',          said: 'answer that thursday is not possible for me offer friday',
+      text: 'Unfortunately, Thursday at 3 pm does not work for me. Would Friday work for you instead? Please let me know if that fits your schedule.' },
     { tag: 'Dictionary',  said: 'send the en dee ay by friday',
       text: 'Send the NDA by Friday.' },
     { tag: 'Arithmetic',  said: 'fifteen percent of two thousand four hundred',
@@ -305,6 +315,8 @@
   DEMOS.ru = [
     { tag: 'Диктовка', said: 'ну э-э аида доброе утро спасибо большое',
       text: 'Аида, доброе утро! Спасибо большое.' },
+    { tag: 'AI',       said: 'ответь что в четверг не получится предложи пятницу',
+      text: 'К сожалению, в четверг не получится. Предлагаю перенести встречу на пятницу.' },
     { tag: 'Словарь',  said: 'пришлите эн-ди-эй до пятницы',
       text: 'Пришлите NDA до пятницы.', textLang: 'ru' },
     { tag: 'Счёт',     said: 'пятнадцать процентов от двух тысяч четырёхсот',
@@ -315,6 +327,8 @@
   DEMOS.es = [
     { tag: 'Dictado',     said: 'eh bueno ana buenos días muchas gracias',
       text: 'Ana, buenos días. ¡Muchas gracias!' },
+    { tag: 'IA',          said: 'responde que el jueves no puedo propón el viernes',
+      text: 'Lo siento, el jueves no puedo. ¿Os vendría bien el viernes?' },
     { tag: 'Diccionario', said: 'manda el ene de a antes del viernes',
       text: 'Manda el NDA antes del viernes.' },
     { tag: 'Cálculo',     said: 'el quince por ciento de dos mil cuatrocientos',
@@ -332,6 +346,8 @@
   DEMOS.zh = [
     { tag: '听写',   said: '周二上午十点半的会议你能确认一下吗',
       text: '周二上午十点半的会议，你能确认一下吗？' },
+    { tag: 'AI',     said: '回复说周四不行建议改到周五',
+      text: '抱歉，周四下午三点我不方便，建议改到周五，你看可以吗？' },
     { tag: '词典',   said: '请把方案发给张伟',
       text: '请把方案发给章玮。' },
     { tag: '计算',   said: '两千四百的百分之十五',

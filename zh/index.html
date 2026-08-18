@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Scribla — iPhone 与 Mac 语音输入：会写、会算、会翻译</title>
-<meta name="description" content="iPhone 与 Mac 上的语音输入。按住、说话，文字就落进任何应用的输入框。识别在本机完成，声音不外传。Mac 版已发布，可直接下载。">
+<title>Scribla — iPhone 与 Mac 语音输入：会写、会算、会翻译、会回答</title>
+<meta name="description" content="iPhone 与 Mac 上的语音输入。说话，文字就落进任何应用的输入框；问一句，模型先上网搜索再作答。用到 AI 的模式都包含在内，不另收费。识别在本机完成，声音不外传。">
 <link rel="canonical" href="https://scribla.io/zh/">
 <link rel="alternate" hreflang="ru" href="https://scribla.io/">
 <link rel="alternate" hreflang="en" href="https://scribla.io/en/">
@@ -24,7 +24,7 @@
 <link rel="apple-touch-icon" href="../assets/brand/AppIcon-1024.png">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Scribla — 比手指更快">
-<meta property="og:description" content="iPhone 与 Mac 语音输入。按住、说话，文字就在输入框里。识别在本机完成。Mac 版已发布。">
+<meta property="og:description" content="iPhone 与 Mac 语音输入。说话，文字就在输入框里；问一句，模型先上网搜索再作答。用到 AI 的模式不另收费。Mac 版已发布。">
 <meta property="og:url" content="https://scribla.io/zh/">
 <meta property="og:image" content="https://scribla.io/assets/img/og.jpg">
 <meta property="og:image:width" content="1200">
@@ -87,7 +87,7 @@
              alt="Scribla" width="420" height="76">
         <p class="hero-status"><span class="dot"></span> Mac 版已发布 · iPhone 版审核中</p>
         <h1>比手指更快</h1>
-        <p class="lead">iPhone 与 Mac 上的语音输入。按一下、说话，文字就落进任何应用的输入框。手机上点 Scribla 键盘上的书吏，也就是录音键；Mac 上按住右侧 ⌘。声音始终留在本机。</p>
+        <p class="lead">iPhone 与 Mac 上的语音输入。按一下、说话，文字就落进任何应用的输入框；问一句，落下来的就是模型的答案——它会先上网搜索，而且不为此收订阅费。手机上点 Scribla 键盘上的书吏，也就是录音键；Mac 上按住右侧 ⌘。声音始终留在本机。</p>
         <div class="hero-cta">
           <!-- Первая кнопка ведёт туда, где что-то можно получить сегодня:
                образ для мака собран, а телефонная версия ещё ждёт проверки. -->
@@ -215,7 +215,7 @@
           </li>
           <li class="mode">
             <span class="mode-keys">AI</span>
-            <span class="mode-what">落下来的是问题的答案，不是问题本身</span>
+            <span class="mode-what">落下来的是问题的答案，不是问题本身：模型会上网搜索，再按搜到的内容作答</span>
           </li>
         </ul>
         <p class="note">四个模式自己占一排，而且做得大：用眼睛就能按准，不用盲按。选定的那个一直保持到你换它，所以不必开口说「算一下」或者「翻译」。旁边是语言键：上面写着我们在听哪种语言，点一下就换到下一个已下载的语言。</p>
@@ -227,7 +227,7 @@
           <li>系统 <b>iOS 17 及以上</b></li>
           <li>语言 <b>中文、英语、俄语、西班牙语</b></li>
           <li>每种语言的模型 <b>137–326 MB</b></li>
-          <li>价格 <b>目前为零</b></li>
+          <li>价格 <b>为零，含 AI</b></li>
         </ul>
         <p class="note">应用里不带模型：它按你选的语言下载，而且只下载两种——
           主语言和第二语言。其余的等你选中之前不占地方。此外还要在 iOS
@@ -310,11 +310,76 @@
 
       <div class="card">
         <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20.3 3.7c-3.4.5-6.2 2-8.4 4.6-1.7 2-2.7 4.3-3 6.9l3.6 3.6c2.6-.3 4.9-1.3 6.9-3 2.6-2.2 4.1-5 4.6-8.4"/><path d="M3.6 20.4 8.9 15.1"/><path d="M4.4 12.5 8 13.2M11.5 16l.7 3.6"/></svg></div>
-        <h3>回复和润色</h3>
-        <p>不只是录下自己要说的，还能回复别人的消息。也能把说出口的一长段想法，变成分好段落的书面文字。答得不合意，紧接着说「短一点」或者「用英文」，它就在原处重写。</p>
+        <h3>模型给的回答</h3>
+        <p>不只是录下自己要说的，还能回复别人的消息：问出口，输入框里就是答案，而且是拿当时搜到的页面拼出来的。同一个模型也能把说出口的一长段想法，变成分好段落的书面文字。<a href="#ai">模型都做些什么</a>，下面单独讲。</p>
       </div>
 
     </div>
+  </div>
+</section>
+
+<!-- ============================================ 用到 AI 的模式
+
+     2026 年 8 月 18 日新增。此前页面只在四处零散地提到 AI——模式表里的一行、
+     一张卡片、隐私里的那条例外，以及末尾的一个问题——为回答和润色而来的人
+     在任何一处都读不全，而这两样加起来就是半个 Scribla。
+
+     「什么会离开设备」这一块放在这里，而不是只放在隐私里：夸用到 AI 的模式，
+     却不说文字去了哪里，跟藏着没有区别。隐私里的那条例外仍旧留在原处——
+     这里讲的是机制，那里给的是承诺。
+
+     中文段落每段只占源文件一行：源文件里的换行，浏览器会在两个汉字之间
+     渲染成一个空格。 -->
+<section id="ai">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>问出口，落进输入框的是答案，不是问题</h2>
+      <p class="lead">AI 模式不是另开一个聊天窗口，去了还得带着剪贴板回来。还是那位书吏，还是那副键盘：把问题说出口，答案就落在你本来就在写的邮件、消息或笔记里。</p>
+    </div>
+
+    <div class="mac-band">
+      <div>
+        <ul class="modes">
+          <li class="mode">
+            <span class="mode-keys">把问题说出口</span>
+            <span class="mode-what">回答之前我们先上网搜索，再按搜到的页面来答——所以汇率、日期和昨天的新闻都是今天的，而不是模型记忆里的。答案是从哪儿来的，在应用的历史里看得见：一行「依据这些页面作答」，带链接</span>
+          </li>
+          <li class="mode">
+            <span class="mode-keys">紧接着补一句</span>
+            <span class="mode-what">「短一点」「用英文」「不，我说的是喀山」——答案就地重写，不用重新问一遍。只改说法不需要联网；如果这一句要的是新的事实（「那换成欧元呢」），我们就重新搜一次</span>
+          </li>
+          <li class="mode">
+            <span class="mode-keys">输入框里的文字</span>
+            <span class="mode-what">有一个专门的键，把输入框里已经写着的内容附在你的问题上：回一封邮件、读懂别人的消息、把开了头的一段接着写下去</span>
+          </li>
+          <li class="mode">
+            <span class="mode-keys">润色</span>
+            <span class="mode-what">说出口的一长段想法变成书面文字：分段、理顺搭配、去掉结巴。格式由模型按文字要去的地方来定——去 Obsidian 就用星号和井号，去普通输入框就是干净的文字</span>
+          </li>
+          <li class="mode">
+            <span class="mode-keys">长按表情键</span>
+            <span class="mode-what">由模型按整句话的意思来放，而不是只看最后一个词</span>
+          </li>
+        </ul>
+        <p class="note">Mac 上是同样的模式、同样的答案，只是改用按键来叫：右侧 <kbd>⌘</kbd><kbd>⌥</kbd> 是回答，再加 <kbd>/</kbd> 是翻译。没有第二套要学。</p>
+      </div>
+
+      <div class="get">
+        <h3>什么会离开设备</h3>
+        <ul class="get-meta">
+          <li>声音 <b>永远不会</b></li>
+          <li>问题的文字 <b>在 AI 模式下</b></li>
+          <li>路径 <b>经过 scribla.io</b></li>
+          <li>你自己的密钥 <b>OpenAI、DeepSeek</b></li>
+        </ul>
+        <p class="note">内置服务的密钥放在我们的服务器上，不放在应用里：放在应用里，谁想拿都能拿到。问题和答案我们都不保存——服务记录里只有长度和响应码。用你自己的密钥时，文字直接去你选的那家服务，不经过我们。</p>
+        <p class="note">用到 AI 的模式从第一次启动起就是开着的，介绍页在开关正上方把这件事写明了。你可以当场关掉，也可以之后在设置里关。</p>
+      </div>
+    </div>
+
+    <p class="lead ai-free">不订阅、不注册、不用银行卡：用到 AI 的模式都包含在内，模型的账单寄给我们，不寄给你。</p>
+    <p class="note">这样能维持多久，我们没法诚实地回答：首先得弄清楚，除了我们自己，Scribla 对别人是不是真的有用。真有一天出现收费的部分，我们会提前说，而不是在开始收费的那天早上才说。</p>
+    <p class="note">其余的一切跟模型毫无关系：识别、口语整理、替换词典和算术都由设备自己完成，不需要联网。只有在没有别的办法时才叫模型——所以在飞机上 Scribla 照样写得下去。</p>
   </div>
 </section>
 
@@ -428,7 +493,7 @@
         </ul>
         <p class="note">用修饰键而不是字母组合：打字打到一半也能单手盲操作口述。右侧 ⌘ 仍然是普通修饰键——如果你本来是要按快捷键，这段录音会被直接丢掉，不留痕迹，⌘C 原样送到应用。模式还能在句子中途改：先开口说，再加上 ⌥，同一句话就以提问的方式送出去。</p>
         <p class="note">语音输入和词典无需联网。回复和翻译由外部模型计算——
-          和手机上一样，就是那几个用到 AI 的模式，也在同一处关掉。</p>
+          和手机上一样，就是那几个<a href="#ai">用到 AI 的模式</a>，也在同一处关掉。</p>
       </div>
 
       <div class="get">
@@ -455,7 +520,7 @@
         <li>键盘<b>不联网</b>，也不会读你用普通按键打的字。</li>
         <li>完全访问权限只用于一件事：从共享容器里取出识别好的文字，那是 Scribla 应用自己放进去的。<b>iOS 没有别的办法。</b></li>
         <li>橙色小点亮着，是因为麦克风提前打开了：iOS 不允许从后台开始录音。<b>在你按下按钮之前，声音哪里也不去。</b></li>
-        <li class="caveat">只有一条例外，也只有这一条：<b>声音永远不外传，但在 AI 模式下文字会外传</b>。这些模式从第一次启动起就是开着的。回复和润色由手机之外的模型计算，没有网络就用不了。哪些内容会送出去，在开关正上方的介绍里写得很清楚。你可以当场关掉，也可以之后在设置里关。</li>
+        <li class="caveat">只有一条例外，也只有这一条：<b>声音永远不外传，但在 <a href="#ai">AI 模式</a>下文字会外传</b>。这些模式从第一次启动起就是开着的。回复和润色由手机之外的模型计算，没有网络就用不了。哪些内容会送出去，在开关正上方的介绍里写得很清楚。你可以当场关掉，也可以之后在设置里关。</li>
       </ul>
       <p class="note"><a href="../privacy.html#en">完整的隐私政策</a>
         <span class="hint">— 英文</span></p>
@@ -608,8 +673,15 @@
     <div class="faq">
       <details>
         <summary>要多少钱？</summary>
-        <p>目前一分不要，全部开放。以后会不会有收费的部分，之后再看实际情况决定：首先得弄清楚，除了我们自己，
-          Scribla 对别人是不是真的有用。真到了那一天，我们会提前说，而不是在开始收费的那天早上才说。</p>
+        <p>目前一分不要，全部开放，用到 AI 的模式也一样：回答、上网搜索和润色都在内。密钥是我们的，模型的账单寄给我们；不订阅、不注册、不用银行卡。以后会不会有收费的部分，之后再看实际情况决定：首先得弄清楚，除了我们自己，Scribla 对别人是不是真的有用。真到了那一天，我们会提前说，而不是在开始收费的那天早上才说。</p>
+      </details>
+      <details>
+        <summary>回答的是哪个模型？能换成我自己的吗？</summary>
+        <p>默认由内置服务回答，路径是这样的：问题先到我们的服务器 scribla.io，我们从那里上网搜索页面，再用我们的密钥去问模型。密钥放在服务器上，不放在应用里——放在应用里，谁想拿都能拿到。问题和答案我们都不保存。如果你有自己的 OpenAI 或 DeepSeek 密钥，在设置里填上：文字就直接去他们那里，不经过我们。</p>
+      </details>
+      <details>
+        <summary>完全不用 AI 也可以吗？</summary>
+        <p>可以。用到 AI 的模式从第一次启动起就是开着的，介绍页在开关正上方写明了这件事——你可以在那里拒绝，也可以之后在设置里关。关掉之后剩下的是语音输入、口语整理、替换词典、算术，以及语言包已下载时的翻译：这些都由设备自己完成，不需要联网。</p>
       </details>
       <details>
         <summary>键盘要求完全访问权限，这安全吗？</summary>
@@ -665,6 +737,7 @@
     <nav class="f-links" aria-label="栏目与文档">
       <a href="#what">这是什么</a>
       <a href="#can">能做什么</a>
+      <a href="#ai">AI 模式</a>
       <a href="#keyboard">键盘上</a>
       <a href="#app">应用里</a>
       <a href="#mac">Mac 版</a>
