@@ -87,7 +87,7 @@
              alt="Scribla" width="420" height="76">
         <p class="hero-status"><span class="dot"></span> Mac 版已发布 · iPhone 版审核中</p>
         <h1>比手指更快</h1>
-        <p class="lead">iPhone 与 Mac 上的语音输入。按一下、说话，文字就落进任何应用的输入框；问一句，落下来的就是模型的答案——它会先上网搜索，而且不为此收订阅费。手机上点 Scribla 键盘上的书吏，也就是录音键；Mac 上按住右侧 ⌘。声音始终留在本机。</p>
+        <p class="lead">iPhone 与 Mac 上的语音输入。说话，文字就落进任何应用的输入框，标点已经加好，「呃」也去掉了。问一句，落下来的是答案：模型先上网搜索，再直接写进输入框。识别在本机完成，声音不外传。没有订阅——语音输入不收，AI 也不收。</p>
         <div class="hero-cta">
           <!-- Первая кнопка ведёт туда, где что-то можно получить сегодня:
                образ для мака собран, а телефонная версия ещё ждёт проверки. -->
@@ -676,6 +676,10 @@
         <p>目前一分不要，全部开放，用到 AI 的模式也一样：回答、上网搜索和润色都在内。密钥是我们的，模型的账单寄给我们；不订阅、不注册、不用银行卡。以后会不会有收费的部分，之后再看实际情况决定：首先得弄清楚，除了我们自己，Scribla 对别人是不是真的有用。真到了那一天，我们会提前说，而不是在开始收费的那天早上才说。</p>
       </details>
       <details>
+        <summary>比系统自带的听写好在哪里？</summary>
+        <p>系统自带的也能替你写。Scribla 在这之上，去掉「呃」和重复，记住你自己的人名和术语词典，会算术、会翻译、会回答问题——而且都在你正在写的输入框里，不用跑去别的应用。四种语言在本机识别，没网也行；在 Mac 上，任何窗口都听得见它的按键。而且它有一位书吏。</p>
+      </details>
+      <details>
         <summary>回答的是哪个模型？能换成我自己的吗？</summary>
         <p>默认由内置服务回答，路径是这样的：问题先到我们的服务器 scribla.io，我们从那里上网搜索页面，再用我们的密钥去问模型。密钥放在服务器上，不放在应用里——放在应用里，谁想拿都能拿到。问题和答案我们都不保存。如果你有自己的 OpenAI 或 DeepSeek 密钥，在设置里填上：文字就直接去他们那里，不经过我们。</p>
       </details>
@@ -726,14 +730,24 @@
   </div>
 </section>
 
+<!-- ============================================ 最后一声 -->
+<section id="go" class="go">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>试试看——不花一分钱</h2>
+      <p class="lead">Mac 版今天就能用，镜像已经做好。iPhone 版一过审就有：留下邮箱，我们只写一封信。</p>
+    </div>
+    <div class="cta">
+      <a class="btn btn-primary" href="#mac">下载 Mac 版</a>
+      <a class="btn btn-ghost" href="#notify">发布时通知我</a>
+    </div>
+  </div>
+</section>
+
 </main>
 
 <footer>
   <div class="wrap">
-    <div>
-      <p style="margin:0 0 .4rem">Scribla — iPhone 与 Mac 语音输入。由一个小团队制作。</p>
-      <p style="margin:0">© 2026 <a href="mailto:dev@scribla.io">dev@scribla.io</a></p>
-    </div>
     <nav class="f-links" aria-label="栏目与文档">
       <a href="#what">这是什么</a>
       <a href="#can">能做什么</a>
@@ -752,6 +766,10 @@
       <a href="/en/" hreflang="en">English</a>
       <a href="/es/" hreflang="es">Español</a>
     </nav>
+    <div class="f-about">
+      <p>Scribla — iPhone 与 Mac 语音输入。由一个小团队制作。</p>
+      <p>© 2026 <a href="mailto:dev@scribla.io">dev@scribla.io</a></p>
+    </div>
   </div>
 </footer>
 
