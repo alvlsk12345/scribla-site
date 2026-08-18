@@ -843,37 +843,49 @@ textarea { resize: vertical; min-height: 7rem; }
 
 /* --------------------------------------------- «напишем, когда выйдет» */
 
-/* Единственная конверсия, которая накапливается до выпуска, получает
-   сильнейшее оформление страницы — ту же терракотовую карточку.
-   Раньше эта форма пряталась внутри списка изменений и в CSS было
-   написано «уже и тише»; это было ровно наоборот. */
-.notify-band {
+/* ------------------------------------------------------------ скачать
+
+   Единственное место, где приложение можно получить, — и оно одето
+   в сильнейшее оформление страницы, ту же терракотовую карточку, что
+   у первого экрана. Раньше эту карточку носила одна почта «напишем,
+   когда выйдет»; теперь внутри две светлые коробки — маковый образ
+   и телефонная плашка с почтой, — и обе одинаковой ширины: то, что
+   есть сегодня, и то, что будет, стоят вровень, а не одно мелким
+   шрифтом под другим. Коробки берут цвета темы (.get), не заперты
+   светлыми, как телефон: в них живая форма, а поля и подписи формы
+   считаны под обе темы. */
+.dl {
   position: relative; overflow: hidden;
   border-radius: 30px;
   background: #A64F22 url("img/hero-paper.jpg") center / cover;
   box-shadow: var(--shadow-lg);
   padding: clamp(1.8rem, 4vw, 3rem);
-  display: grid; gap: clamp(1.5rem, 3vw, 2.5rem);
+  display: grid; gap: clamp(1.5rem, 3vw, 2.2rem);
 }
-@media (min-width: 880px) { .notify-band { grid-template-columns: 1.05fr .95fr; align-items: center; } }
 @media (prefers-color-scheme: dark) {
-  .notify-band {
+  .dl {
     background-image:
       linear-gradient(rgba(26, 11, 4, .22), rgba(26, 11, 4, .22)),
       url("img/hero-paper.jpg");
   }
 }
-.notify-band h2 { color: #F7EFE3; }
-.notify-band .lead { color: #F4E9DC; margin-bottom: 0; }
-.notify-band .field label { color: #F7EFE3; }
-.notify-band .field .hint { color: rgba(247, 239, 227, .82); }
-.notify-band input[type=email] {
-  background: rgba(255, 255, 255, .94); border-color: transparent; color: #241A15;
+.dl-head { max-width: 40rem; }
+.dl-head h2 { color: #F7EFE3; }
+.dl-head .lead { color: #F4E9DC; margin-top: 1rem; }
+.dl-cards { display: grid; gap: 1rem; align-items: start; }
+@media (min-width: 760px) { .dl-cards { grid-template-columns: 1fr 1fr; gap: 1.2rem; } }
+.dl .get h3 { margin-bottom: 1rem; }
+.dl .get form { margin-top: 1.1rem; }
+.dl .get .field { margin-bottom: .8rem; }
+.dl :where(a, button, input):focus-visible { outline-color: #F7EFE3; }
+/* Плашка магазина на светлой коробке: та же форма, что в первом экране,
+   но цвета темы, и во всю ширину — вровень с кнопкой в соседней коробке:
+   «скачать сегодня» и «скачать скоро» стоят одинаково. */
+.appstore.on-card {
+  width: 100%; box-sizing: border-box;
+  border-color: var(--line); background: var(--bg-sunk); color: var(--text);
 }
-.notify-band .btn-primary { background: #F5EDE3; color: #241A15; }
-.notify-band .btn-primary:hover { background: #fff; }
-.notify-band .msg.ok  { background: rgba(255,255,255,.9); color: #256B29; }
-.notify-band .msg.err { background: rgba(255,255,255,.9); color: #96201A; }
+.appstore.on-card .appstore-top { color: var(--text-mute); opacity: 1; }
 
 /* ---------------------------------------------------------- версии */
 
