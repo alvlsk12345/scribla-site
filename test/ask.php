@@ -99,6 +99,14 @@ $lastSystem = static function () use ($fakeDir): string {
     return (string) ($body['messages'][0]['content'] ?? '');
 };
 
+/** Последний запрос к модели целиком — с потолком и температурой. */
+$lastChat = static function () use ($fakeDir): array {
+    $files = glob($fakeDir . '/chat-*.json') ?: [];
+    if (!$files) { return []; }
+    sort($files);
+    return (array) json_decode((string) file_get_contents(end($files)), true);
+};
+
 /** Все запросы, ушедшие в поиск.
  *
  * Порядок здесь НЕ определён: оба запроса уходят разом, и кто из них
@@ -337,6 +345,42 @@ $ok('в журнале длины, а не содержимое',
     is_array($last) && ($last['kind'] ?? '') === 'ask'
     && isset($last['q'], $last['a'], $last['state'])
     && !isset($last['question'], $last['text']));
+
+echo "— потолок ответа\n";
+
+/* Потолок сторожим числом, а не «примерно»: он один стоит между
+ * человеком и его же письмом, обрубленным посреди фразы. */
+$scene('ok');
+$post(array_merge($base, ['search' => false]));
+$ok('обычному вопросу — 512 токенов', ($lastChat()['max_tokens'] ?? 0) === 512);
+
+$scene('ok');
+$long = str_repeat('Строка письма, которую человек просит поправить. ', 100);
+$post(array_merge($base, [
+    'question' => 'замени вы на ты',
+    'search' => false,
+    'previous' => ['question' => 'напиши письмо', 'answer' => $long, 'sources' => []],
+]));
+$cap = (int) ($lastChat()['max_tokens'] ?? 0);
+/* Правка возвращает прошлый ответ ЦЕЛИКОМ и встаёт на его место в поле.
+ * Потолок ниже самого ответа — это обрубленное письмо у человека. */
+$ok('правка длинного ответа — потолок выше прошлого ответа',
+    $cap > (int) ceil(mb_strlen($long) / 3.7));
+$ok('потолок правки не уходит выше 2048', $cap <= 2048);
+
+$scene('cut');
+[$code, $json] = $post(array_merge($base, ['search' => false]));
+$ok('обрубок дорезается до целой фразы',
+    ($json['text'] ?? '') === 'Первое предложение целое. Второе тоже целое.');
+$ok('обрубок отмечен в следе', ($json['trace']['cut'] ?? 0) === 1);
+
+$scene('ok');
+$post(['kind' => 'chat', 'model' => 'gemma4:cloud',
+       'messages' => [['role' => 'user', 'content' => 'привет']]]);
+$rows = array_filter(explode("\n", (string) @file_get_contents($tmp . '/ai.jsonl')));
+$last = json_decode((string) end($rows), true);
+$ok('у полировки в журнале есть время',
+    is_array($last) && ($last['kind'] ?? '') === 'chat' && isset($last['ms']));
 
 echo "— правка инструкции без выкладки\n";
 

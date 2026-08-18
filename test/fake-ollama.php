@@ -78,6 +78,15 @@ if (str_ends_with($path, '/v1/chat/completions')) {
         $reply(200, ['choices' => [['message' => ['content' => '']]]]);
         return true;
     }
+    if ($mode === 'cut') {
+        /* Ответ, упёршийся в потолок: последнее предложение оборвано
+         * посреди слова, и `finish_reason` говорит об этом честно. */
+        $reply(200, ['choices' => [[
+            'message' => ['content' => 'Первое предложение целое. Второе тоже целое. А третье оборвалось на полусло'],
+            'finish_reason' => 'length',
+        ]]]);
+        return true;
+    }
     if ($mode === 'thinking') {
         $reply(200, ['choices' => [['message' => ['content' => "<think>долго думаю</think>ответ после размышления"]]]]);
         return true;

@@ -227,15 +227,45 @@ function ask_search_query(string $question, ?array $field): string
 
 // --------------------------------------------------------- инструкция
 
+/** Грубая длина текста в токенах.
+ *
+ * Мерка снята с самой gemma4 18 августа 2026 через `prompt_tokens`
+ * старой ветки: 1430 знаков кириллицы — 383 токена, 1500 знаков
+ * латиницы — 293. Считаем всегда по кириллической, худшей: на латинском
+ * тексте она даёт полуторный запас, а ошибиться здесь можно только
+ * в одну сторону. Заниженный потолок режет человеку текст посреди слова.
+ */
+function ask_tokens(string $text): int
+{
+    return (int) ceil(mb_strlen($text) / 3.7);
+}
+
 /** Сколько токенов оставить под ответ.
  *
- * Считается по вопросу человека, а не по всей инструкции: приложенные
- * страницы раздули бы потолок и замедлили ответ, ничего не добавив.
+ * Меркой служит то, что человек просит, а не длина вопроса. Прежняя
+ * формула брала её с вопроса, и для диктовки это обратно смыслу: долгая
+ * фраза вслух не значит долгого ответа. Зато короткое «сделай мягче»
+ * получало потолок по умолчанию — ровно тот случай, когда его не хватает.
+ *
+ * Правка прошлого ответа считается отдельно, и это не тонкость.
+ * Исправленный ответ ВСТАЁТ НА МЕСТО прежнего в поле, а не следом за ним:
+ * потолок ниже прошлого ответа означает, что на «замени вы на ты» человек
+ * получит своё письмо обрубленным посреди фразы. Прежние 1024 токена —
+ * это 3800 знаков кириллицы, а прошлый ответ пускают до 6000: письмо
+ * длиннее страницы обрубалось арифметически. Поэтому здесь мерка — сам
+ * прошлый ответ, с запасом на рост: «разверни подробнее» законно.
+ *
+ * Обычному вопросу хватает 512 токенов — это 1900 знаков. Девятый
+ * дециль живых ответов за пять дней — 430 знаков, самый длинный
+ * из 109 — 1631; потолок стоит выше всего, что люди получали, и вчетверо
+ * ниже прежнего. Держит длину не он, а правило в инструкции; его дело —
+ * остановить модель, ушедшую в пересказ самой себя.
  */
-function ask_budget(string $question): int
+function ask_budget(?array $previous): int
 {
-    $estimate = intdiv(mb_strlen($question), 2) * 3 / 2;
-    return (int) max(1024, min(8192, $estimate));
+    if ($previous === null) { return 512; }
+    $was = ask_tokens((string) ($previous['answer'] ?? ''));
+    return (int) max(512, min(2048, $was * 7 / 5 + 128));
 }
 
 /** Запасные тексты инструкции — те, что лежат в открытом репозитории.
@@ -575,17 +605,46 @@ function ask_strip_reasoning(string $text): string
     return trim($text);
 }
 
-/** Потолок ответа. Думающей модели — вдвое, но не выше 4096.
+/** Потолок ответа. Думающей модели — добавка, а не удвоение.
  *
  * Потолок один на рассуждение и на текст, а рассуждение идёт первым:
  * на стенде с обычным потолком пятая часть ответов `gpt-oss` приходила
- * обрубками.
+ * обрубками. Место под него теперь даётся добавкой: удвоение растило
+ * самый дорогой путь из трёх. `gpt-oss` — запасная модель, она тяжелее
+ * основной, и падение gemma4 переводит на неё всех разом; удвоенный
+ * потолок в этот час означал бы двойной счёт поверх дорогой модели.
+ *
+ * Нижние 2048 трогать нельзя: столько ему отмерили не на глаз, а по той
+ * самой пятой части обрубков. Обрубок у думающей модели — это не короткий
+ * ответ, а пустой: `ask_strip_reasoning` срезает незакрытое размышление
+ * целиком, и человек получает «модель ответила пустотой».
  */
-function ask_ceiling(string $question, string $model): int
+function ask_ceiling(int $budget, string $model): int
 {
-    $base = ask_budget($question);
-    if (!str_starts_with($model, 'gpt-oss')) { return $base; }
-    return (int) min(4096, max(2048, $base * 2));
+    if (!str_starts_with($model, 'gpt-oss')) { return $budget; }
+    return (int) min(3072, max(2048, $budget + 768));
+}
+
+/** Обрубленный по потолку ответ — до последней законченной мысли.
+ *
+ * Текст уходит прямо в документ человека, и фраза, оборванная посреди
+ * слова, читается там как поломка приложения. Недосказанная — просто
+ * как краткость. Режем по последней точке, восклицательному,
+ * вопросительному, многоточию или переводу строки: последний нужен
+ * спискам, у которых точек не бывает вовсе.
+ *
+ * Если резать пришлось бы больше половины — оставляем как есть. Пустоту
+ * приложение показывает ошибкой, и огрызок без точки заведомо лучше неё.
+ */
+function ask_trim_to_sentence(string $text): string
+{
+    $cut = 0;
+    foreach (['.', '!', '?', '…', "\n"] as $mark) {
+        $at = mb_strrpos($text, $mark);
+        if ($at !== false && $at > $cut) { $cut = $at; }
+    }
+    if ($cut < mb_strlen($text) / 2) { return $text; }
+    return rtrim(mb_substr($text, 0, $cut + 1));
 }
 
 /** Спрашивает модель, перебирая запасные, если основную сняли с раздачи.
@@ -594,9 +653,10 @@ function ask_ceiling(string $question, string $model): int
  * перебор бессмыслен: пятисотка у провайдера будет у всех моделей
  * одинаковой, а человек ждёт с открытой клавиатурой.
  *
- * @return array{0: string, 1: string, 2: int} ответ, модель, код
+ * @return array{0: string, 1: string, 2: int, 3: bool} ответ, модель, код, упёрлись ли в потолок
  */
-function ask_chat(array $models, string $system, string $question, string $key, int $deadline): array
+function ask_chat(array $models, string $system, string $question, string $key, int $deadline,
+                  int $budget): array
 {
     $lastCode = 0;
 
@@ -609,7 +669,7 @@ function ask_chat(array $models, string $system, string $question, string $key, 
                 ['role' => 'system', 'content' => $system],
                 ['role' => 'user', 'content' => $question],
             ],
-            'max_tokens' => ask_ceiling($question, $model),
+            'max_tokens' => ask_ceiling($budget, $model),
             'temperature' => 0.2,
             'stream' => false,
         ];
@@ -628,16 +688,24 @@ function ask_chat(array $models, string $system, string $question, string $key, 
         $lastCode = $code;
 
         if ($code === 404 || $code === 410) { continue; }
-        if ($body === false || $code < 200 || $code >= 300) { return ['', $model, $code]; }
+        if ($body === false || $code < 200 || $code >= 300) { return ['', $model, $code, false]; }
 
         $json = json_decode((string) $body, true);
         $content = $json['choices'][0]['message']['content'] ?? null;
-        if (!is_string($content)) { return ['', $model, $code]; }
+        if (!is_string($content)) { return ['', $model, $code, false]; }
 
-        return [ask_strip_reasoning($content), $model, $code];
+        /* Упёрлись в потолок — обрезаем сами, до целой фразы. Раньше
+         * этого признака не читали вовсе, и обрубок уезжал в документ
+         * как есть: человек видел ответ, оборванный посреди слова,
+         * и никакого следа, почему. */
+        $text = ask_strip_reasoning($content);
+        $cut = ($json['choices'][0]['finish_reason'] ?? '') === 'length';
+        if ($cut) { $text = ask_trim_to_sentence($text); }
+
+        return [$text, $model, $code, $cut];
     }
 
-    return ['', '', $lastCode];
+    return ['', '', $lastCode, false];
 }
 
 // ------------------------------------------------------------- ручка
@@ -757,7 +825,8 @@ function ask_handle(array $in, string $key, callable $charge): never
     ]);
 
     $models = ['gemma4:cloud', 'mistral-large-3:675b-cloud', 'gpt-oss:120b-cloud'];
-    [$text, $model, $code] = ask_chat($models, $system, $question, $key, time() + 120);
+    $budget = ask_budget($previous);
+    [$text, $model, $code, $cut] = ask_chat($models, $system, $question, $key, time() + 120, $budget);
 
     $sources = [];
     foreach ($findings as $f) {
@@ -781,6 +850,8 @@ function ask_handle(array $in, string $key, callable $charge): never
         'dated' => $counts[1] ?? 0,
         'model' => $model,
         'prompt' => ask_prompt_version(),
+        'cap' => $budget,
+        'cut' => $cut ? 1 : 0,
         'ms' => (int) round((microtime(true) - $started) * 1000),
     ];
 
@@ -799,6 +870,8 @@ function ask_handle(array $in, string $key, callable $charge): never
         'code' => $code,
         'state' => $state,
         'pages' => count($findings),
+        'cap' => $budget,
+        'cut' => $cut ? 1 : 0,
         'ms' => $trace['ms'],
     ]);
 
