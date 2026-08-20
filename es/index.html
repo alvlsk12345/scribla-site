@@ -24,7 +24,7 @@
 <link rel="apple-touch-icon" href="../assets/brand/AppIcon-1024.png">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Scribla — más rápido que tus dedos">
-<meta property="og:description" content="Dictado para iPhone y Mac. Habla y el texto está en el campo; pregunta y responde un modelo que busca en internet. Los modos con IA no cuestan nada. La versión para Mac ya está fuera.">
+<meta property="og:description" content="Dictado para iPhone y Mac. Habla y el texto está en el campo; pregunta y responde un modelo que busca en internet. Los modos con IA no cuestan nada. Ya disponible en iPhone y Mac.">
 <meta property="og:url" content="https://scribla.io/es/">
 <meta property="og:image" content="https://scribla.io/assets/img/og.jpg">
 <meta property="og:image:width" content="1200">
@@ -86,7 +86,7 @@
       <div>
         <img class="hero-word" src="../assets/brand/scribla-wordmark-white.svg"
              alt="Scribla" width="420" height="76">
-        <p class="hero-status"><span class="dot"></span> Mac ya disponible · iPhone en revisión</p>
+        <p class="hero-status"><span class="dot"></span> Ya en iPhone y en Mac</p>
         <h1>Más rápido que tus dedos</h1>
         <p class="lead">Dictado para iPhone y Mac. Habla, y en el campo de
           cualquier app aparece el texto ya listo: con signos, sin los «eh»
@@ -94,20 +94,20 @@
           armada con páginas recientes de internet. Todo gratis, y el audio
           nunca sale del equipo.</p>
         <div class="hero-cta">
-          <!-- Первая кнопка ведёт туда, где что-то можно получить сегодня:
-               образ для мака собран, а телефонная версия ещё ждёт проверки. -->
-          <a class="btn btn-primary" href="#download">Descargar para Mac</a>
-          <a class="btn btn-ghost" href="#notify">Avísame</a>
+          <!-- Обе кнопки ведут к скачиванию: телефонная — прямо в запись
+               App Store, маковая — к разделу с образом. -->
+          <a class="btn btn-primary" href="https://apps.apple.com/app/id6800086470">Descargar para iPhone</a>
+          <a class="btn btn-ghost" href="#download">Descargar para Mac</a>
         </div>
 
-        <!-- Плашка магазина. Ссылки нет, пока нет записи в App Store;
-             в тот день span меняется на <a href="…"> и снимается
-             is-soon вместе со строкой «Pronto». Подробности — в site.css. -->
+        <!-- Плашка магазина — ссылка на запись в App Store. Адрес по ID,
+             без имени: такой переживёт переименование приложения.
+             Подробности — в site.css. -->
         <div class="hero-store">
-          <span class="appstore is-soon">
-            <span class="appstore-top">Pronto para descargar en el</span>
+          <a class="appstore" href="https://apps.apple.com/app/id6800086470">
+            <span class="appstore-top">Consíguelo en el</span>
             <span class="appstore-name">App&nbsp;Store</span>
-          </span>
+          </a>
         </div>
       </div>
 
@@ -518,17 +518,16 @@
 <!-- ============================================ descargar
 
      El único sitio de la página donde se consigue la app, con las dos
-     respuestas juntas: el Mac hoy como imagen, el iPhone en revisión y,
-     en su lugar, un correo para el día del lanzamiento. La banda terracota
-     es la que antes llevaba solo el correo. -->
+     respuestas juntas: el Mac como imagen, el iPhone con el sello del
+     App Store. La banda terracota es la que antes llevaba solo el correo. -->
 <section id="download">
   <div class="wrap">
     <div class="dl">
       <div class="dl-head">
         <h2>Descargar Scribla</h2>
-        <p class="lead">En el Mac, hoy: la imagen está lista y validada por
-          Apple. En el iPhone, en cuanto pase la revisión del App&nbsp;Store;
-          deja tu correo y te escribimos una vez.</p>
+        <p class="lead">Las dos versiones ya están fuera. En el Mac, una
+          imagen lista y validada por Apple; en el iPhone, el App&nbsp;Store.
+          Gratis en ambos.</p>
       </div>
       <div class="dl-cards">
         <div class="get">
@@ -545,24 +544,23 @@
             abajo.</p>
         </div>
         <div class="get" id="notify">
-          <h3>En el iPhone: pronto</h3>
-          <span class="appstore is-soon on-card">
-            <span class="appstore-top">Pronto para descargar en el</span>
-            <span class="appstore-name">App&nbsp;Store</span>
-          </span>
-          <form data-notify novalidate>
-            <div class="field">
-              <label for="nt-email">Correo</label>
-              <input id="nt-email" type="email" name="email" required autocomplete="email"
-                     placeholder="tu@correo.com" spellcheck="false"
-                     aria-describedby="nt-msg">
-            </div>
-            <button class="btn btn-primary" type="submit">Avísame cuando salga</button>
-            <div class="msg" id="nt-msg" data-notify-msg role="alert"></div>
-          </form>
-          <p class="note">Un correo el día que aparezca en el App&nbsp;Store, y ya
-            está. Sin boletines, no damos tu dirección a nadie, y para darte
-            de baja basta con responder.</p>
+          <h3>En el iPhone: ahora también</h3>
+          <!-- Официальный значок Apple. SVG лежит у нас в assets/img:
+               хотлинк на CDN Apple формально не обещан. Размер — пропорция
+               исходных 120×40, меньше 40 px по высоте нельзя по их же
+               Marketing Guidelines. -->
+          <a href="https://apps.apple.com/app/id6800086470">
+            <img src="../assets/img/appstore-badge-es-es.svg" alt="Consíguelo en el App Store"
+                 width="156" height="52">
+          </a>
+          <ul class="get-meta">
+            <li>Versión <b>1.2</b></li>
+            <li>Sistema <b>iOS 17 o posterior</b></li>
+          </ul>
+          <p class="note">Se abre directamente en el App&nbsp;Store. La app te
+            guía por la configuración; cómo funciona todo en el teléfono:
+            <a href="#keyboard">en el teclado</a> y
+            <a href="#app">en la app</a>, más abajo.</p>
         </div>
       </div>
     </div>
@@ -571,9 +569,8 @@
 
 <!-- ============================================ para Mac
 
-     Маковая версия — единственное, что на этом сайте можно получить
-     сегодня: телефонная ждёт проверки в App Store. Поэтому раздел стоит
-     сразу после «что умеет», а не в конце. -->
+     Раздел про мак стоит сразу после «что умеет», а не в конце: сюда
+     приходят за устройством, в «Скачать» — за файлом. -->
 <section id="mac">
   <div class="wrap">
     <div class="sec-head">
@@ -814,7 +811,7 @@
       <div class="rel">
         <div class="rel-v">1.2<span class="rel-d">para iPhone</span></div>
         <div>
-          <span class="status">En revisión en el App&nbsp;Store</span>
+          <span class="status">Ya en el App&nbsp;Store</span>
           <ul>
             <li>Cuatro idiomas de reconocimiento en el dispositivo; la pareja se elige por puestos: principal y adicional</li>
             <li>Traducción a cualquiera de los cuatro: mantén pulsada la tecla «Traducción» y elige el idioma</li>
@@ -1038,13 +1035,12 @@
   <div class="wrap">
     <div class="sec-head">
       <h2>Pruébala: no cuesta nada</h2>
-      <p class="lead">En el Mac, descárgala hoy: la imagen ya está lista. En el
-        iPhone, pronto en el App&nbsp;Store: deja tu correo y te escribimos
-        una vez.</p>
+      <p class="lead">En el iPhone y en el Mac: descárgala hoy,
+        gratis y sin anuncios.</p>
     </div>
     <div class="cta">
-      <a class="btn btn-primary" href="#download">Descargar para Mac</a>
-      <a class="btn btn-ghost" href="#notify">Avísame cuando salga en iPhone</a>
+      <a class="btn btn-primary" href="https://apps.apple.com/app/id6800086470">Descargar para iPhone</a>
+      <a class="btn btn-ghost" href="#download">Descargar para Mac</a>
     </div>
   </div>
 </section>

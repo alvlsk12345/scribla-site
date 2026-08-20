@@ -24,7 +24,7 @@
 <link rel="apple-touch-icon" href="../assets/brand/AppIcon-1024.png">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Scribla — faster than your fingers">
-<meta property="og:description" content="Dictation for iPhone and Mac. Speak and the text is in the field; ask and a model answers, searching the web first. The AI modes cost nothing. The Mac version is out.">
+<meta property="og:description" content="Dictation for iPhone and Mac. Speak and the text is in the field; ask and a model answers, searching the web first. The AI modes cost nothing. Out now on iPhone and Mac.">
 <meta property="og:url" content="https://scribla.io/en/">
 <meta property="og:image" content="https://scribla.io/assets/img/og.jpg">
 <meta property="og:image:width" content="1200">
@@ -86,31 +86,30 @@
       <div>
         <img class="hero-word" src="../assets/brand/scribla-wordmark-white.svg"
              alt="Scribla" width="420" height="76">
-        <p class="hero-status"><span class="dot"></span> The Mac version is out · iPhone is in review</p>
+        <p class="hero-status"><span class="dot"></span> Out on iPhone and Mac</p>
         <h1>Faster than your fingers</h1>
         <p class="lead">Dictation for iPhone and Mac. Speak, and finished text
           lands in the field of any app — punctuated, with the “ums” and repeats
           gone. Ask, and the answer lands instead, built from fresh pages on the
           web. All of it free, and the audio never leaves the device.</p>
         <div class="hero-cta">
-          <!-- Первая кнопка ведёт туда, где что-то можно получить сегодня:
-               образ для мака собран, а телефонная версия ещё ждёт проверки.
-               Короче на 42 px: две кнопки должны стоять в строку даже
-               в самой узкой текстовой колонке первого экрана (364 px на
-               широком мониторе). «What it does» — 146 px — не помещалось
-               ровно на один пиксель. -->
-          <a class="btn btn-primary" href="#download">Download for Mac</a>
-          <a class="btn btn-ghost" href="#notify">Tell me when</a>
+          <!-- Обе кнопки ведут к скачиванию: телефонная — прямо в запись
+               App Store, маковая — к разделу с образом. Подписи короткие:
+               две кнопки должны стоять в строку даже в самой узкой
+               текстовой колонке первого экрана (364 px на широком
+               мониторе). -->
+          <a class="btn btn-primary" href="https://apps.apple.com/app/id6800086470">Get it for iPhone</a>
+          <a class="btn btn-ghost" href="#download">Download for Mac</a>
         </div>
 
-        <!-- Плашка магазина. Ссылки нет, пока нет записи в App Store;
-             в тот день span меняется на <a href="…"> и снимается
-             is-soon вместе со строкой «Coming». Подробности — в site.css. -->
+        <!-- Плашка магазина — ссылка на запись в App Store. Адрес по ID,
+             без имени: такой переживёт переименование приложения.
+             Подробности — в site.css. -->
         <div class="hero-store">
-          <span class="appstore is-soon">
-            <span class="appstore-top">Soon to download on the</span>
+          <a class="appstore" href="https://apps.apple.com/app/id6800086470">
+            <span class="appstore-top">Download on the</span>
             <span class="appstore-name">App&nbsp;Store</span>
-          </span>
+          </a>
         </div>
       </div>
 
@@ -517,8 +516,8 @@
 <!-- ============================================ download
 
      The one place on the page where the app can be had, with both answers
-     side by side: the Mac build is an image today, the phone build is in
-     review, and an email for release day stands in for it. Before, the image
+     side by side: the Mac build is an image, the phone build is the
+     App Store badge. Before, the image
      lived in the Mac section and the email in its own band near the end;
      someone looking for the word “download” found it only on the first
      screen. The terracotta band is the one the email used to have: the
@@ -528,9 +527,9 @@
     <div class="dl">
       <div class="dl-head">
         <h2>Download Scribla</h2>
-        <p class="lead">On the Mac — today: the image is built and notarised by
-          Apple. On the iPhone — as soon as it clears App&nbsp;Store review;
-          leave an email and we will write once.</p>
+        <p class="lead">Both versions are out. On the Mac — an image built
+          and notarised by Apple; on the iPhone — the App&nbsp;Store.
+          Free on both.</p>
       </div>
       <div class="dl-cards">
         <div class="get">
@@ -546,27 +545,23 @@
             and speak — <a href="#mac">how it works on the Mac</a>, below.</p>
         </div>
         <div class="get" id="notify">
-          <h3>On the iPhone — soon</h3>
-          <!-- The same badge as on the first screen, on a light card; on
-               release day the official badge with a link goes here, and the
-               email form leaves. -->
-          <span class="appstore is-soon on-card">
-            <span class="appstore-top">Soon to download on the</span>
-            <span class="appstore-name">App&nbsp;Store</span>
-          </span>
-          <form data-notify novalidate>
-            <div class="field">
-              <label for="nt-email">Email</label>
-              <input id="nt-email" type="email" name="email" required autocomplete="email"
-                     placeholder="you@mail.com" spellcheck="false"
-                     aria-describedby="nt-msg">
-            </div>
-            <button class="btn btn-primary" type="submit">Let me know when it ships</button>
-            <div class="msg" id="nt-msg" data-notify-msg role="alert"></div>
-          </form>
-          <p class="note">One letter on the day it appears in the App&nbsp;Store,
-            that’s all. No newsletters, the address goes to nobody, and replying
-            unsubscribes you.</p>
+          <h3>On the iPhone — now too</h3>
+          <!-- Официальный значок Apple. SVG лежит у нас в assets/img:
+               хотлинк на CDN Apple формально не обещан. Размер — пропорция
+               исходных 120×40, меньше 40 px по высоте нельзя по их же
+               Marketing Guidelines. -->
+          <a href="https://apps.apple.com/app/id6800086470">
+            <img src="../assets/img/appstore-badge-en-us.svg" alt="Download on the App Store"
+                 width="156" height="52">
+          </a>
+          <ul class="get-meta">
+            <li>Version <b>1.2</b></li>
+            <li>System <b>iOS 17 and later</b></li>
+          </ul>
+          <p class="note">Opens right in the App&nbsp;Store. The app walks you
+            through setup; how it all works on the phone —
+            <a href="#keyboard">on the keyboard</a> and
+            <a href="#app">in the app</a>, below.</p>
         </div>
       </div>
     </div>
@@ -575,9 +570,8 @@
 
 <!-- ============================================ for the Mac
 
-     Маковая версия — единственное, что на этом сайте можно получить
-     сегодня: телефонная ждёт проверки в App Store. Поэтому раздел стоит
-     сразу после «что умеет», а не в конце. -->
+     Раздел про мак стоит сразу после «что умеет», а не в конце: сюда
+     приходят за устройством, в «Скачать» — за файлом. -->
 <section id="mac">
   <div class="wrap">
     <div class="sec-head">
@@ -822,7 +816,7 @@
       <div class="rel">
         <div class="rel-v">1.2<span class="rel-d">for iPhone</span></div>
         <div>
-          <span class="status">In review at the App&nbsp;Store</span>
+          <span class="status">Out in the App&nbsp;Store</span>
           <ul>
             <li>Four recognition languages on the device; the pair is chosen by slot — main and additional</li>
             <li>Translation into any of the four: hold the Translate key and pick the language</li>
@@ -1049,13 +1043,12 @@
   <div class="wrap">
     <div class="sec-head">
       <h2>Try it — it costs nothing</h2>
-      <p class="lead">On the Mac — download today: the image is built. On the
-        iPhone — soon in the App&nbsp;Store: leave an email and we will write
-        once.</p>
+      <p class="lead">On the iPhone and the Mac alike — download today,
+        free and without ads.</p>
     </div>
     <div class="cta">
-      <a class="btn btn-primary" href="#download">Download for Mac</a>
-      <a class="btn btn-ghost" href="#notify">Tell me when it ships on iPhone</a>
+      <a class="btn btn-primary" href="https://apps.apple.com/app/id6800086470">Get it for iPhone</a>
+      <a class="btn btn-ghost" href="#download">Download for Mac</a>
     </div>
   </div>
 </section>

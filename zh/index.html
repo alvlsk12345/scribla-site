@@ -24,7 +24,7 @@
 <link rel="apple-touch-icon" href="../assets/brand/AppIcon-1024.png">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Scribla — 比手指更快">
-<meta property="og:description" content="iPhone 与 Mac 语音输入。说话，文字就在输入框里；问一句，模型先上网搜索再作答。用到 AI 的模式不另收费。Mac 版已发布。">
+<meta property="og:description" content="iPhone 与 Mac 语音输入。说话，文字就在输入框里；问一句，模型先上网搜索再作答。用到 AI 的模式不另收费。iPhone 版与 Mac 版均已发布。">
 <meta property="og:url" content="https://scribla.io/zh/">
 <meta property="og:image" content="https://scribla.io/assets/img/og.jpg">
 <meta property="og:image:width" content="1200">
@@ -85,24 +85,24 @@
       <div>
         <img class="hero-word" src="../assets/brand/scribla-wordmark-white.svg"
              alt="Scribla" width="420" height="76">
-        <p class="hero-status"><span class="dot"></span> Mac 版已发布 · iPhone 版审核中</p>
+        <p class="hero-status"><span class="dot"></span> iPhone 版与 Mac 版均已发布</p>
         <h1>比手指更快</h1>
         <p class="lead">iPhone 与 Mac 上的语音输入。开口说，任何应用的输入框里落下的就是现成的文字：标点已加好，「呃」和重复都去掉了。问一句，落下的是模型的答案，由网上最新的页面整理而来。全部免费，声音也从不离开设备。</p>
         <div class="hero-cta">
-          <!-- Первая кнопка ведёт туда, где что-то можно получить сегодня:
-               образ для мака собран, а телефонная версия ещё ждёт проверки. -->
-          <a class="btn btn-primary" href="#download">下载 Mac 版</a>
-          <a class="btn btn-ghost" href="#notify">发布时通知我</a>
+          <!-- Обе кнопки ведут к скачиванию: телефонная — прямо в запись
+               App Store, маковая — к разделу с образом. -->
+          <a class="btn btn-primary" href="https://apps.apple.com/app/id6800086470">下载 iPhone 版</a>
+          <a class="btn btn-ghost" href="#download">下载 Mac 版</a>
         </div>
 
-        <!-- Плашка магазина. Ссылки нет, пока нет записи в App Store;
-             в тот день span меняется на <a href="…"> и снимается
-             is-soon вместе со строкой «即将上架». Подробности — в site.css. -->
+        <!-- Плашка магазина — ссылка на запись в App Store. Адрес по ID,
+             без имени: такой переживёт переименование приложения.
+             Подробности — в site.css. -->
         <div class="hero-store">
-          <span class="appstore is-soon">
-            <span class="appstore-top">即将开放下载</span>
+          <a class="appstore" href="https://apps.apple.com/app/id6800086470">
+            <span class="appstore-top">现已上架</span>
             <span class="appstore-name">App&nbsp;Store</span>
-          </span>
+          </a>
         </div>
       </div>
 
@@ -429,14 +429,14 @@
 
 <!-- ============================================ 下载
 
-     页面上唯一能拿到应用的地方，两个答案并排：Mac 版今天就是映像，
-     iPhone 版在审核，位置上先放发布日通知的邮箱。赭色大块以前只给邮箱用。 -->
+     页面上唯一能拿到应用的地方，两个答案并排：Mac 版是映像，
+     iPhone 版是 App Store 的官方徽章。赭色大块以前只给邮箱用。 -->
 <section id="download">
   <div class="wrap">
     <div class="dl">
       <div class="dl-head">
         <h2>下载 Scribla</h2>
-        <p class="lead">Mac 版今天就能下载：映像已做好并经 Apple 公证。iPhone 版一过 App&nbsp;Store 审核就有；留下邮箱，我们只写一封信。</p>
+        <p class="lead">两个版本都已发布。Mac 版是做好并经 Apple 公证的映像；iPhone 版在 App&nbsp;Store。两边都免费。</p>
       </div>
       <div class="dl-cards">
         <div class="get">
@@ -451,22 +451,20 @@
           <p class="note">双击即可打开，不会有警告。按住右 ⌘ 说话——<a href="#mac">在 Mac 上是怎么用的</a>，见下文。</p>
         </div>
         <div class="get" id="notify">
-          <h3>iPhone 版——即将</h3>
-          <span class="appstore is-soon on-card">
-            <span class="appstore-top">即将开放下载</span>
-            <span class="appstore-name">App&nbsp;Store</span>
-          </span>
-          <form data-notify novalidate>
-            <div class="field">
-              <label for="nt-email">邮箱</label>
-              <input id="nt-email" type="email" name="email" required autocomplete="email"
-                     placeholder="you@mail.com" spellcheck="false"
-                     aria-describedby="nt-msg">
-            </div>
-            <button class="btn btn-primary" type="submit">发布时通知我</button>
-            <div class="msg" id="nt-msg" data-notify-msg role="alert"></div>
-          </form>
-          <p class="note">上架 App&nbsp;Store 那天一封信，就这样。没有订阅推送，地址不会给任何人，回信即可退订。</p>
+          <h3>iPhone 版——也是现在</h3>
+          <!-- Официальный значок Apple. SVG лежит у нас в assets/img:
+               хотлинк на CDN Apple формально не обещан. Размер — пропорция
+               исходных 109×40, меньше 40 px по высоте нельзя по их же
+               Marketing Guidelines. -->
+          <a href="https://apps.apple.com/app/id6800086470">
+            <img src="../assets/img/appstore-badge-zh-cn.svg" alt="在 App Store 下载"
+                 width="142" height="52">
+          </a>
+          <ul class="get-meta">
+            <li>版本 <b>1.2</b></li>
+            <li>系统 <b>iOS 17 及以上</b></li>
+          </ul>
+          <p class="note">点开就是 App&nbsp;Store。装好后应用会一步步带你完成设置；手机上怎么用——<a href="#keyboard">在键盘上</a>和<a href="#app">在应用里</a>，见下文。</p>
         </div>
       </div>
     </div>
@@ -475,9 +473,8 @@
 
 <!-- ============================================ Mac 版
 
-     Маковая версия — единственное, что на этом сайте можно получить
-     сегодня: телефонная ждёт проверки в App Store. Поэтому раздел стоит
-     сразу после «что умеет», а не в конце. -->
+     Раздел про мак стоит сразу после «что умеет», а не в конце: сюда
+     приходят за устройством, в «Скачать» — за файлом. -->
 <section id="mac">
   <div class="wrap">
     <div class="sec-head">
@@ -641,7 +638,7 @@
       <div class="rel">
         <div class="rel-v">1.2<span class="rel-d">iPhone 版</span></div>
         <div>
-          <span class="status">App&nbsp;Store 审核中</span>
+          <span class="status">已上架 App&nbsp;Store</span>
           <ul>
             <li>本机识别支持四种语言；按位置挑选一对——主语言和第二语言</li>
             <li>可译成四种语言中的任意一种：长按「翻译」键选目标语言</li>
@@ -803,11 +800,11 @@
   <div class="wrap">
     <div class="sec-head">
       <h2>试试看——不花一分钱</h2>
-      <p class="lead">Mac 版今天就能下载，映像已经做好。iPhone 版即将上架 App&nbsp;Store：留下邮箱，我们只写一封信。</p>
+      <p class="lead">iPhone 版和 Mac 版今天都能下载，免费，无广告。</p>
     </div>
     <div class="cta">
-      <a class="btn btn-primary" href="#download">下载 Mac 版</a>
-      <a class="btn btn-ghost" href="#notify">iPhone 版发布时通知我</a>
+      <a class="btn btn-primary" href="https://apps.apple.com/app/id6800086470">下载 iPhone 版</a>
+      <a class="btn btn-ghost" href="#download">下载 Mac 版</a>
     </div>
   </div>
 </section>
