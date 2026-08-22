@@ -164,9 +164,11 @@
 
   const DEV = (() => {
     const ua = navigator.userAgent || '';
-    const plat = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || '';
+    /* Обе площадки разом: в безголовом Chromium userAgentData.platform
+       пустой или чужой, а navigator.platform при этом верный. */
+    const plat = [(navigator.userAgentData && navigator.userAgentData.platform) || '', navigator.platform || ''].join(' ');
     if (/iPhone|iPad|iPod/.test(ua) || (/Mac/.test(plat) && navigator.maxTouchPoints > 1)) return 'ios';
-    if (/Mac/.test(plat) || (!plat && /Macintosh/.test(ua))) return 'mac';
+    if (/Mac/.test(plat) || (!plat.trim() && /Macintosh/.test(ua))) return 'mac';
     return 'other';
   })();
   document.documentElement.classList.add('is-' + DEV);
