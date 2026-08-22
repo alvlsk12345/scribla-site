@@ -84,9 +84,17 @@ $post = static function (array $body, ?string $key = null) use ($sitePort, $appK
     return [$code, json_decode($out, true), $out];
 };
 
-/** Задаёт поведение поддельного Ollama и стирает записи прошлого случая. */
-$scene = static function (string $mode) use ($fakeDir): void {
+/** Задаёт поведение поддельного Ollama и стирает записи прошлого случая.
+ *
+ * Заодно обнуляет счётчик частоты. Он считает тридцать запросов
+ * за десять минут с адреса — потолок для живых рук, но стенд делает
+ * их три десятка за минуту и упирался в него хвостом: последние
+ * проверки получали 429 и не сходились по причине, к ним не относящейся
+ * вовсе. Ловушка тихая: добавил четыре случая в начало — «сломались»
+ * четыре в конце. */
+$scene = static function (string $mode) use ($fakeDir, $tmp): void {
     foreach (glob($fakeDir . '/*.json') ?: [] as $f) { @unlink($f); }
+    foreach (glob($tmp . '/rate/*') ?: [] as $f) { @unlink($f); }
     file_put_contents($fakeDir . '/mode', $mode);
 };
 
@@ -143,6 +151,35 @@ $ok('chat отдаёт ответ модели как есть',
 [$code] = $post(['kind' => 'chat', 'model' => 'чужая-модель',
                  'messages' => [['role' => 'user', 'content' => 'привет']]]);
 $ok('chat отбивает чужую модель', $code === 400);
+
+/* Перегрузка раздачи. Прежде она уезжала телефону как ошибка, и человек
+ * получал «Текст без полировки» вместе с английской строкой про чужую
+ * модель — за чужую занятость платил своим текстом. Проверяем оба вида
+ * беды: мгновенную и затяжную. */
+$scene('overloaded-once');
+[$code, $json] = $post(['kind' => 'chat', 'model' => 'gemma4:cloud',
+                        'messages' => [['role' => 'user', 'content' => 'привет']]]);
+$ok('мгновенная перегрузка снимается повтором',
+    $code === 200 && ($json['choices'][0]['message']['content'] ?? '') === 'ответ модели gemma4:cloud');
+
+$scene('overloaded');
+[$code, $json] = $post(['kind' => 'chat', 'model' => 'gemma4:cloud',
+                        'messages' => [['role' => 'user', 'content' => 'привет']]]);
+$ok('затяжная перегрузка снимается заменой модели',
+    $code === 200
+    && ($json['choices'][0]['message']['content'] ?? '') === 'ответ модели mistral-large-3:675b-cloud');
+$rows = array_filter(explode("\n", (string) @file_get_contents($tmp . '/ai.jsonl')));
+$last = json_decode((string) end($rows), true);
+$ok('в журнале видно, сколько было походов и на кого сменили',
+    is_array($last) && ($last['try'] ?? 0) === 3 && ($last['via'] ?? '') === 'mistral-large-3:675b-cloud');
+
+/* Режим AI ходит наверх своей дорогой (`ask_chat`), и перебор моделей
+ * там был только по снятым с раздачи. Занятость лечится тем же способом,
+ * а времени у режима AI больше ста секунд — ждать незачем. */
+$scene('overloaded');
+[$code, $json] = $post(array_merge($base, ['search' => false]));
+$ok('режим AI обходит перегрузку запасной моделью',
+    $code === 200 && str_contains((string) ($json['text'] ?? ''), 'mistral-large-3:675b-cloud'));
 
 [$code, $json] = $post(['kind' => 'search', 'query' => 'проба', 'max_results' => 3]);
 $ok('search отвечает 200 и отдаёт выдачу', $code === 200 && count($json['results'] ?? []) === 3);

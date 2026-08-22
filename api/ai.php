@@ -126,15 +126,19 @@ if ($kind === 'ask') {
     });
 }
 
+/* Модель называет приложение — значит назвать её может и посторонний.
+ * Тяжёлая модель ест квоту в разы быстрее лёгкой, поэтому список
+ * закрытый: те же имена, что в BuiltInAIClient (основная и запасные).
+ * Новая модель в приложении требует строки здесь — это неудобно
+ * ровно один раз и защищает от чужого выбора всегда.
+ *
+ * Список вынесен из ветки наверх: по нему же выбирается замена, когда
+ * названную модель раздача не тянет. */
+const AI_MODELS = ['gemma4:cloud', 'mistral-large-3:675b-cloud', 'gpt-oss:120b-cloud'];
+
 if ($kind === 'chat') {
-    /* Модель называет приложение — значит назвать её может и посторонний.
-     * Тяжёлая модель ест квоту в разы быстрее лёгкой, поэтому список
-     * закрытый: те же имена, что в BuiltInAIClient (основная и запасные).
-     * Новая модель в приложении требует строки здесь — это неудобно
-     * ровно один раз и защищает от чужого выбора всегда. */
-    $allowed = ['gemma4:cloud', 'mistral-large-3:675b-cloud', 'gpt-oss:120b-cloud'];
     $model = (string) ($in['model'] ?? '');
-    if (!in_array($model, $allowed, true)) {
+    if (!in_array($model, AI_MODELS, true)) {
         say(400, ['error' => 'Модель не поддерживается']);
     }
 
@@ -175,24 +179,73 @@ if ($kind === 'chat') {
  * и у вопросов время в журнале есть, а у неё нет. */
 $started = microtime(true);
 
-$ch = curl_init($url);
-curl_setopt_array($ch, [
-    CURLOPT_POST => true,
-    CURLOPT_POSTFIELDS => json_encode($payload, JSON_UNESCAPED_UNICODE),
-    CURLOPT_HTTPHEADER => [
-        'Content-Type: application/json',
-        'Authorization: Bearer ' . $upstream,
-    ],
-    CURLOPT_RETURNTRANSFER => true,
-    // Больше, чем ждёт телефон: пусть лучше он оборвёт сам, чем мы
-    // отдадим ему пустоту, когда модель почти ответила.
-    CURLOPT_TIMEOUT => 90,
-    CURLOPT_CONNECTTIMEOUT => 10,
-]);
-$answer = curl_exec($ch);
-$code = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
-$curlError = curl_error($ch);
-curl_close($ch);
+/* Один поход наверх. Вынесен в функцию, потому что походов бывает
+ * больше одного: перегруженная раздача отвечает «приходи ещё». */
+function ai_send(string $url, array $payload, string $upstream): array
+{
+    $ch = curl_init($url);
+    curl_setopt_array($ch, [
+        CURLOPT_POST => true,
+        CURLOPT_POSTFIELDS => json_encode($payload, JSON_UNESCAPED_UNICODE),
+        CURLOPT_HTTPHEADER => [
+            'Content-Type: application/json',
+            'Authorization: Bearer ' . $upstream,
+        ],
+        CURLOPT_RETURNTRANSFER => true,
+        // Больше, чем ждёт телефон: пусть лучше он оборвёт сам, чем мы
+        // отдадим ему пустоту, когда модель почти ответила.
+        CURLOPT_TIMEOUT => 90,
+        CURLOPT_CONNECTTIMEOUT => 10,
+    ]);
+    $answer = curl_exec($ch);
+    $code = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $error = curl_error($ch);
+    curl_close($ch);
+
+    return [$answer, $code, $error];
+}
+
+/* «Приходи ещё» — это не отказ.
+ *
+ * Ollama отвечает на перегрузку 503 и пишет прямым текстом: model is
+ * temporarily overloaded, please retry. Раньше эта просьба уходила
+ * телефону как ошибка, и человек видел «Текст без полировки» —
+ * то есть расплачивался за чужую занятость своим текстом.
+ *
+ * Отбить её надо здесь, а не в приложении, и по двум причинам. Ответ
+ * на перегрузку приходит быстро — 0,3–0,9 с по журналу за 14–21 августа
+ * 2026, — так что вторая попытка укладывается в те же восемь секунд,
+ * что отпущены короткой полировке. И, главное, правка на сервере
+ * работает у всех разошедшихся сборок сразу, а правка в приложении —
+ * только у тех, кто обновится.
+ *
+ * Порядок такой. Сначала та же модель через треть секунды: перегрузка
+ * бывает мгновенной. Потом следующая по списку — потому что бывает
+ * и не мгновенной: 20 августа две просьбы пришли с промежутком в 28
+ * секунд, и повтор той же моделью не спас бы.
+ */
+[$answer, $code, $curlError] = ai_send($url, $payload, $upstream);
+
+$tries = 1;
+$switched = '';
+if (in_array($code, [429, 503], true)) {
+    usleep(350000);
+    [$answer, $code, $curlError] = ai_send($url, $payload, $upstream);
+    $tries++;
+
+    if (in_array($code, [429, 503], true) && $kind === 'chat') {
+        $spare = null;
+        foreach (AI_MODELS as $candidate) {
+            if ($candidate !== $payload['model']) { $spare = $candidate; break; }
+        }
+        if ($spare !== null) {
+            $payload['model'] = $spare;
+            $switched = $spare;
+            [$answer, $code, $curlError] = ai_send($url, $payload, $upstream);
+            $tries++;
+        }
+    }
+}
 
 /* В журнал — счётчики, не содержимое. Длина запроса и ответа говорят,
  * кто выбирает квоту; сам текст остаётся у человека. */
@@ -205,6 +258,12 @@ store('ai.jsonl', [
     'code' => $code,
     'day' => $day['n'],
     'ms' => (int) round((microtime(true) - $started) * 1000),
+    /* Сколько походов понадобилось и на кого пришлось менять модель.
+     * Без этих двух чисел повтор невидим: в журнале остаётся ровный
+     * ряд двухсоток, и понять, сколько раз раздача была занята,
+     * нельзя ничем. */
+    'try' => $tries,
+    'via' => $switched !== '' ? $switched : null,
 ]);
 
 if ($answer === false) {

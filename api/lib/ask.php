@@ -687,7 +687,13 @@ function ask_chat(array $models, string $system, string $question, string $key, 
         $code = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $lastCode = $code;
 
-        if ($code === 404 || $code === 410) { continue; }
+        /* 404 и 410 — модель сняли с раздачи. 429 и 503 — раздача занята
+         * прямо сейчас и просит прийти позже («temporarily overloaded,
+         * please retry»). Причины разные, а лечение одно: взять следующую
+         * модель из списка. Раньше на занятость мы возвращались ни с чем,
+         * хотя рядом стояли две работающие и до срока оставалось больше
+         * ста секунд. */
+        if (in_array($code, [404, 410, 429, 503], true)) { continue; }
         if ($body === false || $code < 200 || $code >= 300) { return ['', $model, $code, false]; }
 
         $json = json_decode((string) $body, true);

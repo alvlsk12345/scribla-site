@@ -74,6 +74,24 @@ if (str_ends_with($path, '/v1/chat/completions')) {
     if ($mode === 'retired' && $model === 'gemma4:cloud') { $reply(404, ['error' => 'model not found']); return true; }
     if ($mode === 'gone' && $model !== 'gpt-oss:120b-cloud') { $reply(410, ['error' => 'gone']); return true; }
     if ($mode === 'chat-fails') { $reply(500, ['error' => 'нет']); return true; }
+
+    /* Перегрузка раздачи. Настоящая Ollama отвечает на неё 503 и просит
+     * прийти ещё раз — вот этими словами. Два режима, потому что беда
+     * бывает двух видов: мгновенная (помогает повтор той же моделью)
+     * и затяжная (помогает только другая модель — 20 августа 2026
+     * две просьбы пришли с промежутком в 28 секунд). */
+    if ($mode === 'overloaded' && $model === 'gemma4:cloud') {
+        $reply(503, ['error' => "model 'gemma4:31b' is temporarily overloaded, please retry"]);
+        return true;
+    }
+    if ($mode === 'overloaded-once') {
+        $flag = $dir . '/overloaded-once.json';
+        if (!is_file($flag)) {
+            file_put_contents($flag, '1');
+            $reply(503, ['error' => "model 'gemma4:31b' is temporarily overloaded, please retry"]);
+            return true;
+        }
+    }
     if ($mode === 'chat-empty') {
         $reply(200, ['choices' => [['message' => ['content' => '']]]]);
         return true;
