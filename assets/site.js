@@ -150,6 +150,52 @@
   addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
+  /* ---------------------------------------------------- устройство
+
+     Метрика за квартал: 62 % визитов с Windows, 26 % с Android, и все
+     они видели те же две кнопки «на iPhone» и «для Mac», ни одна
+     из которых им не годится. Маку при этом первой предлагали iPhone.
+     Отсюда три режима, один класс на <html>, разметка общая:
+       is-mac   — образ первой и залитой, магазин призрачной;
+       is-ios   — только магазин, маковская кнопка спрятана;
+       is-other — вместо кнопок блок: бейдж, код на магазин, почта.
+     iPadOS представляется маком (platform MacIntel), отличаем по
+     сенсору. Без JS остаётся порядок из разметки — телефон первым. */
+
+  const DEV = (() => {
+    const ua = navigator.userAgent || '';
+    const plat = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || '';
+    if (/iPhone|iPad|iPod/.test(ua) || (/Mac/.test(plat) && navigator.maxTouchPoints > 1)) return 'ios';
+    if (/Mac/.test(plat) || /Macintosh/.test(ua)) return 'mac';
+    return 'other';
+  })();
+  document.documentElement.classList.add('is-' + DEV);
+
+  {
+    const cta = $('.hero-cta');
+    const ios = cta && $('[data-dev=ios]', cta), mac = cta && $('[data-dev=mac]', cta);
+    if (DEV === 'mac' && ios && mac) {
+      mac.classList.replace('btn-ghost', 'btn-primary');
+      ios.classList.replace('btn-primary', 'btn-ghost');
+      cta.prepend(mac);
+    }
+    const alt = $('.hero-alt');
+    if (DEV === 'other' && alt) { alt.hidden = false; }
+    const top = $('[data-top-cta]');
+    if (top) top.href = DEV === 'mac' ? '/download/Scribla-1.0.dmg'
+                    : DEV === 'ios' ? 'https://apps.apple.com/app/id6800086470'
+                    : '#download';
+  }
+
+  /* Меню языков — <details>; закрывается по клику мимо и по Esc. */
+  {
+    const menu = $('.lang-menu');
+    if (menu) {
+      document.addEventListener('click', e => { if (!menu.contains(e.target)) menu.open = false; });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') menu.open = false; });
+    }
+  }
+
   /* ---------------------------------------------------- цели Метрики
 
      До 22 августа 2026 счётчик знал только «скачан файл» и «ушёл

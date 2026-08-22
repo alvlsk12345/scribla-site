@@ -81,15 +81,25 @@
       <a href="#mac">Для Mac</a>
       <a href="#privacy">Приватность</a>
       <a href="#download">Скачать</a>
-      <a href="#feedback">Написать</a>
-      <a href="#support">Поддержать</a>
     </nav>
-    <div class="lang">
-      <a href="/" aria-current="page">RU</a>
-      <a href="/en/" hreflang="en">EN</a>
-      <a href="/es/" hreflang="es">ES</a>
-      <a href="/zh/" hreflang="zh-Hans">中文</a>
-    </div>
+    <!-- Кнопка «Скачать» в шапке — единственный залитый элемент на странице
+         кроме кнопок героя: шапка липкая, и призыв едет с человеком. Адрес
+         подставляет site.js по устройству: мак — образ, iPhone — App Store,
+         остальным — раздел «Скачать». Без JS — раздел.
+         «Написать» и «Поддержать» из шапки ушли в подвал 22 августа 2026:
+         они соперничали с целью страницы. Языки свёрнуты в меню — ими
+         пользуется меньше 2 % посетителей, а места на телефоне они
+         занимали полряда. -->
+    <a class="btn btn-primary top-cta" href="#download" data-top-cta>Скачать</a>
+    <details class="lang-menu">
+      <summary aria-label="Язык">RU</summary>
+      <div class="lang">
+        <a href="/" aria-current="page">RU</a>
+        <a href="/en/" hreflang="en">EN</a>
+        <a href="/es/" hreflang="es">ES</a>
+        <a href="/zh/" hreflang="zh-Hans">中文</a>
+      </div>
+    </details>
   </div>
 </header>
 
@@ -103,38 +113,42 @@
       <img class="hero-dyak" src="assets/brand/scribla-dyak-alpha-writing.svg" alt=""
            width="215" height="215">
       <div>
-        <img class="hero-word" src="assets/brand/scribla-wordmark-white.svg"
-             alt="Scribla" width="420" height="76">
         <!-- Номер версии в плашку не ставим: строка держится в одну
              только до 43 знаков, а «1.2» её ломает на две. Номер стоит
              в разделе «Версии», где ему и место. -->
-        <p class="hero-status"><span class="dot"></span> Вышла на iPhone и на Mac</p>
-        <h1>Мысль быстрее пальцев</h1>
-        <p class="lead">Диктовка для iPhone и Mac. Говорите — в поле любого
-          приложения встаёт готовый текст: со знаками, без «э-э» и повторов.
-          Спросите — встанет ответ модели, собранный по свежим страницам
-          из интернета. Всё бесплатно, а звук не покидает устройство.</p>
+        <!-- Первый экран пересобран 22 августа 2026 по замеру: на 1280×720
+             кнопки стояли на 801 px — за сгибом. Ушли дубль вордмарка
+             (он в шапке), плашка «Вышла…» и третья кнопка с той же
+             ссылкой на App Store. Заголовок называет продукт, а не
+             метафору: 96 % визитов короче 30 секунд. -->
+        <h1>Сказали&nbsp;— текст уже&nbsp;в&nbsp;поле</h1>
+        <p class="lead">Диктовка для iPhone и Mac. Ставит знаки, убирает «э-э», считает, переводит и отвечает на вопрос. Бесплатно, звук остаётся на устройстве.</p>
+        <!-- Кнопки одни на всех, порядок и вес — по устройству (site.js,
+             класс на <html>): мак видит образ первой, iPhone — только
+             магазин, Windows и Android — блок ниже вместо кнопок. -->
         <div class="hero-cta">
-          <!-- Обе кнопки ведут к скачиванию: телефонная — прямо в запись
-               App Store, маковая — прямо на образ. До 22 августа 2026
-               она вела якорем в раздел «Скачать» на десятом экране;
-               человек с мака жал «скачать» и получал прокрутку вместо
-               файла. Место клика считает site.js. Подписи короткие
-               не ради краткости: текстовая колонка первого экрана на
-               широком мониторе всего 355 px, и две кнопки должны стоять
-               в строку, а не столбиком вместе с плашкой магазина. -->
-          <a class="btn btn-primary" href="https://apps.apple.com/app/id6800086470">Скачать на iPhone</a>
-          <a class="btn btn-ghost" href="/download/Scribla-1.0.dmg">Скачать на Mac</a>
+          <a class="btn btn-primary" data-dev="ios" href="https://apps.apple.com/app/id6800086470">Скачать на iPhone</a>
+          <a class="btn btn-ghost" data-dev="mac" href="/download/Scribla-1.0.dmg">Скачать для Mac</a>
         </div>
-
-        <!-- Плашка магазина — ссылка на запись в App Store. Адрес по ID,
-             без имени: такой переживёт переименование приложения.
-             Подробности — в site.css. -->
-        <div class="hero-store">
-          <a class="appstore" href="https://apps.apple.com/app/id6800086470">
-            <span class="appstore-top">Загрузите</span>
-            <span class="appstore-name">в App&nbsp;Store</span>
-          </a>
+        <p class="hero-meta" data-dev="mac">macOS 14 и новее · Apple Silicon и Intel · 25&nbsp;МБ · подписано и заверено Apple</p>
+        <!-- Для тех, кому поставить нечего: 90 % визитов за квартал
+             пришли с Windows и Android. Не «версия появится» — её
+             в планах нет, — а почта под новости и код на магазин. -->
+        <div class="hero-alt" data-dev="other" hidden>
+          <p class="hero-alt-h">Scribla работает на iPhone и Mac</p>
+          <p class="hero-alt-p">С телефона — откройте в App Store или наведите камеру на код.</p>
+          <div class="hero-alt-row">
+            <a href="https://apps.apple.com/app/id6800086470"><img src="assets/img/appstore-badge-ru-ru.svg" alt="Загрузите в App Store" width="120" height="40"></a>
+            <img class="hero-qr" src="assets/img/appstore-qr.svg" alt="QR-код: страница Scribla в App Store" width="124" height="124">
+          </div>
+          <form class="hero-alt-form" data-notify novalidate>
+            <p class="hero-alt-p"><label for="alt-email">Оставьте почту — напишем, когда будут новости.</label></p>
+            <div class="hero-alt-fields">
+              <input id="alt-email" name="email" type="email" autocomplete="email" placeholder="вы@почта.ru" required>
+              <button class="btn btn-primary" type="submit">Сообщать о новостях</button>
+            </div>
+            <p class="msg" data-notify-msg aria-live="polite"></p>
+          </form>
         </div>
       </div>
 
@@ -569,7 +583,7 @@
             <li>Система <b>macOS 14 и новее</b></li>
             <li>Процессор <b>Apple Silicon и Intel</b></li>
           </ul>
-          <p class="note">Открывается двойным щелчком, без предупреждений.
+          <p class="note"><span class="sha">Контрольная сумма SHA-256 образа: <code>21d193c0d73ece315edb727280fd067b8185700b46a2a1cd44bed7826f274c61</code></span> Открывается двойным щелчком, без предупреждений.
             Держите правый ⌘ и говорите — <a href="#mac">как это устроено
             на маке</a>, ниже.</p>
         </div>
@@ -649,8 +663,7 @@
         <p class="note">Образ подписан и заверен у Apple: открывается двойным
           щелчком, без предупреждений. При первом запуске приложение попросит
           микрофон и «Универсальный доступ» — вторым оно слышит вашу клавишу
-          и вставляет готовый текст. Больше ни для чего. За обновлениями
-          само оно не ходит: новая версия появится здесь.</p>
+          и вставляет готовый текст. Больше ни для чего.</p>
       </div>
     </div>
   </div>
@@ -1002,6 +1015,7 @@
           не надо. Распознавание, чистка речи, словарь и режимы с AI —
           одни и те же. Панелей эмодзи и правки по словам на маке нет:
           там у вас настоящая клавиатура.</p>
+      <p>За обновлениями само оно не ходит: новая версия появится здесь.</p>
       </details>
       <details>
         <summary>Зачем Scribla на маке «Универсальный доступ»?</summary>

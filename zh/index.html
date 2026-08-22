@@ -71,15 +71,25 @@
       <a href="#mac">Mac 版</a>
       <a href="#privacy">隐私</a>
       <a href="#download">下载</a>
-      <a href="#feedback">写信给我们</a>
-      <a href="#support">支持我们</a>
     </nav>
-    <div class="lang">
-      <a href="/" hreflang="ru">RU</a>
-      <a href="/en/" hreflang="en">EN</a>
-      <a href="/es/" hreflang="es">ES</a>
-      <a href="/zh/" aria-current="page">中文</a>
-    </div>
+    <!-- Кнопка «Скачать» в шапке — единственный залитый элемент на странице
+         кроме кнопок героя: шапка липкая, и призыв едет с человеком. Адрес
+         подставляет site.js по устройству: мак — образ, iPhone — App Store,
+         остальным — раздел «Скачать». Без JS — раздел.
+         «Написать» и «Поддержать» из шапки ушли в подвал 22 августа 2026:
+         они соперничали с целью страницы. Языки свёрнуты в меню — ими
+         пользуется меньше 2 % посетителей, а места на телефоне они
+         занимали полряда. -->
+    <a class="btn btn-primary top-cta" href="#download" data-top-cta>下载</a>
+    <details class="lang-menu">
+      <summary aria-label="语言">中文</summary>
+      <div class="lang">
+        <a href="/" hreflang="ru">RU</a>
+        <a href="/en/" hreflang="en">EN</a>
+        <a href="/es/" hreflang="es">ES</a>
+        <a href="/zh/" aria-current="page">中文</a>
+      </div>
+    </details>
   </div>
 </header>
 
@@ -93,26 +103,39 @@
       <img class="hero-dyak" src="../assets/brand/scribla-dyak-alpha-writing.svg" alt=""
            width="215" height="215">
       <div>
-        <img class="hero-word" src="../assets/brand/scribla-wordmark-white.svg"
-             alt="Scribla" width="420" height="76">
-        <p class="hero-status"><span class="dot"></span> iPhone 版与 Mac 版均已发布</p>
-        <h1>比手指更快</h1>
-        <p class="lead">iPhone 与 Mac 上的语音输入。开口说，任何应用的输入框里落下的就是现成的文字：标点已加好，「呃」和重复都去掉了。问一句，落下的是模型的答案，由网上最新的页面整理而来。全部免费，声音也从不离开设备。</p>
+        <!-- Первый экран пересобран 22 августа 2026 по замеру: на 1280×720
+             кнопки стояли на 801 px — за сгибом. Ушли дубль вордмарка
+             (он в шапке), плашка «Вышла…» и третья кнопка с той же
+             ссылкой на App Store. Заголовок называет продукт, а не
+             метафору: 96 % визитов короче 30 секунд. -->
+        <h1>说出口，字已在输入框里</h1>
+        <p class="lead">iPhone 与 Mac 上的语音输入：标点自动加好，「呃」自动去掉，还能算数、翻译、回答问题。免费，声音不离开设备。</p>
+        <!-- Кнопки одни на всех, порядок и вес — по устройству (site.js,
+             класс на <html>): мак видит образ первой, iPhone — только
+             магазин, Windows и Android — блок ниже вместо кнопок. -->
         <div class="hero-cta">
-          <!-- Обе кнопки ведут к скачиванию: телефонная — прямо в запись
-               App Store, маковая — к разделу с образом. -->
-          <a class="btn btn-primary" href="https://apps.apple.com/app/id6800086470">下载 iPhone 版</a>
-          <a class="btn btn-ghost" href="/download/Scribla-1.0.dmg">下载 Mac 版</a>
+          <a class="btn btn-primary" data-dev="ios" href="https://apps.apple.com/app/id6800086470">下载 iPhone 版</a>
+          <a class="btn btn-ghost" data-dev="mac" href="/download/Scribla-1.0.dmg">下载 Mac 版</a>
         </div>
-
-        <!-- Плашка магазина — ссылка на запись в App Store. Адрес по ID,
-             без имени: такой переживёт переименование приложения.
-             Подробности — в site.css. -->
-        <div class="hero-store">
-          <a class="appstore" href="https://apps.apple.com/app/id6800086470">
-            <span class="appstore-top">现已上架</span>
-            <span class="appstore-name">App&nbsp;Store</span>
-          </a>
+        <p class="hero-meta" data-dev="mac">macOS 14 及以上 · Apple 芯片与 Intel · 25&nbsp;MB · 已由 Apple 签名并公证</p>
+        <!-- Для тех, кому поставить нечего: 90 % визитов за квартал
+             пришли с Windows и Android. Не «версия появится» — её
+             в планах нет, — а почта под новости и код на магазин. -->
+        <div class="hero-alt" data-dev="other" hidden>
+          <p class="hero-alt-h">Scribla 只在 iPhone 和 Mac 上运行</p>
+          <p class="hero-alt-p">用手机打开 App Store，或用相机对准二维码。</p>
+          <div class="hero-alt-row">
+            <a href="https://apps.apple.com/app/id6800086470"><img src="../assets/img/appstore-badge-zh-cn.svg" alt="在 App Store 下载" width="120" height="40"></a>
+            <img class="hero-qr" src="../assets/img/appstore-qr.svg" alt="二维码：App Store 上的 Scribla" width="124" height="124">
+          </div>
+          <form class="hero-alt-form" data-notify novalidate>
+            <p class="hero-alt-p"><label for="alt-email">留下邮箱，有新消息时我们写信给你。</label></p>
+            <div class="hero-alt-fields">
+              <input id="alt-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+              <button class="btn btn-primary" type="submit">有消息通知我</button>
+            </div>
+            <p class="msg" data-notify-msg aria-live="polite"></p>
+          </form>
         </div>
       </div>
 
@@ -458,7 +481,7 @@
             <li>系统 <b>macOS 14 及以上</b></li>
             <li>处理器 <b>Apple Silicon 与 Intel</b></li>
           </ul>
-          <p class="note">双击即可打开，不会有警告。按住右 ⌘ 说话——<a href="#mac">在 Mac 上是怎么用的</a>，见下文。</p>
+          <p class="note"><span class="sha">映像的 SHA-256 校验和： <code>21d193c0d73ece315edb727280fd067b8185700b46a2a1cd44bed7826f274c61</code></span> 双击即可打开，不会有警告。按住右 ⌘ 说话——<a href="#mac">在 Mac 上是怎么用的</a>，见下文。</p>
         </div>
         <div class="get" id="notify">
           <h3>iPhone 版——也是现在</h3>
@@ -521,7 +544,7 @@
           <li>系统 <b>macOS 14 及以上</b></li>
           <li>处理器 <b>Apple Silicon 与 Intel</b></li>
         </ul>
-        <p class="note">映像已由 Apple 签名并公证：双击即可打开，不会有警告。首次启动时应用会请求麦克风和“辅助功能”权限——后者用来听见你按下的键，并把写好的文字插进去。除此之外别无他用。它自己不会检查更新：新版本会出现在这里。</p>
+        <p class="note">映像已由 Apple 签名并公证：双击即可打开，不会有警告。首次启动时应用会请求麦克风和“辅助功能”权限——后者用来听见你按下的键，并把写好的文字插进去。除此之外别无他用。</p>
       </div>
     </div>
   </div>
@@ -769,6 +792,7 @@
       <details>
         <summary>Mac 版和手机版有什么不一样？</summary>
         <p>差别在于怎么叫它出来。在手机上 Scribla 是一个键盘：切换过去，点一下书吏。在 Mac 上它是菜单栏里的应用，在任何窗口都能听见右侧 ⌘，不用切换到别处。识别、口语整理、词典和用到 AI 的模式都是同一套。Mac 上没有表情面板，也没有逐词修改栏：那里你有一副真正的键盘。</p>
+      <p>它不会自己检查更新：新版本会出现在这里。</p>
       </details>
       <details>
         <summary>Mac 上的 Scribla 为什么要“辅助功能”权限？</summary>
