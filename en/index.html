@@ -33,6 +33,16 @@
 <meta name="twitter:image" content="https://scribla.io/assets/img/og.jpg">
 <meta name="theme-color" content="#F5EDE3" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#17100D" media="(prefers-color-scheme: dark)">
+<!-- Шрифты объявлены в fonts.css, который site.css тянет через @import:
+     без подсказки браузер узнаёт о них третьим шагом (html → css → css →
+     woff2), и на живом замере 22.08.2026 они начинали качаться на 4,3 с.
+     preload ставит их в первую волну вместе с CSS. Кириллических
+     наборов здесь нет: на этой странице они не нужны. Метрика — отдельный
+     хост, рукопожатие с ним тоже заранее. -->
+<link rel="preconnect" href="https://mc.yandex.ru">
+<link rel="preload" href="../assets/fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/garamond-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/img/hero-paper.jpg" as="image">
 <link rel="stylesheet" href="../assets/site.css">
 <script src="../assets/metrika.js" async></script>
 </head>
@@ -99,7 +109,7 @@
                текстовой колонке первого экрана (364 px на широком
                мониторе). -->
           <a class="btn btn-primary" href="https://apps.apple.com/app/id6800086470">Get it for iPhone</a>
-          <a class="btn btn-ghost" href="#download">Download for Mac</a>
+          <a class="btn btn-ghost" href="/download/Scribla-1.0.dmg">Download for Mac</a>
         </div>
 
         <!-- Плашка магазина — ссылка на запись в App Store. Адрес по ID,
@@ -1048,7 +1058,7 @@
     </div>
     <div class="cta">
       <a class="btn btn-primary" href="https://apps.apple.com/app/id6800086470">Get it for iPhone</a>
-      <a class="btn btn-ghost" href="#download">Download for Mac</a>
+      <a class="btn btn-ghost" href="/download/Scribla-1.0.dmg">Download for Mac</a>
     </div>
   </div>
 </section>

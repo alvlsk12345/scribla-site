@@ -150,6 +150,72 @@
   addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
+  /* ---------------------------------------------------- цели Метрики
+
+     До 22 августа 2026 счётчик знал только «скачан файл» и «ушёл
+     по внешней ссылке» — trackLinks. Девять кнопок сливались в одно
+     число, и было не понять, работает ли первый экран или раздел
+     «Скачать», десктоп или телефон. Теперь у каждого клика есть
+     имя цели и место.
+
+     Имя — по адресу, а не по разметке: ссылка на .dmg — `dmg`,
+     на apps.apple.com — `appstore`. Место — id ближайшей секции,
+     для шапки и подвала — `header`/`footer`. Поэтому четыре языковые
+     страницы не нуждаются ни в одном атрибуте, и новая кнопка
+     считается сама, где бы её ни поставили.
+
+     Промежуточные цели — чтобы воронка была не из одного шага:
+     глубина прокрутки 25/50/75 % (по высоте документа, один раз
+     за визит), раскрытие вопроса в FAQ, уход на политику, отправка
+     форм. Вебвизора по-прежнему нет — и не будет: он пишет ввод
+     в поле с почтой. Глубина и клики его заменяют.
+
+     `ym` может не быть вовсе: блокировщик, нет сети. Тогда всё
+     молча пропускается — цели не важнее того, чтобы ссылка открылась. */
+
+  const COUNTER = 111532968;
+  const goal = (name, params) => {
+    if (typeof ym !== 'function') return;
+    try { ym(COUNTER, 'reachGoal', name, params); } catch (_) {}
+  };
+  const placeOf = el => {
+    if (el.closest('header')) return 'header';
+    if (el.closest('footer')) return 'footer';
+    /* У первого экрана id нет, только класс `hero`: берём его. */
+    const sec = el.closest('section');
+    return sec?.id || sec?.className.split(' ')[0] || 'page';
+  };
+
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a[href]');
+    if (!a) return;
+    const href = a.getAttribute('href') || '';
+    const place = placeOf(a);
+    if (/\.dmg(\?|$)/.test(href))            goal('dmg',      { place, lang: LANG });
+    else if (href.includes('apps.apple.com')) goal('appstore', { place, lang: LANG });
+    else if (/privacy\.html/.test(href))      goal('privacy',  { place, lang: LANG });
+  });
+
+  document.addEventListener('toggle', e => {
+    const d = e.target;
+    if (d.tagName === 'DETAILS' && d.open && d.closest('#faq'))
+      goal('faq_open', { q: $('summary', d)?.textContent.trim().slice(0, 60), lang: LANG });
+  }, true);
+
+  {
+    const marks = [25, 50, 75];
+    const hit = new Set();
+    const depth = () => {
+      const h = document.documentElement.scrollHeight - innerHeight;
+      if (h <= 0) return;
+      const pct = (scrollY / h) * 100;
+      for (const m of marks)
+        if (pct >= m && !hit.has(m)) { hit.add(m); goal('scroll_' + m, { lang: LANG }); }
+      if (hit.size === marks.length) removeEventListener('scroll', depth);
+    };
+    addEventListener('scroll', depth, { passive: true });
+  }
+
   /* ---------------------------------------------------- приход на раздел
 
      Приложение зовёт на «/#support», а браузер оставлял человека
@@ -482,6 +548,7 @@
       const data = await r.json().catch(() => ({}));
       if (!r.ok) throw new Error(data.error || T.cantSend);
       say(box, 'ok', data.message || okText);
+      goal(form === fb ? 'feedback_sent' : 'notify_sent', { lang: LANG });
       form.reset();
       if (fbCount) fbCount.textContent = '0';
       if (form === fb) shots.clear();
