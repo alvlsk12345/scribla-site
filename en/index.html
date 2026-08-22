@@ -42,7 +42,6 @@
 <link rel="preconnect" href="https://mc.yandex.ru">
 <link rel="preload" href="../assets/fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../assets/fonts/garamond-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="../assets/img/hero-paper.jpg" as="image">
 <link rel="stylesheet" href="../assets/site.css">
 <script src="../assets/metrika.js" async></script>
 </head>
@@ -51,35 +50,24 @@
 
 <a class="sr skip" href="#main">Skip to content</a>
 
+<!-- Страница собрана tools/build-pages.py 22 августа 2026: один макет
+     на четыре языка. Править разметку — там, не здесь. -->
 <header class="top">
   <div class="wrap">
     <a class="brand" href="/en/">
-      <!-- Дьяк с пером, и перо чуть ходит. Файл отдельный
-           (scribla-dyak-writing.svg): анимация лежит внутри SVG, поэтому
-           работает через img и не требует вставки разметки в страницы.
-           Именно эта версия, а не -alpha: у неё свой терракотовый кружок,
-           а перо пергаментное и на светлой шапке без кружка пропадает. -->
       <img class="mark" src="../assets/brand/scribla-dyak-writing.svg" alt="" width="32" height="32">
       <picture>
         <source srcset="../assets/brand/scribla-wordmark-white.svg" media="(prefers-color-scheme: dark)">
         <img class="word" src="../assets/brand/scribla-wordmark.svg" alt="Scribla">
       </picture>
     </a>
-    <nav class="nav" aria-label="Page sections">
-      <a href="#what">What it is</a>
-      <a href="#can">What it does</a>
+    <nav class="nav" aria-label="How it works">
+      <a href="#how">How it works</a>
+      <a href="#modes">Modes</a>
       <a href="#mac">For Mac</a>
       <a href="#privacy">Privacy</a>
-      <a href="#download">Download</a>
+      <a href="#faq">FAQ</a>
     </nav>
-    <!-- Кнопка «Скачать» в шапке — единственный залитый элемент на странице
-         кроме кнопок героя: шапка липкая, и призыв едет с человеком. Адрес
-         подставляет site.js по устройству: мак — образ, iPhone — App Store,
-         остальным — раздел «Скачать». Без JS — раздел.
-         «Написать» и «Поддержать» из шапки ушли в подвал 22 августа 2026:
-         они соперничали с целью страницы. Языки свёрнуты в меню — ими
-         пользуется меньше 2 % посетителей, а места на телефоне они
-         занимали полряда. -->
     <a class="btn btn-primary top-cta" href="#download" data-top-cta>Download</a>
     <details class="lang-menu">
       <summary aria-label="Language">EN</summary>
@@ -95,770 +83,224 @@
 
 <main id="main">
 
-<!-- ============================================ hero -->
 <section class="hero">
-  <div class="wrap">
-    <div class="hero-band">
-      <!-- The scribe with his quill: the quill is parchment-coloured
-           and only lives on terracotta. -->
-      <img class="hero-dyak" src="../assets/brand/scribla-dyak-alpha-writing.svg" alt=""
-           width="215" height="215">
-      <div>
-        <!-- Первый экран пересобран 22 августа 2026 по замеру: на 1280×720
-             кнопки стояли на 801 px — за сгибом. Ушли дубль вордмарка
-             (он в шапке), плашка «Вышла…» и третья кнопка с той же
-             ссылкой на App Store. Заголовок называет продукт, а не
-             метафору: 96 % визитов короче 30 секунд. -->
-        <h1>Say it. It is already in the field.</h1>
-        <p class="lead">Dictation for iPhone and Mac. Punctuation in, the ums out. It also counts, translates and answers questions. Free, and the audio stays on the device.</p>
-        <!-- Кнопки одни на всех, порядок и вес — по устройству (site.js,
-             класс на <html>): мак видит образ первой, iPhone — только
-             магазин, Windows и Android — блок ниже вместо кнопок. -->
-        <div class="hero-cta">
-          <a class="btn btn-primary" data-dev="ios" href="https://apps.apple.com/app/id6800086470">Get it for iPhone</a>
-          <a class="btn btn-ghost" data-dev="mac" href="/download/Scribla-1.0.dmg">Download for Mac</a>
-        </div>
-        <p class="hero-meta" data-dev="mac">macOS 14 or later · Apple Silicon and Intel · 25&nbsp;MB · signed and notarized by Apple</p>
-        <!-- Для тех, кому поставить нечего: 90 % визитов за квартал
-             пришли с Windows и Android. Не «версия появится» — её
-             в планах нет, — а почта под новости и код на магазин. -->
-        <div class="hero-alt" data-dev="other" hidden>
-          <p class="hero-alt-h">Scribla runs on iPhone and Mac</p>
-          <p class="hero-alt-p">On your phone, open the App Store or point the camera at the code.</p>
-          <div class="hero-alt-row">
-            <a href="https://apps.apple.com/app/id6800086470"><img src="../assets/img/appstore-badge-en-us.svg" alt="Download on the App Store" width="120" height="40"></a>
-            <img class="hero-qr" src="../assets/img/appstore-qr.svg" alt="QR code: Scribla on the App Store" width="124" height="124">
-          </div>
-          <form class="hero-alt-form" data-notify novalidate>
-            <p class="hero-alt-p"><label for="alt-email">Leave an email and we will write when there is news.</label></p>
-            <div class="hero-alt-fields">
-              <input id="alt-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
-              <button class="btn btn-primary" type="submit">Keep me posted</button>
-            </div>
-            <p class="msg" data-notify-msg aria-live="polite"></p>
-          </form>
-        </div>
+  <div class="wrap hero-grid">
+    <div class="hero-text">
+      <h1>Say it. It is already in&nbsp;the&nbsp;field.</h1>
+      <p class="lead">Dictation for iPhone and Mac. Punctuation in, the ums out. It also counts, translates and answers questions. Free, and the audio stays on the device.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" data-dev="ios" href="https://apps.apple.com/app/id6800086470">Get it for iPhone</a>
+        <a class="btn btn-ghost" data-dev="mac" href="/download/Scribla-1.0.dmg">Download for Mac</a>
       </div>
-
-      <!-- The demo shows rather than tells. The first pair is rendered in
-           HTML so the phone is never blank on arrival. -->
-      <div>
-        <div class="phone">
-          <div class="phone-screen">
-            <div class="chat" data-chat aria-live="off">
-              <div class="pair">
-                <div class="said">“um so anna good morning thanks a lot”</div>
-                <div class="became on"><span class="tag">Dictation</span><span class="txt">Anna, good morning! Thanks a lot.</span></div>
-              </div>
-            </div>
-            <div class="kbd" aria-hidden="true">
-              <div class="kbd-row"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-              <div class="kbd-row"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-              <div class="kbd-row"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-              <div class="kbd-mic" data-mic><img src="../assets/brand/scribla-dyak-writing.svg" alt="" width="52" height="52"></div>
-            </div>
+      <p class="hero-meta" data-dev="mac">macOS 14 or later · Apple Silicon and Intel · 25&nbsp;MB · signed by Apple</p>
+      <p class="hero-meta hero-meta-ios" data-dev="ios">iOS 17 or later · four languages · no sign-up</p>
+      <div class="hero-alt" data-dev="other" hidden>
+        <p class="hero-alt-h">Scribla runs on iPhone and Mac</p>
+        <p class="hero-alt-p">On your phone, open the App Store or point the camera at the code.</p>
+        <div class="hero-alt-row">
+          <a href="https://apps.apple.com/app/id6800086470"><img src="../assets/img/appstore-badge-en-us.svg" alt="Download on the App Store" width="120" height="40"></a>
+          <img class="hero-qr" src="../assets/img/appstore-qr.svg" alt="QR code: Scribla on the App Store" width="124" height="124">
+        </div>
+        <form class="hero-alt-form" data-notify novalidate>
+          <p class="hero-alt-p"><label for="alt-email">Leave an email and we will write when there is news.</label></p>
+          <div class="hero-alt-fields">
+            <input id="alt-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+            <button class="btn btn-primary" type="submit">Keep me posted</button>
           </div>
-        </div>
-        <div class="demo-ctl">
-          <button type="button" data-demo-toggle aria-pressed="false">
-            <svg viewBox="0 0 12 12" aria-hidden="true" data-demo-icon><rect x="1.5" y="1" width="3" height="10" rx="1"/><rect x="7.5" y="1" width="3" height="10" rx="1"/></svg>
-            <span data-demo-label>Stop the demo</span>
-          </button>
-        </div>
+          <p class="msg" data-notify-msg aria-live="polite"></p>
+        </form>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- ============================================ film
-
-     A band of its own under the first screen rather than a background
-     behind the heading: text over motion reads worse, and this is what
-     people stay for.
-
-     Sound is off because browsers will not let it be otherwise — a
-     video with sound would simply refuse to start. Hence the button:
-     press it and the film restarts, this time with the voice, the music
-     and the pen on paper. The track is mixed here: the voice as shot,
-     the music quietest of all and ducking under the voice, the pen
-     heard exactly while it writes. -->
-<section id="film" class="film">
-  <div class="wrap">
-    <figure class="film-frame">
-      <div class="film-media">
-        <video data-film
-               poster="../assets/img/hero-film-en.jpg"
-               width="1280" height="720"
-               muted playsinline loop preload="metadata"
-               aria-label="A voice says “Hello! How are you?” and a pen writes
-                           the phrase on paper">
-          <source src="../assets/video/hero-en.mp4" type="video/mp4">
+    <!-- Не макет и не иллюстрация: запись экрана настоящей клавиатуры
+         в «Напоминаниях», та же, что в App Store. Звук включается кнопкой:
+         браузер не даст запустить его сам. -->
+    <figure class="hero-demo">
+      <div class="phone">
+        <video data-film poster="../assets/img/app/demo-en.jpg" width="886" height="1920"
+               muted playsinline loop preload="metadata" aria-label="Screen recording: the Scribla keyboard in Reminders turns speech into finished text">
+          <source src="../assets/video/demo-en.mp4" type="video/mp4">
         </video>
-        <button class="film-sound" type="button" data-film-sound aria-pressed="false">
-          <svg viewBox="0 0 16 16" aria-hidden="true" data-film-icon>
-            <path d="M7 2.5 3.8 5.2H1.6v5.6h2.2L7 13.5z"/>
-            <path d="M10.2 5.4a3.4 3.4 0 0 1 0 5.2" fill="none"
-                  stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-            <path d="M12.3 3.4a6.2 6.2 0 0 1 0 9.2" fill="none"
-                  stroke="currentColor" stroke-width="1.4" stroke-linecap="round"
-                  data-film-wave/>
-          </svg>
-          <span data-film-label>With sound</span>
-        </button>
       </div>
-      <figcaption>Said out loud — written by hand.</figcaption>
+      <button class="film-sound" type="button" data-film-sound aria-pressed="false">
+        <svg viewBox="0 0 16 16" aria-hidden="true" width="14" height="14">
+          <path d="M7 2.5 3.8 5.2H1.6v5.6h2.2L7 13.5z"/>
+          <path d="M10.2 5.4a3.4 3.4 0 0 1 0 5.2" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          <path d="M12.3 3.4a6.2 6.2 0 0 1 0 9.2" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" data-film-wave/>
+        </svg>
+        <span data-film-label>With sound</span>
+      </button>
     </figure>
   </div>
 </section>
 
-<!-- ============================================ where it helps
-
-     Added 18 August 2026. Straight after the film the page used to explain
-     mechanics — “a keyboard, not a window”, iOS 17, megabytes — before the
-     reader had decided why they would want any of it. This is where they
-     recognise their own day: a chat on the move, a long thought, an email,
-     a sum, a foreign language, a question without leaving the chat, a name
-     recognition keeps breaking. Each line is a scene, not a feature name;
-     the features are named below, in “what it does”. The examples are the
-     ones from the phone and the cards: nothing invented, they are real. -->
-<section id="why">
+<section id="modes">
   <div class="wrap">
-    <div class="sec-head">
-      <h2>Where it earns its keep, every day</h2>
-      <p class="lead">Not “another dictation app”, but a way not to type where
-        typing is awkward, slow, or in the wrong language. And all of it in the
-        field you are already in.</p>
-    </div>
+    <h2>Four modes. The mode decides what lands in the field</h2>
+    <p class="lead">The chosen mode stays until you change it: no need to say “calculate” or “translate”.</p>
     <ul class="modes">
       <li class="mode">
-        <span class="mode-keys">on the move, one hand</span>
-        <span class="mode-what">say the phrase, and the message goes out to the
-          chat with punctuation and capitals, no “um” and “so”</span>
+        <span class="mode-name">Text</span>
+        <span class="mode-said"><i>You say</i>um so hi aida good morning thanks a lot</span>
+        <span class="mode-got"><i>In the field</i>Hi Aida, good morning! Thanks a lot.</span>
       </li>
       <li class="mode">
-        <span class="mode-keys">a thought longer than the screen</span>
-        <span class="mode-what">talk the way you think, five minutes if need be:
-          the polish mode turns it into text with paragraphs, not a wall</span>
+        <span class="mode-name">Calc</span>
+        <span class="mode-said"><i>You say</i>fifteen percent of two thousand four hundred</span>
+        <span class="mode-got"><i>In the field</i>360</span>
       </li>
       <li class="mode">
-        <span class="mode-keys">reply to an email</span>
-        <span class="mode-what">the “text from the field” key attaches the email
-          to your question: “say Thursday won’t work, offer Friday” — and the
-          finished reply is in the field</span>
+        <span class="mode-name">Translate</span>
+        <span class="mode-said"><i>You say</i>documents received, we will reply by friday</span>
+        <span class="mode-got"><i>In the field</i>Documentos recibidos, respondemos antes del viernes.</span>
       </li>
       <li class="mode">
-        <span class="mode-keys">do the sums in a chat</span>
-        <span class="mode-what">“fifteen percent of two thousand four hundred” —
-          360 in the field; no calculator to open</span>
-      </li>
-      <li class="mode">
-        <span class="mode-keys">write in a language you don’t speak</span>
-        <span class="mode-what">say it in English, and it lands in Spanish,
-          Russian or Chinese</span>
-      </li>
-      <li class="mode">
-        <span class="mode-keys">ask without leaving the chat</span>
-        <span class="mode-what">a rate, a date, what was decided about the
-          flight — the model looks it up on the web and answers right in the
-          field, with the sources kept in history</span>
-      </li>
-      <li class="mode">
-        <span class="mode-keys">names and terms</span>
-        <span class="mode-what">recognition keeps writing “en dee ay”? Fix it
-          once — it is NDA from then on</span>
+        <span class="mode-name">AI</span>
+        <span class="mode-said"><i>You say</i>reply that thursday does not work and suggest friday</span>
+        <span class="mode-got"><i>In the field</i>Unfortunately, Thursday does not work for me. Could we move the meeting to Friday?</span>
       </li>
     </ul>
-    <p class="note">In any app with a text field: messenger, mail, notes,
-      search, someone else’s form. Dictation, speech clean-up, the dictionary
-      and arithmetic run on the device itself, offline; answers and polish are
-      done by the model — and you don’t pay for it.</p>
+    <p class="note">A “sounds like → spelled as” dictionary fixes names and terms for good: correct “en dee ay” once and it is NDA from then on.</p>
   </div>
 </section>
 
-<!-- ============================================ what it is
-
-     Раздел появился 17 августа 2026. Записи в App Store ещё нет, значит
-     прочитать про приложение человеку негде: сайт говорил, что Scribla
-     умеет, но не говорил, чем она является. Здесь лежит то, что
-     в магазине лежало бы в описании. Стоит до «трёх шагов»: сперва
-     что это, потом как включить. -->
-<section id="what">
-  <div class="wrap">
-    <div class="sec-head">
-      <h2>A keyboard, not a separate window</h2>
-      <p class="lead">Scribla doesn’t ask you to come over, dictate, and carry
-        the result back. It takes the place of your ordinary keyboard: in a
-        messenger, an email, a note, a search box, someone else’s form. Tap the
-        scribe, speak, tap again, and the text is already in the field.</p>
-    </div>
-
-    <div class="mac-band">
-      <div>
-        <h3>Four modes, and the mode decides what lands in the field</h3>
-        <ul class="modes">
-          <li class="mode">
-            <span class="mode-keys">Text</span>
-            <span class="mode-what">what you said, with punctuation and capitals</span>
-          </li>
-          <li class="mode">
-            <span class="mode-keys">Math</span>
-            <span class="mode-what">the answer instead of the sum: say “fifteen
-              percent of two thousand four hundred” and 360 lands</span>
-          </li>
-          <li class="mode">
-            <span class="mode-keys">Translate</span>
-            <span class="mode-what">said in one language, written in another</span>
-          </li>
-          <li class="mode">
-            <span class="mode-keys">AI</span>
-            <span class="mode-what">an answer to your question, not a record of it:
-              the model searches the web and answers from what it finds</span>
-          </li>
-        </ul>
-        <p class="note">The modes sit in a row of their own and they are large:
-          you aim at them with your eyes, not blindly. The one you pick holds
-          until you change it, so there is nothing to say out loud — no
-          “calculate”, no “translate”. Next to them is the language key: it
-          shows which language we are listening in, and a tap moves to the next
-          one downloaded.</p>
-      </div>
-
-      <div class="get">
-        <h3>What you do once</h3>
-        <ul class="get-meta">
-          <li>System <b>iOS 17 and newer</b></li>
-          <li>Languages <b>EN, RU, ES, 中文</b></li>
-          <li>Model per language <b>137–326 MB</b></li>
-          <li>Price <b>nothing, AI included</b></li>
-        </ul>
-        <p class="note">No model ships inside the app: it downloads for the
-          languages you choose, and two of them do — the main one and the
-          additional one. The rest wait until you pick them and take up no
-          space. You also turn the keyboard on in iOS settings and give it Full
-          Access, or it cannot see the recognised text even from its own
-          app.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================ how -->
 <section id="how">
   <div class="wrap">
-    <div class="sec-head">
-      <h2>Three steps, and the first one is once</h2>
-    </div>
-    <div class="steps">
-      <div class="step">
-        <h3>Turn the keyboard on</h3>
-        <p>Settings → General → Keyboard → Keyboards → Scribla.
-          A minute, and you never come back to it.</p>
-      </div>
-      <div class="step">
-        <h3>Switch to Scribla and tap the scribe</h3>
-        <p>In any app with an input field: messenger, mail, notes, search.</p>
-      </div>
-      <div class="step">
+    <h2>Three steps, and the first one only once</h2>
+    <ol class="steps">
+      <li class="step">
+        <img src="../assets/img/app/main-en.webp" alt="" width="720" height="1558" loading="lazy">
+        <h3>Enable the keyboard</h3>
+        <p>Settings → General → Keyboard → Keyboards → Scribla. A minute, and you never come back to it.</p>
+      </li>
+      <li class="step">
+        <img src="../assets/img/app/dictation-en.webp" alt="" width="720" height="1558" loading="lazy">
+        <h3>Tap the scribe</h3>
+        <p>In any text field: messenger, mail, notes, search. The bearded scribe is the record button on the keyboard.</p>
+      </li>
+      <li class="step">
+        <img src="../assets/img/app/wordpanel-en.webp" alt="" width="720" height="1558" loading="lazy">
         <h3>Speak</h3>
-        <p>The text lands in the field by itself. If a word came out wrong,
-          the edit strip is right there — you fix the word, not the sentence.</p>
-      </div>
-    </div>
+        <p>The text lands in the field by itself. Misheard a word? The edit bar is right there: change one word, not the whole phrase.</p>
+      </li>
+    </ol>
   </div>
 </section>
 
-<!-- ============================================ what it does -->
-<section id="can">
-  <div class="wrap">
-    <div class="sec-head">
-      <h2>Text you don’t have to tidy up</h2>
-      <p class="lead">Voice input usually hands you a stream of words with no
-        punctuation. Scribla hands you something you can send.</p>
-    </div>
-    <div class="cards">
-
-      <div class="card">
-        <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3.2c1.9 1.5 2.9 3.6 2.9 6.3 0 2-.5 3.7-1.4 5.2H10.5c-.9-1.5-1.4-3.2-1.4-5.2 0-2.7 1-4.8 2.9-6.3z"/><path d="M12 14.7V21"/><path d="M6.4 10.6a5.6 5.6 0 0 0 2.4 4.3M17.6 10.6a5.6 5.6 0 0 1-2.4 4.3"/></svg></div>
-        <h3>Dictation on the device</h3>
-        <p>English, Russian, Spanish and Chinese. Recognition runs inside the
-          device itself — the phone or the Mac — which is also why it works
-          with no connection.</p>
-      </div>
-
-      <div class="card">
-        <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 17.5c2.8.6 5.2.3 7.2-.9 2-1.2 3.4-2.9 4.2-5"/><path d="M8.2 13.4 19 3.4c.6-.5 1.4-.5 1.9.1.5.6.4 1.4-.1 1.9L10.6 15.6"/><path d="M4.6 20.4h6"/></svg></div>
-        <h3>Cleaning up speech</h3>
-        <p>Hesitations, stumbles and repeats drop out, and punctuation and
-          capitals follow the rules of the language rather than guesswork.
-          Real words are not cut blindly: “actually”, “right”, “so” stay
-          where they carry meaning.</p>
-        <div class="ex">um so anna good morning thanks a lot
-          <b>Anna, good morning! Thanks a lot.</b></div>
-      </div>
-
-      <div class="card">
-        <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4.5 5.2c2.6-1.1 5.1-1.1 7.5 0v13.6c-2.4-1.1-4.9-1.1-7.5 0z"/><path d="M19.5 5.2c-2.6-1.1-5.1-1.1-7.5 0v13.6c2.4-1.1 4.9-1.1 7.5 0z"/><path d="M12 5.2v13.6"/></svg></div>
-        <h3>A “heard&nbsp;→&nbsp;written” dictionary</h3>
-        <p>Names, terms and abbreviations break the same way every time.
-          Write it once the way it should be, and it stays that way. It also
-          fills up from the keyboard: the edit strip has a “remember the
-          spelling” key.</p>
-        <div class="ex">send the en dee ay by friday
-          <b>Send the NDA by Friday.</b></div>
-      </div>
-
-      <div class="card">
-        <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M19 5 5 19"/><circle cx="7.3" cy="7.3" r="2.6"/><circle cx="16.7" cy="16.7" r="2.6"/></svg></div>
-        <h3>Arithmetic and percentages</h3>
-        <p>Counted by the phone itself, no connection needed. Currencies go by
-          the Russian Central Bank rate, and that part does need the network.</p>
-        <div class="ex">fifteen percent of two thousand four hundred
-          <b>360</b></div>
-      </div>
-
-      <div class="card">
-        <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3.4 8.6h7.2M6.6 5.6v3M8.4 8.6c-.5 4-2.3 6.6-5 7.9M6 11.8c1 1.9 2.6 3.2 4.6 3.9"/><path d="m12.6 20 4-9.4 4 9.4M14.2 16.6h4.8"/></svg></div>
-        <h3>Translation</h3>
-        <p>Speak Russian and English comes out in the field. Useful when
-          thinking in the other language takes longer than saying it in yours.
-          Which language it goes into is asked by the same key when you hold
-          it: there are four.</p>
-        <div class="ex" lang="ru">документы получены, ответим до пятницы
-          <b lang="en">The documents have been received, we will reply by Friday.</b></div>
-      </div>
-
-      <div class="card">
-        <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20.3 3.7c-3.4.5-6.2 2-8.4 4.6-1.7 2-2.7 4.3-3 6.9l3.6 3.6c2.6-.3 4.9-1.3 6.9-3 2.6-2.2 4.1-5 4.6-8.4"/><path d="M3.6 20.4 8.9 15.1"/><path d="M4.4 12.5 8 13.2M11.5 16l.7 3.6"/></svg></div>
-        <h3>Answers from a model</h3>
-        <p>Answer a message instead of only recording your own: ask out loud
-          and the reply lands in the field, built from pages found on the web
-          just then. The same model turns a long thought said out loud into
-          written text with paragraphs. <a href="#ai">What the model does</a>
-          is set out below.</p>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ============================================ the AI modes
-
-     Added 18 August 2026. The page used to mention AI in four scattered
-     lines — one row in the mode list, one card, the caveat in privacy
-     and a question at the end — so someone who came for replies and
-     polish never found them in one place, although together they are
-     half of Scribla.
-
-     The “what leaves the device” box sits right here, not only in
-     privacy: praising the AI modes and staying quiet about where the
-     text goes is the same thing as hiding it. The caveat down in
-     privacy stays where it is — here we describe the machinery, there
-     we make the promise. -->
-<section id="ai">
-  <div class="wrap">
-    <div class="sec-head">
-      <h2>You asked — the answer is in the field, not the question</h2>
-      <p class="lead">AI mode is not a separate chat you leave for and come
-        back from with something in the clipboard. Same scribe, same keyboard:
-        say the question out loud and the answer lands right in the email,
-        message or note you were already in.</p>
-    </div>
-
-    <div class="mac-band">
-      <div>
-        <ul class="modes">
-          <li class="mode">
-            <span class="mode-keys">a question out loud</span>
-            <span class="mode-what">before answering we search the web and answer
-              from the pages we found — so a rate, a date or yesterday’s news
-              come out current instead of coming out of the model’s memory.
-              Where the answer came from is visible in the app’s history:
-              a line saying “Answered from”, with links</span>
-          </li>
-          <li class="mode">
-            <span class="mode-keys">a follow-up</span>
-            <span class="mode-what">“shorter”, “in Russian”, “no, I meant Kazan” —
-              the answer is rewritten in place, no need to ask again. Reshaping
-              the wording needs no connection; if the follow-up asks for new
-              facts (“and in euros?”), we search again</span>
-          </li>
-          <li class="mode">
-            <span class="mode-keys">the text in the field</span>
-            <span class="mode-what">its own key attaches whatever is already
-              written in the field to your question: reply to an email, make
-              sense of someone’s message, carry on a paragraph</span>
-          </li>
-          <li class="mode">
-            <span class="mode-keys">polish</span>
-            <span class="mode-what">a long thought said out loud becomes written
-              text: paragraphs, agreement, no stumbles. The model matches the
-              markup to wherever the text is going — asterisks and hashes for
-              Obsidian, plain text for an ordinary field</span>
-          </li>
-          <li class="mode">
-            <span class="mode-keys">emoji on a long press</span>
-            <span class="mode-what">the model places them by the sense of the
-              whole phrase, not by the last word</span>
-          </li>
-        </ul>
-        <p class="note">On the Mac these are the same modes and the same answers,
-          called by keys instead: <kbd>⌘</kbd><kbd>⌥</kbd> on the right for
-          an answer, the same two plus <kbd>/</kbd> for a translation. Nothing
-          to learn twice.</p>
-      </div>
-
-      <div class="get">
-        <h3>What leaves the device</h3>
-        <ul class="get-meta">
-          <li>Audio <b>never</b></li>
-          <li>The question text <b>in the AI modes</b></li>
-          <li>The route <b>through scribla.io</b></li>
-          <li>Your own key <b>OpenAI, DeepSeek</b></li>
-        </ul>
-        <p class="note">The built-in service’s key lives on our server, not
-          inside the app: from inside the app anyone who wants it can take it.
-          We store neither the question nor the answer — the service record
-          gets a length and a response code. With your own key the text goes
-          to the service you picked directly, past us.</p>
-        <p class="note">The AI modes are on from the first launch, and the
-          walkthrough says so right above the switch. You can turn them off
-          there, or later in the settings.</p>
-      </div>
-    </div>
-
-    <p class="lead ai-free">No subscription, no account, no card: the AI modes
-      are included, and the bill for the model comes to us, not to you.</p>
-    <p class="note">How long it stays that way we honestly cannot say: first we
-      need to find out whether Scribla is of any use to anyone besides us.
-      If something ever does become paid, we will say so in advance rather than
-      on the day it is switched on.</p>
-    <p class="note">Everything else has nothing to do with the model at all:
-      recognition, speech cleanup, the replacement dictionary and arithmetic are
-      done by the device itself and need no connection. The model is called only
-      where nothing else will do — which is why Scribla keeps writing on
-      a plane.</p>
-  </div>
-</section>
-
-<!-- ============================================ download
-
-     The one place on the page where the app can be had, with both answers
-     side by side: the Mac build is an image, the phone build is the
-     App Store badge. Before, the image
-     lived in the Mac section and the email in its own band near the end;
-     someone looking for the word “download” found it only on the first
-     screen. The terracotta band is the one the email used to have: the
-     strongest dressing on the page goes to the place where people decide. -->
-<section id="download">
-  <div class="wrap">
-    <div class="dl">
-      <div class="dl-head">
-        <h2>Download Scribla</h2>
-        <p class="lead">Both versions are out. On the Mac — an image built
-          and notarised by Apple; on the iPhone — the App&nbsp;Store.
-          Free on both.</p>
-      </div>
-      <div class="dl-cards">
-        <div class="get">
-          <h3>On the Mac — now</h3>
-          <a class="btn btn-primary" href="/download/Scribla-1.0.dmg">Download for Mac</a>
-          <ul class="get-meta">
-            <li>Version <b>1.0</b></li>
-            <li>Size <b>24.7 MB</b></li>
-            <li>System <b>macOS 14 and later</b></li>
-            <li>Chip <b>Apple Silicon and Intel</b></li>
-          </ul>
-          <p class="note"><span class="sha">SHA-256 checksum of the image: <code>21d193c0d73ece315edb727280fd067b8185700b46a2a1cd44bed7826f274c61</code></span> Opens on a double-click, no warnings. Hold the right ⌘
-            and speak — <a href="#mac">how it works on the Mac</a>, below.</p>
-        </div>
-        <div class="get" id="notify">
-          <h3>On the iPhone — now too</h3>
-          <!-- Официальный значок Apple. SVG лежит у нас в assets/img:
-               хотлинк на CDN Apple формально не обещан. Размер — пропорция
-               исходных 120×40, меньше 40 px по высоте нельзя по их же
-               Marketing Guidelines. -->
-          <a href="https://apps.apple.com/app/id6800086470">
-            <img src="../assets/img/appstore-badge-en-us.svg" alt="Download on the App Store"
-                 width="156" height="52">
-          </a>
-          <ul class="get-meta">
-            <li>Version <b>1.2</b></li>
-            <li>System <b>iOS 17 and later</b></li>
-          </ul>
-          <p class="note">Opens right in the App&nbsp;Store. The app walks you
-            through setup; how it all works on the phone —
-            <a href="#keyboard">on the keyboard</a> and
-            <a href="#app">in the app</a>, below.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================ for the Mac
-
-     Раздел про мак стоит сразу после «что умеет», а не в конце: сюда
-     приходят за устройством, в «Скачать» — за файлом. -->
 <section id="mac">
-  <div class="wrap">
-    <div class="sec-head">
-      <h2>On the Mac it’s the same thing, on a key</h2>
-      <p class="lead">A separate app: an icon in the menu bar and a window
-        with three panes. Hold the right ⌘, speak, and the text lands wherever
-        the cursor is, in any window. Nothing to switch to.</p>
-    </div>
-
-    <div class="mac-band">
-      <div>
-        <ul class="modes">
-          <li class="mode">
-            <span class="mode-keys">hold the right <kbd>⌘</kbd></span>
-            <span class="mode-what">what you said</span>
-          </li>
-          <li class="mode">
-            <span class="mode-keys">hold the right <kbd>⌘</kbd> <kbd>⌥</kbd></span>
-            <span class="mode-what">a reply to what you said</span>
-          </li>
-          <li class="mode">
-            <span class="mode-keys">the same, then press <kbd>/</kbd></span>
-            <span class="mode-what">a translation of it</span>
-          </li>
-        </ul>
-        <p class="note">Modifier keys rather than a letter combination: you can
-          dictate mid-sentence, one-handed and without looking. The right ⌘
-          stays an ordinary modifier — if you were reaching for a shortcut,
-          the recording is dropped without a trace and ⌘C goes through
-          untouched. The mode can change mid-phrase: start talking, add ⌥,
-          and the same words go out as a question.</p>
-        <p class="note">Dictation and the dictionary work offline. Replies and
-          translation are computed by a model elsewhere — the same <a href="#ai">AI modes</a> as
-          on the phone, and they switch off in the same place.</p>
-      </div>
-
-      <div class="get">
-        <a class="btn btn-primary" href="/download/Scribla-1.0.dmg">Download for Mac</a>
-        <ul class="get-meta">
-          <li>Version <b>1.0</b></li>
-          <li>Size <b>24.7 MB</b></li>
-          <li>System <b>macOS 14 and later</b></li>
-          <li>Chip <b>Apple Silicon and Intel</b></li>
-        </ul>
-        <p class="note">The image is signed and notarised by Apple: it opens on
-          a double-click, with no warnings. On first launch the app asks for the
-          microphone and for Accessibility — the second is how it hears your key
-          and inserts the finished text. Nothing else.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================ privacy -->
-<section id="privacy" class="privacy">
-  <div class="wrap">
+  <div class="wrap mac-grid">
     <div>
-      <h2>The audio never leaves</h2>
-      <p class="lead">There is simply nowhere to send a recording — that is
-        how the app is built, not a line of small print in a policy.</p>
+      <h2>On the Mac, the same thing with one key</h2>
+      <p class="lead">An icon in the menu bar. Hold the right ⌘ and speak: the text lands at the cursor in any window. ⌘ + ⌥ answers what you said; add / for a translation.</p>
       <ul class="facts">
-        <li>Recognition happens <b>inside the device itself</b> — the phone or
-          the Mac. Recordings are not sent to servers and are not stored
-          anywhere.</li>
-        <li>The keyboard <b>never goes online</b> and does not read what you
-          type on ordinary keys.</li>
-        <li>Full Access is needed for exactly one thing — to pick up the
-          recognised text from the shared container, where the Scribla app
-          itself put it. <b>iOS offers no other way.</b></li>
-        <li>The orange dot is on because the microphone is opened ahead of
-          time: iOS will not start a recording from the background.
-          <b>Until you tap the button, no audio goes anywhere.</b></li>
-        <li class="caveat">One caveat, and only one: <b>audio never leaves,
-          but text does in the <a href="#ai">AI modes</a></b>. Those modes are on from the first
-          launch. Replies and polish are computed by a model elsewhere, and
-          they do not work offline. The intro says what goes out, directly
-          above the switch. You can turn them off there, or later in the
-          settings.</li>
+        <li>The image is signed and notarized by Apple: opens with a double click</li>
+        <li>Apple Silicon and Intel, macOS 14 or later</li>
+        <li>Dictation and dictionary work offline; answers and translation use the model</li>
       </ul>
-      <p class="note"><a href="../privacy.html#en">The full privacy policy</a></p>
+      <a class="btn btn-primary" href="/download/Scribla-1.0.dmg">Download for Mac</a>
+      <p class="sha">SHA-256 of the image: <code>21d193c0d73ece315edb727280fd067b8185700b46a2a1cd44bed7826f274c61</code></p>
     </div>
-    <img src="../assets/brand/scribla-dyak-writing.svg" alt="" width="240" height="240">
+    <div class="mac-visual"><picture class="hud-rec"><source srcset="../assets/img/app/mac-hud-rec-dark.webp" media="(prefers-color-scheme: dark)"><img src="../assets/img/app/mac-hud-rec-light.webp" alt="The Scribla pill on the Mac while dictating" width="620" height="120" loading="lazy"></picture><picture class="hud-answer"><source srcset="../assets/img/app/mac-hud-answer-dark.webp" media="(prefers-color-scheme: dark)"><img src="../assets/img/app/mac-hud-answer-light.webp" alt="" width="1010" height="320" loading="lazy"></picture></div>
   </div>
 </section>
 
-<!-- ============================================ on the keyboard
-
-     Список, а не карточки: слева клавиша, справа то, что она делает, —
-     та же пара, что в маковом разделе, и класс переиспользован оттуда.
-     Порядок по тому, как клавиши стоят на экране. -->
-<section id="keyboard">
+<section id="privacy">
   <div class="wrap">
-    <div class="sec-head">
-      <h2>What else is on the keyboard</h2>
-      <p class="lead">There aren’t many keys, and each one covers the case that
-        would otherwise send you off to another keyboard and out of sight of
-        the field.</p>
-    </div>
-    <ul class="modes">
-      <li class="mode">
-        <span class="mode-keys">the scribe, the record key</span>
-        <span class="mode-what">tap, speak, tap again. The ring around him says
-          whether we are listening or already working it out, and the badge
-          says which mode is on</span>
-      </li>
-      <li class="mode">
-        <span class="mode-keys">the edit strip</span>
-        <span class="mode-what">it comes up above the keys by itself: first the
-          sentences you spoke, tap a sentence and it opens into words, tap a
-          word and you get its cases, number and capitalisation. One wrong form
-          is no longer a reason to retype the phrase</span>
-      </li>
-      <li class="mode">
-        <span class="mode-keys">“remember the spelling”</span>
-        <span class="mode-what">the word goes from the edit strip into your own
-          dictionary and is written your way from then on</span>
-      </li>
-      <li class="mode">
-        <span class="mode-keys">the row of marks and digits</span>
-        <span class="mode-what">without leaving for another layout. The row is
-          deliberately shorter than the others: commas and periods the model
-          places itself, while question and exclamation marks depend on
-          intonation and come out worse, so those you add by hand</span>
-      </li>
-      <li class="mode">
-        <span class="mode-keys">the space bar</span>
-        <span class="mode-what">hold it and slide: sideways the cursor walks
-          letter by letter, up and down it moves whole words. You can’t land a
-          finger between two letters; this way you can</span>
-      </li>
-      <li class="mode">
-        <span class="mode-keys">the two arrows</span>
-        <span class="mode-what">the left one removes the whole last insertion,
-          the right one brings it back. Hold them and it goes one sentence at a
-          time: the one the cursor sits in leaves whole, with no holding down
-          backspace</span>
-      </li>
-      <li class="mode">
-        <span class="mode-keys">emoji</span>
-        <span class="mode-what">our own panel: a keyboard extension cannot
-          summon the system one. Hold the key and the model places emoji by
-          meaning across the whole phrase you just spoke</span>
-      </li>
-      <li class="mode">
-        <span class="mode-keys">ABC and АБВ</span>
-        <span class="mode-what">ordinary letters, to finish a word by hand
-          without leaving the scribe</span>
-      </li>
-      <li class="mode">
-        <span class="mode-keys">the arrow leaving a square</span>
-        <span class="mode-what">your apps as tiles with their real icons: tap
-          one and you are there, and the field stays open. The set is assembled
-          in settings beforehand, because iOS tells no one which apps are open
-          right now</span>
-      </li>
-      <li class="mode">
-        <span class="mode-keys">the gear</span>
-        <span class="mode-what">Scribla settings</span>
-      </li>
-    </ul>
-    <p class="note">There are places where no third-party keyboard appears at
-      all: banks and government apps block them entirely, and no one can get
-      around that. For those, dictate on Scribla’s own main screen — the text
-      lands in the clipboard and the buttons below take you to the app, where a
-      long press pastes it.</p>
-  </div>
-</section>
-
-<!-- ============================================ inside the app
-
-     Клавиатура — половина Scribla. Без второй половины непонятно, почему
-     приложение нельзя смахивать и где живут настройки. -->
-<section id="app">
-  <div class="wrap">
-    <div class="sec-head">
-      <h2>The app listens, the keyboard writes</h2>
-      <p class="lead">Recognition is done by the app, not the keyboard: iOS
-        doesn’t allow an extension that much. So don’t swipe Scribla away in
-        the app switcher — swipe it away and the scribe falls asleep, and your
-        first tap goes on waking him. Everything else lives in the app’s
-        settings.</p>
-    </div>
-    <ul class="facts">
-      <li><b>Languages.</b> A pair works at a time: the main one and the
-        additional one. The language key moves between them, translation runs
-        between them, and the “you seem to have switched language” hint compares
-        exactly this pair.</li>
-      <li><b>Your own dictionary.</b> On the left, what gets heard; on the
-        right, what should be written. Case on the left doesn’t matter.</li>
-      <li><b>Polish.</b> It breaks a wall of dictation into paragraphs, fixes
-        agreement, removes stumbles. A model elsewhere computes it, as it does
-        the answers in AI mode: without a connection neither works, and both
-        switch off in one place.</li>
-      <li><b>Markup delivery.</b> Where the text is going: asterisks and hashes
-        for Obsidian, Notion and Bear; an underline instead of bold for
-        ordinary fields, which have no typeface at all; plain text for
-        anywhere.</li>
-      <li><b>Translation.</b> The system downloads language packs only while
-        the app is open — from a keyboard it won’t even show the prompt. With
-        the pack, the phone translates by itself and offline; without it, the
-        translation goes over the network.</li>
-      <li><b>History.</b> The text only, and only the latest entries. Audio is
-        never stored: it lives in memory and gets overwritten by the next
-        take.</li>
-      <li><b>Your numbers.</b> How many words you said and how much time that
-        saved. It is an estimate rather than a measurement, and the whole
-        arithmetic is shown right there, including what doesn’t count.</li>
-      <li><b>Microphone.</b> When to release it is yours to set, from five
-        minutes to never. Auto-stop on silence is a separate switch, with the
-        limit for a single recording next to it.</li>
-      <li><b>Diagnostics.</b> Service notes about the app’s own work: what you
-        pressed, where it stumbled. No audio, none of your words, and it
-        switches off.</li>
-    </ul>
-    <p class="note">There is a longer walkthrough inside the app — “How it
-      works”: what sits where on the keyboard, and why it was done that
-      way.</p>
-  </div>
-</section>
-
-<!-- ============================================ releases -->
-<section id="versions">
-  <div class="wrap">
-    <div class="sec-head">
-      <h2>What’s here and what’s next</h2>
-    </div>
-    <div class="releases">
-      <div class="rel">
-        <div class="rel-v">1.0<span class="rel-d">for Mac</span></div>
-        <div>
-          <span class="status">Out</span>
-          <ul>
-            <li>Dictation in any window on the right ⌘; the text lands under the cursor</li>
-            <li>Replies and translation on the same keys, with the mode switchable mid-phrase</li>
-            <li>Your own dictionary, and a hint to the model about the app receiving the text:
-              mail as a letter, a messenger as a line of chat</li>
-            <li>One app for Apple Silicon and Intel</li>
-          </ul>
-        </div>
+    <h2>The audio never leaves</h2>
+    <div class="privacy-grid">
+      <div class="fact">
+        <h3>Recognition on the device</h3>
+        <p>Your phone or Mac does the listening. The recording never leaves it, so there is nothing for a server to keep.</p>
       </div>
-      <div class="rel">
-        <div class="rel-v">1.2<span class="rel-d">for iPhone</span></div>
-        <div>
-          <span class="status">Out in the App&nbsp;Store</span>
-          <ul>
-            <li>Four recognition languages on the device; the pair is chosen by slot — main and additional</li>
-            <li>Translation into any of the four: hold the Translate key and pick the language</li>
-            <li>The edit strip: sentences, words, forms — and “remember the spelling” straight from there</li>
-            <li>Switching to another app from a grid of tiles, with real icons</li>
-            <li>An app that blocks the keyboard: the text lands in the clipboard, and the buttons below lead there</li>
-            <li>An AI answer is edited by what you say next: “shorter”, “in Russian”, “no, I meant Kazan”</li>
-            <li>A six-page introduction: the dictionary, the microphone and the keyboard, step by step</li>
-          </ul>
-        </div>
+      <div class="fact">
+        <h3>What leaves in AI modes</h3>
+        <p>Only the text of your question, to scribla.io and on to the model. Neither question nor answer is stored. The modes switch off in Settings.</p>
+      </div>
+      <div class="fact">
+        <h3>No account, no ads</h3>
+        <p>No sign-up, no card, no trackers. No session recording on this site either.</p>
+      </div>
+    </div>
+    <p class="note"><a href="../privacy.html#en">Full privacy policy</a></p>
+  </div>
+</section>
+
+<section id="download" class="download">
+  <div class="wrap">
+    <h2>Download Scribla</h2>
+    <p class="lead">Free on both.</p>
+    <div class="dl-grid">
+      <div class="dl-card">
+        <h3>iPhone</h3>
+        <a class="dl-badge" href="https://apps.apple.com/app/id6800086470"><img src="../assets/img/appstore-badge-en-us.svg" alt="Download on the App Store" width="156" height="52"></a>
+        <p class="dl-meta">Version 1.2 · iOS 17 or later</p>
+      </div>
+      <div class="dl-card">
+        <h3>Mac</h3>
+        <a class="btn btn-primary" href="/download/Scribla-1.0.dmg">Download for Mac</a>
+        <p class="dl-meta">Version 1.0 · 24.7 MB · macOS 14 or later</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============================================ feedback -->
+<section id="faq">
+  <div class="wrap">
+    <h2>Questions</h2>
+    <div class="faq">
+<details>
+        <summary>What does it cost?</summary>
+        <p>Nothing at the moment — everything is open, the AI modes included:
+          answers, web search and polish. The key is ours and the bill for the
+          model comes to us; no subscription, no account, no card. Whether
+          anything becomes paid will be decided later and on the evidence:
+          first it has to be clear that Scribla is useful to someone besides
+          us. If that day comes, we will say so in advance rather than on the
+          morning it happens.</p>
+      </details>
+<details>
+        <summary>How is this better than the built-in dictation?</summary>
+        <p>The built-in one writes for you too. On top of that Scribla drops
+          the “ums” and repeats, remembers your own dictionary of names and
+          terms, does arithmetic, translates and answers questions — all of it
+          in the field you are in, without leaving for another app. Four
+          languages are recognised on the device itself, offline included,
+          and on the Mac it hears its key in any window. And it has a scribe.</p>
+      </details>
+<details>
+        <summary>The keyboard asks for Full Access — is that safe?</summary>
+        <p>Full Access is needed for exactly one thing: to read the recognised
+          text from the shared container, where the Scribla app itself put it.
+          iOS offers no other way to get text into a keyboard. The keyboard
+          never goes online and does not read what you type on ordinary keys.</p>
+      </details>
+<details>
+        <summary>How does the Mac version differ from the phone one?</summary>
+        <p>In how you call it. On the phone Scribla is a keyboard: you switch
+          to it and tap the scribe. On the Mac it is an app in the menu bar
+          that hears the right ⌘ in any window, so there is nothing to switch
+          to. Recognition, speech cleanup, the dictionary and the AI modes are
+          the same. There are no emoji or word-by-word edit panels on the Mac:
+          you have a real keyboard there.</p>
+      <p>It does not check for updates on its own: a new version turns up here.</p>
+      </details>
+<details>
+        <summary>Do I need a connection?</summary>
+        <p>Dictation, speech cleanup, the replacement dictionary and arithmetic
+          run on the device. So does translation, once the language pack is
+          downloaded; without it, translation goes over the network. That leaves
+          currency rates, AI answers and text polish.</p>
+      </details>
+<details>
+        <summary>Something isn’t working</summary>
+        <p>Common breakages — microphone, Full Access, an empty field — are
+          collected on the <a href="../support.html#en">support page</a>. If yours
+          isn’t there, write: <a href="mailto:dev@scribla.io">dev@scribla.io</a>.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<div class="contact">
 <section id="feedback">
   <div class="wrap">
     <div class="sec-head">
@@ -909,8 +351,6 @@
     </div>
   </div>
 </section>
-
-<!-- ============================================ support -->
 <section id="support">
   <div class="wrap">
     <div class="sec-head">
@@ -943,177 +383,21 @@
     </div>
   </div>
 </section>
-
-<!-- ============================================ faq -->
-<section id="faq">
-  <div class="wrap">
-    <div class="sec-head">
-      <h2>Asked most often</h2>
-    </div>
-    <div class="faq">
-      <details>
-        <summary>What does it cost?</summary>
-        <p>Nothing at the moment — everything is open, the AI modes included:
-          answers, web search and polish. The key is ours and the bill for the
-          model comes to us; no subscription, no account, no card. Whether
-          anything becomes paid will be decided later and on the evidence:
-          first it has to be clear that Scribla is useful to someone besides
-          us. If that day comes, we will say so in advance rather than on the
-          morning it happens.</p>
-      </details>
-      <details>
-        <summary>How is this better than the built-in dictation?</summary>
-        <p>The built-in one writes for you too. On top of that Scribla drops
-          the “ums” and repeats, remembers your own dictionary of names and
-          terms, does arithmetic, translates and answers questions — all of it
-          in the field you are in, without leaving for another app. Four
-          languages are recognised on the device itself, offline included,
-          and on the Mac it hears its key in any window. And it has a scribe.</p>
-      </details>
-      <details>
-        <summary>Which model answers, and can I bring my own?</summary>
-        <p>By default the built-in service answers, and the route is this: the
-          question goes to our server at scribla.io, from there we search the
-          web and ask the model on our key. The key sits on the server, not
-          inside the app — from inside the app anyone who wants it can take it.
-          We store neither the question nor the answer. If you have your own
-          OpenAI or DeepSeek key, put it in the settings: the text will then go
-          to them directly, past us.</p>
-      </details>
-      <details>
-        <summary>Can I use it with no AI at all?</summary>
-        <p>Yes. The AI modes are on from the first launch, and the walkthrough
-          says so right above the switch — you can decline there, or later in
-          the settings. What remains is dictation, speech cleanup, the
-          replacement dictionary, arithmetic and translation with the language
-          pack downloaded: all of it computed by the device itself, with no
-          connection needed.</p>
-      </details>
-      <details>
-        <summary>The keyboard asks for Full Access — is that safe?</summary>
-        <p>Full Access is needed for exactly one thing: to read the recognised
-          text from the shared container, where the Scribla app itself put it.
-          iOS offers no other way to get text into a keyboard. The keyboard
-          never goes online and does not read what you type on ordinary keys.</p>
-      </details>
-      <details>
-        <summary>How does the Mac version differ from the phone one?</summary>
-        <p>In how you call it. On the phone Scribla is a keyboard: you switch
-          to it and tap the scribe. On the Mac it is an app in the menu bar
-          that hears the right ⌘ in any window, so there is nothing to switch
-          to. Recognition, speech cleanup, the dictionary and the AI modes are
-          the same. There are no emoji or word-by-word edit panels on the Mac:
-          you have a real keyboard there.</p>
-      <p>It does not check for updates on its own: a new version turns up here.</p>
-      </details>
-      <details>
-        <summary>Why does Scribla on the Mac want Accessibility?</summary>
-        <p>For exactly two things: to hear that you are holding the key, and to
-          insert the finished text where the cursor is. macOS offers no other
-          way. The app does not read your screen and goes nowhere with that
-          permission. If the switch is on and Scribla still does not hear the
-          key, remove the row with “−” in the list and launch the app again:
-          the system’s record was made under an earlier signature, and toggling
-          it off and on does not fix that.</p>
-      </details>
-      <details>
-        <summary>Why is the orange dot on?</summary>
-        <p>The microphone is opened ahead of time: iOS does not allow starting
-          a recording from the background, and without an open microphone a tap
-          could not begin dictation. Until you tap, no audio goes anywhere and
-          nothing is stored. When to release the microphone is your setting —
-          from five minutes to never.</p>
-      </details>
-      <details>
-        <summary>Do I need a connection?</summary>
-        <p>Dictation, speech cleanup, the replacement dictionary and arithmetic
-          run on the device. So does translation, once the language pack is
-          downloaded; without it, translation goes over the network. That leaves
-          currency rates, AI answers and text polish.</p>
-      </details>
-      <details>
-        <summary>How much space does it take?</summary>
-        <p>A recognition model weighs between 137 and 326 MB, depending on the
-          language. None ships inside the app: it downloads for the languages
-          you choose, and two of them do — the main one and the additional one.
-          The rest take up nothing until you pick them.</p>
-      </details>
-      <details>
-        <summary>My bank’s app doesn’t list Scribla among the keyboards</summary>
-        <p>Banks and government apps block third-party keyboards entirely, not
-          just ours. That is their right, and no one can get around it. Dictate
-          on Scribla’s own main screen instead: the text lands in the clipboard
-          by itself, and the buttons below take you to the app, where a long
-          press pastes it.</p>
-      </details>
-      <details>
-        <summary>Can I support the work?</summary>
-        <p>Yes — <a href="#support">just above</a>, with any card. For a long
-          time there was no honest way to say that: the only channel ran
-          through the Russian instant-payment system, which works from Russian
-          banks and nowhere else. There is a second one now. Writing in above
-          and telling us what is broken is still worth more, and it costs
-          nothing.</p>
-      </details>
-      <details>
-        <summary>Something isn’t working</summary>
-        <p>Common breakages — microphone, Full Access, an empty field — are
-          collected on the <a href="../support.html#en">support page</a>. If yours
-          isn’t there, write: <a href="mailto:dev@scribla.io">dev@scribla.io</a>.</p>
-      </details>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================ the last call -->
-<section id="go" class="go">
-  <div class="wrap">
-    <div class="sec-head">
-      <h2>Try it — it costs nothing</h2>
-      <p class="lead">On the iPhone and the Mac alike — download today,
-        free and without ads.</p>
-    </div>
-    <div class="cta">
-      <a class="btn btn-primary" href="https://apps.apple.com/app/id6800086470">Get it for iPhone</a>
-      <a class="btn btn-ghost" href="/download/Scribla-1.0.dmg">Download for Mac</a>
-    </div>
-  </div>
-</section>
+</div>
 
 </main>
 
 <footer>
   <div class="wrap">
-    <nav class="f-links" aria-label="Sections and documents">
-      <a href="#why">Where it helps</a>
-      <a href="#what">What it is</a>
-      <a href="#can">What it does</a>
-      <a href="#ai">AI modes</a>
-      <a href="#keyboard">On the keyboard</a>
-      <a href="#app">Inside the app</a>
-      <a href="#mac">For Mac</a>
-      <a href="#privacy">Privacy</a>
-      <a href="#download">Download</a>
-      <a href="#versions">Releases</a>
+    <nav class="f-links" aria-label="Scribla">
+      <a href="../privacy.html#en">Privacy policy</a>
+      <a href="../support.html">Help</a>
       <a href="#feedback">Write in</a>
       <a href="#support">Support</a>
-      <a href="../privacy.html#en">Privacy policy</a>
-      <!-- Не «Support»: этим словом уже назван блок переводов выше,
-           а здесь страница разбора поломок. Два одинаковых слова
-           в одном подвале ведут в разные места и путают. -->
-      <a href="../support.html#en">Help</a>
-      <a href="/" hreflang="ru">Русский</a>
-      <a href="/es/" hreflang="es">Español</a>
-      <a href="/zh/" hreflang="zh-Hans">中文</a>
     </nav>
-    <div class="f-about">
-      <p>Scribla — dictation for iPhone and Mac.
-        Made by a small team.</p>
-      <p>© 2026 <a href="mailto:dev@scribla.io">dev@scribla.io</a></p>
-    </div>
+    <p class="f-about">Scribla is dictation for iPhone and Mac, made by a small team. © 2026 <a href="mailto:dev@scribla.io">dev@scribla.io</a></p>
   </div>
 </footer>
-
 <script src="../assets/site.js"></script>
 </body>
 </html>

@@ -1,9 +1,19 @@
 @import "fonts.css";
 
 /* ============================================================
-   Scribla — палитра из фирменного стиля. Пять цветов Дьяка плюс
-   служебные оттенки; больше пяти в самом знаке нельзя, но фону
-   и разделителям нужны полутона.
+   Scribla — сайт. Переработан 22 августа 2026.
+
+   Что изменилось и почему. Прежняя страница была рассказом на 24 экрана
+   с терракотовой картой на весь первый экран, рисованным телефоном
+   и роликом с пером; на замере 96 % визитов были короче 30 секунд.
+   Теперь — девять разделов, продукт показан настоящими экранами
+   и записью экрана, терракота осталась только кнопке и одной полосе
+   «Скачать». Палитра та же, что в приложении и на карточке в магазине:
+   менять её нельзя, три поверхности продукта должны выглядеть одной
+   вещью. Антиква — только в строке «сказали» перед примерами.
+
+   Подписи и приглушённые тона считаны на контраст: 4.5:1 на пергаменте,
+   карточке и утопленном фоне одновременно.
    ============================================================ */
 
 :root {
@@ -11,50 +21,41 @@
   --terra-dark: #8C3F1B;
   --terra-lite: #E78E58;
   --ink:        #241A15;
-  --beard:      #C89A6E;
-  --face:       #E4C6A2;
   --parch:      #F5EDE3;
-  --parch-2:    #E8D9C5;
   --paper:      #FBF6F0;
 
-  --bg:        var(--parch);
-  --bg-card:   var(--paper);
-  --bg-sunk:   #E9DBC7;
+  --bg:        var(--paper);
+  --bg-alt:    var(--parch);
+  --bg-card:   #FFFFFF;
   --text:      var(--ink);
-
-  /* Приглушённые тона считаны, а не подобраны на глаз. Прежние
-     #6B5A4E и #92806F давали 3.0–3.5:1 на пергаменте — ниже нормы
-     AA во всей светлой теме. Эти проходят 4.5:1 на всех трёх
-     поверхностях сразу: пергаменте, карточке и утопленном фоне. */
   --text-soft: #5E4E42;
   --text-mute: #6F5D4E;
-
-  --line:      #E0CFBB;
-
-  /* Заливка и текст акцента — РАЗНЫЕ цвета. Терракота на пергаменте
-     даёт 4.00:1: для плашки хватает, для ссылки нет. */
+  --line:      #E3D5C4;
   --accent:      var(--terra);
   --accent-text: #A44E20;
   --accent-on:   #fff;
+  --band:      #A64F22;
+  --band-text: #F7EFE3;
+  --band-soft: #F1DCCB;
 
   --shadow:    0 1px 2px rgba(36,26,21,.05), 0 8px 24px -12px rgba(36,26,21,.18);
   --shadow-lg: 0 2px 4px rgba(36,26,21,.06), 0 24px 60px -24px rgba(36,26,21,.28);
 
   --sans: "Manrope", ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
   --serif: "EB Garamond", ui-serif, Georgia, "Times New Roman", serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  --wrap: 68rem;
-  --r: 18px;
+  --wrap: 66rem;
   --header: 64px;
-
+  --nav-strip: 0px;
   color-scheme: light dark;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --bg:        #17100D;
+    --bg-alt:    #1D1410;
     --bg-card:   #211712;
-    --bg-sunk:   #1D1410;
     --text:      #F0E4D6;
     --text-soft: #CDB9A6;
     --text-mute: #A8937F;
@@ -62,6 +63,9 @@
     --accent:      #E78E58;
     --accent-text: #F0A472;
     --accent-on:   #1A120E;
+    --band:      #8C3F1B;
+    --band-text: #F7EFE3;
+    --band-soft: #E9CDB8;
     --shadow:    0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
     --shadow-lg: 0 2px 4px rgba(0,0,0,.45), 0 24px 60px -24px rgba(0,0,0,.75);
   }
@@ -70,1014 +74,280 @@
 /* ---------------------------------------------------------- основа */
 
 *, *::before, *::after { box-sizing: border-box; }
-
-/* Без этого [hidden] проигрывает любому явному display в правилах ниже,
-   и спрятанное остаётся на виду. */
 [hidden] { display: none !important; }
-
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
-
 body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font: 400 17px/1.6 var(--sans);
-  letter-spacing: -0.005em;
+  margin: 0; background: var(--bg); color: var(--text);
+  font: 400 1.0625rem/1.55 var(--sans);
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
 }
+img, video, svg { max-width: 100%; height: auto; display: block; }
+a { color: var(--accent-text); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip:focus { position: fixed; top: 8px; left: 8px; z-index: 100; width: auto; height: auto; clip: auto;
+  background: var(--bg-card); padding: .6rem 1rem; border-radius: 8px; box-shadow: var(--shadow-lg); }
 
-.wrap { width: 100%; max-width: var(--wrap); margin-inline: auto; padding-inline: 1.5rem; }
-main { position: relative; z-index: 1; }
-
-h1, h2, h3 { font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; margin: 0; text-wrap: balance; }
-h1 { font-size: clamp(2.4rem, 6.5vw, 4.1rem); }
-/* Заголовки стали крупнее: надзаголовков над ними больше нет,
-   и вес, который раньше нёс ярлычок, теперь несёт сам заголовок. */
-h2 { font-size: clamp(2rem, 4.6vw, 3rem); }
-h3 { font-size: 1.12rem; letter-spacing: -0.015em; }
-p { margin: 0 0 1rem; text-wrap: pretty; }
-a { color: var(--accent-text); text-underline-offset: 3px; text-decoration-thickness: 1px; }
-
-/* Мера строки: длиннее 70 знаков глаз теряет начало следующей. */
-.lead { font-size: clamp(1.05rem, 2vw, 1.25rem); color: var(--text-soft); line-height: 1.55; max-width: 34rem; }
-
-/* Курсив Гарамондом — то же, что делают «S» и «a» в знаке:
-   письменная буква рядом с печатной. */
-.hand { font-family: var(--serif); font-style: italic; font-weight: 700; letter-spacing: 0; }
-
-section { padding-block: clamp(4rem, 9vw, 7rem); position: relative; scroll-margin-top: calc(var(--header) + 12px); }
+.wrap { width: min(100% - 2.5rem, var(--wrap)); margin-inline: auto; }
+section { padding-block: clamp(3.5rem, 8vw, 6rem); scroll-margin-top: calc(var(--header) + var(--nav-strip) + 12px); }
 section + section { border-top: 1px solid var(--line); }
-.sec-head { max-width: 40rem; margin-bottom: clamp(2rem, 4vw, 3rem); }
-.sec-head p { margin-top: 1rem; }
-/* Заголовок и подзаголовок не слипаются и вне .sec-head:
-   в разделах приватности и почты они стояли встык. */
-h1 + .lead, h2 + .lead { margin-top: 1.1rem; }
 
-/* Ссылка «к содержимому» — первая в порядке обхода с клавиатуры. */
-.sr {
-  position: absolute; width: 1px; height: 1px; overflow: hidden;
-  clip-path: inset(50%); white-space: nowrap;
-}
-.skip:focus-visible {
-  position: fixed; top: 10px; left: 10px; z-index: 100;
-  width: auto; height: auto; clip-path: none;
-  background: var(--accent); color: var(--accent-on);
-  padding: .7rem 1.1rem; border-radius: 10px; font-weight: 700;
-}
-
-/* ---------------------------------------------------------- фокус
-
-   Прежде во всей таблице было ровно одно правило фокуса, и оно фокус
-   УБИРАЛО. Теперь кольцо авторское, одно на все интерактивные вещи,
-   и на терракоте оно пергаментное, чтобы не тонуть. */
-
-:where(a, button, summary, input, textarea, [tabindex]):focus-visible {
-  outline: 3px solid var(--accent-text);
-  outline-offset: 3px;
-  border-radius: 6px;
-}
-.hero-band :where(a, button):focus-visible { outline-color: #F7EFE3; }
-input:focus-visible, textarea:focus-visible { outline-offset: 1px; }
-
-/* ---------------------------------------------------------- шапка */
-
-.top {
-  position: sticky; top: 0; z-index: 50;
-  background: color-mix(in srgb, var(--bg) 88%, transparent);
-  backdrop-filter: saturate(1.4) blur(14px);
-  border-bottom: 1px solid transparent;
-  transition: border-color .2s;
-}
-.top.stuck { border-bottom-color: var(--line); }
-.top .wrap { display: flex; align-items: center; gap: 1rem; height: var(--header); }
-
-.brand { display: flex; align-items: center; gap: .6rem; text-decoration: none; color: inherit; margin-right: auto; min-height: 44px; }
-.brand img.mark { width: 32px; height: 32px; border-radius: 50%; }
-
-/* Слово в рост кружка. Одним числом это не задаётся: в самом SVG почти
-   треть высоты — пустое поле (13% сверху, 18% снизу; замерено getBBox
-   по файлу, а не на глаз). Поэтому коробка картинки берётся с запасом —
-   46 px коробки дают ровно 32 px букв, то есть диаметр кружка с Дьяком.
-
-   На телефоне слово приходится сдерживать: в рост кружка надпись
-   занимает 158 px, и вместе с четырьмя языками в шапке она перестаёт
-   помещаться около 405 px ширины. Ступенями это решать плохо — ровно
-   на границе слово прыгает вдвое. Поэтому формула по свободному месту:
-   ширина окна минус отступы, переключатель языка, кружок и зазоры,
-   делённая на пропорцию знака (3,428). Растёт слово плавно и на каждой
-   ширине занимает всё, что есть, а 46 px — потолок. */
-/* Слово всплывало над кружком: буква S выходила за его верх на 4,5 px,
-   а снизу оставался зазор 4,9 px. Причин две, и обе не в размере.
-
-   Первая: картинка была `inline` внутри `picture`, то есть стояла
-   на строке, и под ней резервировалось место под выносные элементы —
-   коробка `picture` выходила 53,2 px против 46 у самой картинки.
-   Флексбокс центрует `picture`, а картинку внутри прижимает вверх.
-   Лечится `display: block`; выступ падает с 4,5 px до 0,9.
-
-   Вторая: поля в самом файле надписи не равны (сверху меньше, чем
-   снизу), поэтому буквы и внутри своей коробки сидят выше середины
-   на 1,1 px из 46. Отсюда сдвиг вниз на 2,4% — процентом, а не
-   пикселями: высота слова задана формулой и меняется с шириной окна,
-   а доля остаётся верной на любой из них.
-
-   Итог замерен растром: буквы 16,2–47,8 против кружка 16–48. */
-.brand img.word {
-  height: clamp(21px, calc(29.17vw - 72px), 46px); width: auto;
-  display: block; transform: translateY(2.4%);
-}
-
-.nav { display: flex; gap: 1.6rem; align-items: center; }
-/* Внутри пункта переносить нельзя нигде — по той же причине, что
-   и в «中文» ниже. Без этого шапка на ширине, где ей уже тесно,
-   ломала каждый пункт пополам: «О / приложении», «Скоро / выйдет».
-   Замечено на маке владельца 17 августа 2026. */
-.nav a { color: var(--text-soft); text-decoration: none; font-size: .95rem; font-weight: 600; padding-block: .9rem; white-space: nowrap; }
-.nav a:hover { color: var(--text); }
-
-.lang { display: flex; gap: .1rem; font-size: .85rem; font-weight: 700; }
-.lang a {
-  color: var(--text-mute); text-decoration: none; border-radius: 8px;
-  min-width: 44px; min-height: 44px;
-  display: inline-flex; align-items: center; justify-content: center;
-  /* «中文» — два знака, и на узкой полосе браузер ломал их на две
-     строки: под ссылкой оказывался столбик из «中» и «文». Переносить
-     внутри названия языка нельзя нигде. */
-  white-space: nowrap;
-}
-.lang a[aria-current] { color: var(--accent-on); background: var(--accent); }
-
-/* Где в один ряд не влезает, навигация не исчезает, а переезжает
-   в прокручиваемую ленту под шапкой: страница длинная, и оставлять
-   человека без единого перехода нельзя.
-
-   Порог поднят с 860 px до 68em (1088 px) 17 августа 2026, и это
-   ровно `--wrap` — ширина колонки страницы. Считается он так: место
-   под ряд даёт не окно, а колонка (`.wrap`, 68rem), и внутри неё
-   русский ряд занимает 998 px — слово с кружком 199, навигация 617,
-   языки 149, два зазора 32. Колонка добирает свои 1040 px внутренней
-   ширины как раз на 68em; ниже она уже ряда, и навигация уезжает
-   в ленту. Замерено в браузере, а не выведено: на 1041 px ряд вылезал
-   за край колонки на 5 px.
-
-   Порог в em, а не в пикселях: он обязан ехать вместе с увеличенным
-   шрифтом браузера, иначе при крупном шрифте разлом вернётся
-   на большей ширине.
-
-   Что было 17 августа 2026 и чем это лечится. Прежний порог 860 px
-   оставлял полосу, где места в ряду уже нет, а лента ещё не включилась;
-   флексбокс в ней сжимал пункты до самого длинного слова и ломал
-   каждый пополам — «О / приложении», «Скоро / выйдет». Владелец увидел
-   это на маке. Считать надо по колонке, а не по окну: на мониторе
-   в 1440 px ряд из семи русских пунктов вылезал за её правый край
-   на 99 px, унося туда же переключатель языка. Поэтому семь пунктов
-   уместились не порогом, а короткими подписями — «Что это» и «Скоро»
-   вместо «О приложении» и «Скоро выйдет». */
-/* Лента лежит ВНУТРИ коробки шапки: место под неё держит
-   `padding-bottom`, и потому её накрывают фон и размытие `.top`.
-   Прежде она стояла ниже коробки с `background: inherit`, а наследовать
-   было не от чего — у `.wrap` фона нет, — и вычислялось прозрачное.
-   Страница ехала прямо сквозь ссылки: заголовки и кнопки читались
-   поверх «Что умеет» и «Приватность» на всю телефонную ширину.
-   Высота ленты в rem, а не в пикселях: содержимое её тоже в rem,
-   и при увеличенном шрифте полоса растёт вместе с ним. Отсюда же
-   ушёл подпор `main { padding-top: 46px }` — он был на 4 px меньше
-   настоящей высоты ленты, а теперь она занимает место сама. */
-@media (max-width: 68em) {
-  :root { --nav-strip: 3.15rem; }
-  .top { padding-bottom: var(--nav-strip); }
-  .top .wrap { gap: .5rem; }
-  .nav {
-    position: absolute; left: 0; right: 0; top: var(--header);
-    min-height: var(--nav-strip);
-    gap: 0; overflow-x: auto; scrollbar-width: none;
-    border-top: 1px solid var(--line);
-    padding-inline: 1.5rem;
-  }
-  .nav::-webkit-scrollbar { display: none; }
-  /* Полоса шире экрана, а полосы прокрутки у неё нет — и последняя
-     ссылка обрывалась по краю ровно так, как выглядит сломанная
-     вёрстка. Растушёвка по правому краю говорит, что там продолжение.
-     Ширина растушёвки равна правому отступу полосы: докрутив до конца,
-     человек видит последнюю ссылку целиком, а не в дымке. */
-  .nav {
-    mask-image: linear-gradient(to right, #000 calc(100% - 1.5rem), transparent);
-    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 1.5rem), transparent);
-  }
-  .nav a { padding: .8rem .75rem; font-size: .9rem; }
-  .nav a:first-child { padding-left: 0; }
-  section { scroll-margin-top: calc(var(--header) + var(--nav-strip) + 12px); }
-}
-
-/* Самые узкие телефоны. Кружок, слово и четыре языка в одну строку тут
-   не встают: на 320 px под всю шапку остаётся 272 px. Слово опускается
-   до 32 px коробки, переключатель поджимается по горизонтали — высота
-   нажимаемой области у него остаётся прежней, 44 px. */
-/* Самые узкие телефоны. Переключатель поджимается по горизонтали;
-   высота нажимаемой области остаётся 44 px. Выигрыш небольшой — ширину
-   переключателя держит не поле, а сами буквы, и «中文» шире прочих, —
-   но на 320 px этих пикселей как раз не хватало.
-
-   Отдельной формулы для слова здесь нет намеренно: первая попытка
-   поставила порог на 400 px и дала разрыв, заметный глазом, — ниже
-   порога слово вставало в полный рост кружка, а сразу выше падало
-   до 84%. Одна формула на все ширины такого разрыва не создаёт. */
-@media (max-width: 380px) {
-  .lang { gap: 0; }
-  .lang a { padding-inline: .28rem; font-size: .8rem; }
-}
-
-/* Настольная ширина: между кружком и языками стоит ещё и навигация.
-   Прежде здесь стояла формула `clamp(21px, 29.17vw - 260px, 46px)` —
-   слово убавлялось в полосе 861–1048 px, где ему не хватало места
-   рядом с навигацией. Полосы этой больше нет: ниже 1088 px навигация
-   уезжает в ленту под шапкой, а выше та же формула даёт 46 px на любой
-   ширине. Осталось само число — слово в полный рост кружка. Ниже порога
-   работает формула из базового правила: там в ряду только кружок, слово
-   и языки, и на всё, что шире 405 px, выходят те же 46 px. */
-@media (min-width: 68.0625em) {
-  .brand img.word { height: 46px; }
-  /* Зазор в ряду поджат с 1.6rem: колонка даёт под навигацию 660 px,
-     семь коротких русских подписей просят 513, и на зазоры остаётся
-     147 — по 24 px на шесть промежутков. Беру 20: запас в 27 px нужен
-     на случай, когда свой шрифт не доехал (Manrope подменился
-     системным) и подписи стали шире процентов на пять. */
-  .nav { gap: 1.25rem; }
-}
+h1, h2, h3 { margin: 0; letter-spacing: -0.02em; text-wrap: balance; font-weight: 800; line-height: 1.1; }
+h1 { font-size: clamp(2.25rem, 5.2vw, 3.75rem); }
+h2 { font-size: clamp(1.6rem, 3.2vw, 2.25rem); margin-bottom: .8rem; }
+h3 { font-size: 1.1rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1.3; }
+p { margin: 0; }
+p + p { margin-top: .8rem; }
+.lead { font-size: 1.15rem; color: var(--text-soft); max-width: 40rem; text-wrap: pretty; }
+.note { color: var(--text-mute); font-size: .95rem; max-width: 44rem; margin-top: 1.6rem; }
+kbd { font: 600 .9em/1 var(--sans); border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 6px; padding: .15em .45em; background: var(--bg-card); }
+code { font: .85em var(--mono); }
 
 /* ---------------------------------------------------------- кнопки */
 
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
   font: 700 1rem/1 var(--sans); letter-spacing: -0.01em;
-  min-height: 48px; padding: .95rem 1.5rem;
-  border-radius: 999px; border: 1px solid transparent;
-  cursor: pointer; text-decoration: none;
+  min-height: 48px; padding: .9rem 1.4rem;
+  border-radius: 12px; border: 1px solid transparent;
+  cursor: pointer; text-decoration: none; white-space: nowrap;
   transition: transform .12s, background .15s, border-color .15s;
 }
 .btn:active { transform: translateY(1px); }
 .btn-primary { background: var(--accent); color: var(--accent-on); box-shadow: var(--shadow); }
 .btn-primary:hover { background: var(--terra-dark); }
 @media (prefers-color-scheme: dark) { .btn-primary:hover { background: #F0A472; } }
-.btn-ghost { background: transparent; color: var(--text); border-color: var(--line); }
+.btn-ghost { background: var(--bg-card); color: var(--text); border-color: var(--line); }
 .btn-ghost:hover { border-color: var(--text-mute); }
-.btn[disabled] { opacity: .5; cursor: not-allowed; }
+.btn[disabled], .btn[aria-disabled=true] { opacity: .5; cursor: not-allowed; }
 
-/* ---------------------------------------------------------- первый экран */
+/* ---------------------------------------------------------- шапка */
 
-/* Терракотовая карточка — та же, что на главном экране приложения
-   и на платёжной странице: три поверхности продукта выглядят одной
-   вещью. Фактура запечена в JPEG (градиент × бумага), потому что
-   mix-blend-mode в CSS ронял захват экрана Chromium. */
-
-.hero { padding-top: clamp(1.2rem, 3vw, 2.4rem); padding-bottom: clamp(3rem, 6vw, 5rem); border: 0; }
-
-.hero-band {
-  position: relative; overflow: hidden;
-  border-radius: 30px;
-  background: #A64F22 url("img/hero-paper.jpg") center / cover;
-  box-shadow: var(--shadow-lg);
-  padding: clamp(1.6rem, 4vw, 3.2rem);
-  display: grid; gap: clamp(1.8rem, 4vw, 2.8rem); align-items: center;
+.top {
+  position: sticky; top: 0; z-index: 30;
+  background: color-mix(in srgb, var(--bg) 86%, transparent);
+  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+  border-bottom: 1px solid transparent;
 }
-@media (min-width: 960px)  { .hero-band { grid-template-columns: 1.2fr .9fr; } }
-@media (min-width: 1080px) { .hero-band { grid-template-columns: auto 1.15fr .9fr; } }
+.top.stuck { border-bottom-color: var(--line); }
+.top .wrap { display: flex; align-items: center; gap: 1rem; height: var(--header); }
+.brand { display: flex; align-items: center; gap: .6rem; text-decoration: none; margin-right: auto; min-height: 44px; }
+.brand img.mark { width: 32px; height: 32px; border-radius: 50%; }
+.brand img.word { height: 38px; width: auto; }
+.nav { display: flex; gap: 1.4rem; }
+.nav a { color: var(--text-soft); text-decoration: none; font-size: .95rem; font-weight: 600; padding-block: .9rem; white-space: nowrap; }
+.nav a:hover { color: var(--text); }
+.top-cta { min-height: 40px; padding: .6rem 1.05rem; font-size: .92rem; flex: none; }
 
-@media (prefers-color-scheme: dark) {
-  .hero-band {
-    background-image:
-      linear-gradient(rgba(26, 11, 4, .22), rgba(26, 11, 4, .22)),
-      url("img/hero-paper.jpg");
-  }
-}
-
-/* Дьяк с пером живёт только на терракоте: перо пергаментное и на
-   светлом поле исчезает. Ниже 900px он уступает место телефону —
-   демонстрация важнее портрета, — но не пропадает совсем: он же
-   служит кнопкой микрофона внутри макета клавиатуры. */
-/* Верхний предел 200, а не 215: шире 1400 полоса первого экрана расти
-   уже некуда (68rem), а Дьяк по 15vw рос — и отбирал ширину у текста.
-   Выходило наоборот здравому смыслу: чем шире монитор, тем теснее
-   колонка с заголовком. Пятнадцать пикселей возвращены тексту, и в них
-   помещается вторая кнопка; на глаз портрет тот же. */
-.hero-dyak {
-  display: none;
-  width: clamp(150px, 15vw, 200px); height: auto;
-  filter: drop-shadow(0 14px 30px rgba(60, 25, 8, .35));
-}
-@media (min-width: 1080px) { .hero-dyak { display: block; } }
-
-.hero-word { height: clamp(42px, 6vw, 56px); width: auto; display: block; margin-bottom: 1.1rem; }
-.hero h1 { margin-bottom: 1.1rem; color: #F7EFE3; }
-/* Непрозрачный пергамент вместо 88% белого: полупрозрачность давала
-   3.28:1 на светлых участках фактуры. */
-.hero .lead { color: #F4E9DC; }
-
-/* Строка состояния: до неё нигде выше 4000px не было сказано, что
-   приложение ещё не вышло. */
-.hero-status {
-  display: inline-flex; align-items: center; gap: .5rem;
-  font-size: .85rem; font-weight: 700; letter-spacing: .02em;
-  color: #F7EFE3;
-  background: rgba(20, 8, 2, .3);
-  border: 1px solid rgba(247, 239, 227, .3);
-  padding: .4rem .85rem; border-radius: 999px;
-  margin-bottom: 1.4rem;
-}
-.hero-status .dot {
-  width: 7px; height: 7px; border-radius: 50%;
-  background: #F7EFE3; flex: none;
-}
-
-.hero-cta { display: flex; flex-wrap: wrap; gap: .8rem; align-items: center; margin-top: 2rem; }
-.hero-band .btn-primary { background: #F5EDE3; color: #241A15; box-shadow: 0 2px 12px rgba(40, 15, 5, .28); }
-.hero-band .btn-primary:hover { background: #fff; }
-.hero-band .btn-ghost { color: #F5EDE3; border-color: rgba(245, 237, 227, .55); }
-.hero-band .btn-ghost:hover { border-color: rgba(245, 237, 227, .95); }
-
-/* ------------------------------------------------- плашка App Store
-
-   Ссылки пока нет — приложения в магазине нет. Официальный значок
-   Apple «Download on the App Store» сюда поставить нельзя: по их
-   правилам он обязан вести на страницу приложения, а вести некуда,
-   и человек нажал бы на обещание, которого никто не выполнит.
-   Поэтому плашка своя, в облике сайта, и в размер настоящей: когда
-   запись в магазине откроется, на её место встаёт официальный значок
-   со ссылкой, и первый экран не переедет.
-
-   Правка в тот день ровно одна на страницу: <span class="appstore">
-   меняется на <a class="appstore" href="…">, слово «Скоро» уходит.
-   Курсор и отсутствие наведения приходят от .is-soon — снять вместе
-   со span'ом. */
-.hero-store { margin-top: 1.1rem; }
-.appstore {
-  display: inline-flex; align-items: center; gap: .1rem;
-  flex-direction: column; align-items: flex-start;
-  min-height: 52px; padding: .6rem 1.2rem;
-  border-radius: 12px;
-  border: 1px solid rgba(245, 237, 227, .45);
-  background: rgba(20, 8, 2, .22);
-  color: #F5EDE3; text-decoration: none; line-height: 1;
-  transition: border-color .15s, background .15s;
-}
-.appstore-top {
-  font: 600 .68rem/1 var(--sans);
-  letter-spacing: .06em; text-transform: uppercase; opacity: .8;
-}
-.appstore-name { font: 700 1.15rem/1.2 var(--sans); letter-spacing: -0.01em; }
-/* Пока ссылки нет: плашка ничего не обещает пальцу. */
-.appstore.is-soon { cursor: default; }
-a.appstore:hover { border-color: rgba(245, 237, 227, .9); background: rgba(20, 8, 2, .34); }
-
-/* ------------------------------------------------- телефон с демонстрацией */
-
-/* Телефон закреплён светлым В ОБЕИХ темах: в тёмной теме демонстрация
-   была нечитаемой. Цвета здесь буквальные, а не из переменных, —
-   это экран телефона, а не поверхность страницы. */
-.phone {
-  width: 100%; max-width: 19.5rem; margin-inline: auto;
-  aspect-ratio: 9 / 16.4;
-  background: #FBF6F0;
-  border: 1px solid rgba(36, 26, 21, .15);
-  border-radius: 38px;
-  box-shadow: var(--shadow-lg);
-  padding: 13px 11px 11px;
-  display: flex; flex-direction: column;
-  position: relative; overflow: hidden;
-}
-.phone::before {
-  content: ""; position: absolute; top: 9px; left: 50%; transform: translateX(-50%);
-  width: 78px; height: 21px; border-radius: 999px; background: #EAD9C3; z-index: 2;
-}
-.phone-screen { flex: 1; display: flex; flex-direction: column; padding-top: 28px; min-height: 0; }
-
-/* Верх ленты растворяется, а не срезается: прежняя жёсткая обрезка
-   отрубала верхней паре строку «сказано», и оставался ответ без
-   вопроса. */
-.chat {
-  flex: 1; display: flex; flex-direction: column; justify-content: flex-end;
-  gap: .85rem; padding: .4rem .3rem .8rem; min-height: 0; overflow: hidden;
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 72px);
-          mask-image: linear-gradient(to bottom, transparent 0, #000 72px);
-}
-.pair { display: grid; gap: .3rem; }
-/* Прошлые пары приглушены, но остаются читаемыми: на .38 белый текст
-   в терракотовом пузыре давал ~2:1. */
-.pair:not(:last-child) { opacity: .72; }
-
-.said {
-  font-family: var(--serif); font-style: italic; font-size: .98rem; line-height: 1.4;
-  color: #6F5C4C; min-height: 1.4em;
-}
-.became {
-  justify-self: start; max-width: 94%;
-  background: #B85A28; color: #fff;
-  font-weight: 600; font-size: .95rem; line-height: 1.38;
-  padding: .55rem .8rem; border-radius: 15px 15px 15px 5px;
-  opacity: 0; transform: translateY(6px) scale(.98);
-  /* Затухание без отскока: текст «встаёт» в поле, а не подпрыгивает.
-     Отскок был остатком первой сборки и ничем не оправдан. */
-  transition: opacity .3s ease-out, transform .34s cubic-bezier(.22, 1, .36, 1);
-}
-.became.on { opacity: 1; transform: none; }
-.became .tag { display: block; font: 700 .64rem/1 var(--sans); letter-spacing: .07em; text-transform: uppercase; opacity: .78; margin-bottom: .28rem; }
-
-.kbd { border-top: 1px solid #E4D3BC; padding: .7rem .3rem .2rem; display: grid; gap: .32rem; }
-.kbd-row { display: grid; grid-auto-flow: column; gap: .22rem; }
-.kbd-row i { height: 24px; border-radius: 5px; background: #ECDECB; display: block; }
-.kbd-mic { display: flex; justify-content: center; padding: .45rem 0 .1rem; }
-.kbd-mic img { width: 52px; height: 52px; border-radius: 50%; box-shadow: 0 4px 14px -4px rgba(184,90,40,.6); }
-.kbd-mic.rec img { animation: pulse 1.4s ease-in-out infinite; }
-@keyframes pulse {
-  0%, 100% { box-shadow: 0 4px 14px -4px rgba(184,90,40,.6), 0 0 0 0 rgba(184,90,40,.45); }
-  50%      { box-shadow: 0 4px 14px -4px rgba(184,90,40,.6), 0 0 0 12px rgba(184,90,40,0); }
-}
-
-/* Управление показом: WCAG требует остановки для всего, что само
-   меняется дольше пяти секунд. */
-.demo-ctl {
-  display: flex; justify-content: center; margin-top: .9rem;
-}
-.demo-ctl button {
-  display: inline-flex; align-items: center; gap: .45rem;
-  min-height: 44px; padding: .5rem 1rem;
-  font: 600 .88rem/1 var(--sans);
-  color: #F5EDE3; background: rgba(20, 8, 2, .28);
-  border: 1px solid rgba(245, 237, 227, .38); border-radius: 999px;
-  cursor: pointer;
-}
-.demo-ctl button:hover { border-color: rgba(245, 237, 227, .8); }
-.demo-ctl svg { width: 13px; height: 13px; fill: currentColor; }
-
-@media (prefers-reduced-motion: reduce) {
-  .kbd-mic.rec img { animation: none; }
-  .became { transition: none; }
-}
-
-/* --------------------------------------------------------- ролик */
-
-/* Соотношение задано рамкой, а не файлом: без него страница
-   подпрыгивает, когда видео дозагружается, и на телефоне это
-   видно всем — блок под роликом уезжает под палец. */
-
-.film { padding-top: clamp(1.6rem, 4vw, 3rem); padding-bottom: clamp(2rem, 5vw, 3.6rem); border: 0; }
-.film-frame { margin: 0; }
-
-.film-media {
-  position: relative;
-  aspect-ratio: 16 / 9;
-  border-radius: clamp(18px, 2.6vw, 26px);
-  overflow: hidden;
-  background: #1A0B04;
-  box-shadow: var(--shadow-lg);
-}
-.film-media video { display: block; width: 100%; height: 100%; object-fit: cover; }
-
-/* Кнопка звука лежит на самом ролике, а не под ним: пока человек
-   смотрит в кадр, взгляд не уходит на подпись. Тёмная подложка —
-   потому что нижний левый угол кадра то светлеет, то темнеет. */
-.film-sound {
-  position: absolute;
-  left: clamp(.6rem, 1.8vw, 1.1rem); bottom: clamp(.6rem, 1.8vw, 1.1rem);
-  display: inline-flex; align-items: center; gap: .5rem;
-  min-height: 44px; padding: .5rem 1rem;
-  font: 600 .88rem/1 var(--sans);
-  color: #F5EDE3; background: rgba(20, 8, 2, .52);
-  border: 1px solid rgba(245, 237, 227, .38); border-radius: 999px;
-  backdrop-filter: blur(6px);
-  cursor: pointer;
-}
-.film-sound:hover { border-color: rgba(245, 237, 227, .85); background: rgba(20, 8, 2, .68); }
-.film-sound svg { width: 15px; height: 15px; fill: currentColor; flex: none; }
-/* Вторая дуга гаснет, когда звук выключен: значок должен показывать
-   состояние, а не только предлагать действие. */
-.film-sound[aria-pressed="false"] [data-film-wave] { opacity: .25; }
-
-.film-frame figcaption {
-  margin-top: .8rem; text-align: center;
-  font-size: .92rem; color: var(--muted);
-}
-
-/* Ролик — не иллюстрация к тексту, а сам текст: если человек просил
-   не двигать картинки, показываем кадр и даём запустить руками. */
-@media (prefers-reduced-motion: reduce) {
-  .film-sound { left: 50%; transform: translateX(-50%); }
-}
-
-/* ---------------------------------------------------------- шаги */
-
-.steps { display: grid; gap: 1.5rem; counter-reset: s; }
-
-/* Заголовки шагов разной длины, и в две строки уходит то один, то
-   другой — по-русски и по-английски в разных местах. Пока каждый шаг
-   был сам себе колонкой, из-за этого разъезжались абзацы под ними:
-   один начинался ниже соседей на строку. Подсетка держит три ряда
-   общими на все шаги — кружок, заголовок, текст, — и абзацы стоят
-   на одной линии независимо от длины заголовка.
-   Междурядье здесь обнулено: внутренние отступы шага держат поля
-   самих элементов, а 2rem между кружком и заголовком разорвали бы шаг. */
-@media (min-width: 760px) {
-  .steps { grid-template-columns: repeat(3, 1fr); column-gap: 2rem; row-gap: 0; }
-  @supports (grid-template-rows: subgrid) {
-    .steps { grid-template-rows: auto auto auto; }
-    .step { display: grid; grid-template-rows: subgrid; grid-row: span 3; }
-  }
-}
-.step { counter-increment: s; }
-/* Номера здесь несут смысл: это последовательность, и первый шаг
-   делается один раз, а остальные каждый день. */
-.step::before {
-  content: counter(s);
-  display: flex; align-items: center; justify-content: center;
-  width: 38px; height: 38px; border-radius: 50%;
-  background: var(--accent); color: var(--accent-on);
-  font: 800 1.05rem/1 var(--sans); margin-bottom: .9rem;
-}
-.step p { color: var(--text-soft); margin: .45rem 0 0; font-size: .98rem; }
-
-/* ---------------------------------------------------------- карточки */
-
-/* Карточки в ряду тянутся до общей высоты, а примеры прижаты к их низу
-   (`margin-top: auto`). Прежний `align-items: start` оставлял ряд рваным:
-   у одних карточек примера нет, у других он в две строки, и разница
-   доходила до 130 px — сетка читалась как случайно рассыпанная. */
-.cards { display: grid; gap: 1rem; }
-@media (min-width: 700px) { .cards { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 1000px) { .cards { grid-template-columns: repeat(3, 1fr); } }
-
-.card {
-  display: flex; flex-direction: column;
-  background: var(--bg-card); border: 1px solid var(--line);
-  border-radius: var(--r); padding: 1.5rem;
-  box-shadow: var(--shadow);
-}
-.chip {
-  width: 46px; height: 46px; border-radius: 13px;
-  display: flex; align-items: center; justify-content: center;
-  background: color-mix(in srgb, var(--terra) 14%, transparent);
-  color: var(--accent-text);
-  margin-bottom: .95rem;
-}
-.chip svg {
-  width: 24px; height: 24px;
-  fill: none; stroke: currentColor; stroke-width: 1.7;
-  stroke-linecap: round; stroke-linejoin: round;
-}
-.card h3 { margin-bottom: .5rem; }
-.card p { color: var(--text-soft); font-size: .97rem; margin: 0 0 .9rem; }
-.card p:last-child { margin-bottom: 0; }
-.card .ex {
-  margin-top: auto; padding-top: .9rem; border-top: 1px dashed var(--line);
-  font-family: var(--serif); font-style: italic; font-size: 1rem; color: var(--text-soft);
-}
-.card .ex b { display: block; font: 700 .95rem/1.4 var(--sans); font-style: normal; color: var(--text); margin-top: .3rem; }
-
-/* ---------------------------------------------------------- Scribla для Mac
-
-   Единственное место на сайте, где что-то можно получить прямо сейчас:
-   телефонная версия ждёт проверки в App Store, а маковая уже собрана
-   и лежит образом. Поэтому раздел стоит сразу после «что умеет» —
-   человек к этому месту уже знает, о чём речь, — и кнопка в нём
-   сплошная, как у переводов: заливка на странице означает действие. */
-
-.mac-band { display: grid; gap: 2.2rem; align-items: start; }
-@media (min-width: 900px) { .mac-band { grid-template-columns: 1fr 21rem; gap: 3rem; } }
-
-/* Три режима: слева клавиши, справа то, что окажется в поле.
-   Список, а не таблица: в двух колонках у таблицы на узком экране
-   заголовки уезжают от строк, а здесь пара просто встаёт столбиком. */
-.modes { list-style: none; padding: 0; margin: 0; }
-.mode {
-  display: grid; grid-template-columns: minmax(0, 14rem) 1fr; gap: 1.4rem;
-  align-items: baseline; padding: .95rem 0; border-top: 1px solid var(--line);
-}
-.mode:first-child { border-top: 0; padding-top: 0; }
-/* Подзаголовок над списком: у первой строки верхний отступ снят вместе
-   с линией, и без этого правила заголовок сидит к ней встык. Проверено
-   на разделе «Клавиатура, а не отдельное окно», где список режимов
-   впервые получил заголовок. */
-h3 + .modes { margin-top: 1.1rem; }
-@media (max-width: 620px) { .mode { grid-template-columns: 1fr; gap: .45rem; } }
-.mode-keys { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem; color: var(--text-soft); font-size: .95rem; }
-.mode-what { color: var(--text); font-weight: 700; }
-
-/* Список без соседней колонки — «Что ещё есть на клавиатуре» — тянулся
-   на всю ширину страницы: строка правой колонки выходила в 110–120
-   знаков, вдвое длиннее меры. Предел взят таким, чтобы правая колонка
-   держалась около 70 знаков; в .mac-band списку и так тесно, там
-   предел не срабатывает. Ту же меру получил список фактов в разделе
-   «Приложение слушает» — он тоже стоит один. */
-section > .wrap > .modes, section > .wrap > .facts { max-width: 56rem; }
-
-/* Клавиша нарисована клавишей. Моноширинный шрифт здесь не нужен:
-   внутри один-два знака, а ⌘ и ⌥ в Manrope есть. */
-kbd {
-  display: inline-flex; align-items: center; justify-content: center;
-  min-width: 1.9rem; min-height: 1.9rem; padding: 0 .4rem;
-  font: 700 .95rem/1 var(--sans); color: var(--text);
-  background: var(--bg-card); border: 1px solid var(--line);
-  border-bottom-width: 2px; border-radius: 7px;
-}
-
-/* Коробка со скачиванием. Ширину держит своя, а не общая .panel:
-   рядом с ней стоит колонка режимов, и 34rem её выдавливали. */
-.get {
-  background: var(--bg-card); border: 1px solid var(--line);
-  border-radius: 22px; padding: clamp(1.4rem, 3vw, 1.9rem);
-  box-shadow: var(--shadow);
-}
-.get .btn { width: 100%; justify-content: center; }
-.get-meta { list-style: none; padding: 0; margin: 1.1rem 0 0; display: grid; gap: .45rem; }
-.get-meta li { display: flex; justify-content: space-between; gap: 1rem; font-size: .88rem; color: var(--text-mute); }
-.get-meta b { color: var(--text-soft); font-weight: 700; text-align: right; }
-.get .note { margin-top: 1.1rem; padding-top: 1rem; border-top: 1px dashed var(--line); max-width: none; }
-
-/* ------------------------------------------------------- режимы с AI
-
-   Цена в разделе про модель набрана доводом, а не примечанием: это
-   единственное место страницы, где сказано, что режимы с AI ничего
-   не стоят, и мелким шрифтом оно потерялось бы среди двух соседних
-   .note. Черта слева, а не заливка: сплошная терракота на экране
-   принадлежит ровно одной кнопке, и брать её сюда нельзя.
-
-   Мера строки у .lead — 34rem, и здесь она остаётся: отступ слева
-   съедает ширину, а не растягивает строку. */
-.ai-free {
-  color: var(--text); font-weight: 700;
-  margin: 2.4rem 0 .9rem;
-  padding-left: 1.1rem;
-  border-left: 3px solid var(--accent);
-}
-
-/* ---------------------------------------------------------- приватность */
-
-/* Тональный шаг сделан заметным: прежние 3% светлоты глаз не различал,
-   и единственная полоса страницы читалась как та же плоскость. */
-.privacy { background: var(--bg-sunk); border-block: 1px solid var(--line); }
-.privacy .wrap { display: grid; gap: 2.5rem; align-items: center; }
-@media (min-width: 900px) { .privacy .wrap { grid-template-columns: 1fr 15rem; } }
-/* `height: auto` обязателен: в разметке у картинки стоит height="240",
-   и одной CSS-ширины мало — высота из атрибута остаётся. Коробка
-   выходила 216×240 при квадратном рисунке, квадрат вставал по центру,
-   и внутри скругления оставалось по 12 px пустоты сверху и снизу.
-   Сверху её не видно, а снизу, над тенью, она читалась светлой
-   полосой поперёк Дьяка — это и было заметно на живом сайте. */
-.privacy img {
-  width: 100%; height: auto; max-width: 13.5rem; margin-inline: auto; display: block;
-  border-radius: 30px;
-  box-shadow: 0 22px 48px -20px rgba(120, 55, 20, .55);
-}
-.facts { list-style: none; padding: 0; margin: 1.5rem 0 0; display: grid; gap: .8rem; }
-.facts li { padding-left: 1.9rem; position: relative; color: var(--text-soft); }
-.facts li::before {
-  content: ""; position: absolute; left: 0; top: .45em;
-  width: 11px; height: 6px; border-left: 2.5px solid var(--accent-text); border-bottom: 2.5px solid var(--accent-text);
-  transform: rotate(-45deg);
-}
-.facts b { color: var(--text); font-weight: 700; }
-
-/* Оговорка не притворяется обещанием.
-   Пункт про AI нёс ту же галочку, что четыре заверения над ним, —
-   прямо под заголовком «Звук никуда не уходит». Исключение, одетое
-   как достоинство, читается как попытка спрятать; поэтому у него
-   свой знак, своя рамка и свой тон. */
-.facts li.caveat {
-  background: color-mix(in srgb, var(--terra) 7%, transparent);
-  border: 1px dashed color-mix(in srgb, var(--terra) 40%, var(--line));
-  border-radius: 12px;
-  padding: .8rem .9rem .8rem 2.6rem;
-  margin-top: .4rem;
-}
-.facts li.caveat::before {
-  content: "!";
-  width: auto; height: auto; border: 0; transform: none;
-  left: 1rem; top: .8rem;
-  font: 800 1rem/1 var(--sans); color: var(--accent-text);
-}
-
-/* ---------------------------------------------------------- формы */
-
-.panel {
-  background: var(--bg-card); border: 1px solid var(--line);
-  border-radius: 22px; padding: clamp(1.5rem, 3vw, 2.4rem);
-  box-shadow: var(--shadow); max-width: 34rem;
-}
-.field { display: grid; gap: .4rem; margin-bottom: 1rem; }
-/* Только прямой потомок: подпись внутри рамки для файлов — тоже <label>,
-   но выглядит она иначе и её эти правила касаться не должны. */
-.field > label, .field > .lbl { font-size: .88rem; font-weight: 700; color: var(--text-soft); }
-.field .hint { font-size: .84rem; color: var(--text-mute); font-weight: 400; }
-input[type=email], input[type=text], input[type=number], textarea {
-  font: 400 1rem/1.45 var(--sans); color: var(--text);
-  background: var(--bg); border: 1px solid var(--line); border-radius: 12px;
-  padding: .8rem .9rem; width: 100%; min-height: 48px;
-  transition: border-color .15s, box-shadow .15s;
-}
-input:focus, textarea:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
-}
-input[aria-invalid=true], textarea[aria-invalid=true] { border-color: #B3261E; }
-@media (prefers-color-scheme: dark) { input[aria-invalid=true], textarea[aria-invalid=true] { border-color: #F1877E; } }
-textarea { resize: vertical; min-height: 7rem; }
-.counter { font-size: .82rem; color: var(--text-mute); text-align: right; font-variant-numeric: tabular-nums; }
-
-/* --------------------------------------------------------- скриншоты
-
-   Поле файлов настоящее, а не подделка из кнопки: оно спрятано классом
-   .sr, но остаётся в порядке обхода и слышно программе чтения экрана.
-   Кольцо фокуса рисуем на всей рамке — иначе с клавиатуры не видно,
-   где ты находишься, потому что сам input размером в пиксель. */
-
-.drop {
-  border: 1px dashed var(--line); border-radius: 14px;
-  background: var(--bg); transition: border-color .15s, background-color .15s;
-}
-.drop:hover, .drop.over { border-color: var(--accent); background: var(--bg-card); }
-.drop.over { border-style: solid; }
-.drop:focus-within { outline: 3px solid var(--accent-text); outline-offset: 3px; }
-
-.drop-face {
-  display: flex; align-items: center; justify-content: center; gap: .6rem;
-  min-height: 76px; padding: .9rem 1rem; cursor: pointer;
-  text-align: center; font-size: .92rem; font-weight: 400;
-  color: var(--text-mute);
-}
-.drop-face b { color: var(--accent-text); font-weight: 700; }
-.drop-face svg { flex: none; color: var(--text-mute); }
-
-.shots { list-style: none; display: grid; gap: .5rem; margin: .2rem 0 0; padding: 0; }
-.shots li {
-  display: flex; align-items: center; gap: .7rem;
-  background: var(--bg); border: 1px solid var(--line);
-  border-radius: 12px; padding: .45rem .5rem .45rem .45rem;
-}
-/* Край у превью обязателен: скриншот чаще всего белый, и без рамки
-   он растворяется в строке — видно пустое место вместо картинки. */
-.shots img {
-  width: 52px; height: 52px; flex: none; object-fit: cover;
-  border-radius: 8px; background: var(--line);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--text) 16%, transparent);
-}
-.shots .who { flex: 1; min-width: 0; font-size: .86rem; line-height: 1.3; }
-.shots .who b { display: block; font-weight: 600; overflow: hidden;
-  text-overflow: ellipsis; white-space: nowrap; }
-.shots .who span { color: var(--text-mute); font-variant-numeric: tabular-nums; }
-.shots .drop-x {
-  flex: none; width: 44px; height: 44px; border-radius: 10px;
-  border: 0; background: transparent; color: var(--text-mute);
-  font-size: 1.35rem; line-height: 1; cursor: pointer;
-}
-.shots .drop-x:hover { background: var(--line); color: var(--text); }
-
-.note { font-size: .89rem; color: var(--text-mute); margin: .9rem 0 0; max-width: 34rem; }
-.msg { margin-top: 1rem; padding: .85rem 1rem; border-radius: 12px; font-size: .93rem; font-weight: 600; display: none; }
-.msg.on { display: block; }
-.msg.ok   { background: color-mix(in srgb, #2E7D32 12%, transparent); color: #256B29; }
-.msg.err  { background: color-mix(in srgb, #B3261E 12%, transparent); color: #96201A; }
-@media (prefers-color-scheme: dark) {
-  .msg.ok { color: #7BC47F; } .msg.err { color: #F1877E; }
-}
-
-/* --------------------------------------------- «напишем, когда выйдет» */
-
-/* ------------------------------------------------------------ скачать
-
-   Единственное место, где приложение можно получить, — и оно одето
-   в сильнейшее оформление страницы, ту же терракотовую карточку, что
-   у первого экрана. Раньше эту карточку носила одна почта «напишем,
-   когда выйдет»; теперь внутри две светлые коробки — маковый образ
-   и телефонная плашка с почтой, — и обе одинаковой ширины: то, что
-   есть сегодня, и то, что будет, стоят вровень, а не одно мелким
-   шрифтом под другим. Коробки берут цвета темы (.get), не заперты
-   светлыми, как телефон: в них живая форма, а поля и подписи формы
-   считаны под обе темы. */
-.dl {
-  position: relative; overflow: hidden;
-  border-radius: 30px;
-  background: #A64F22 url("img/hero-paper.jpg") center / cover;
-  box-shadow: var(--shadow-lg);
-  padding: clamp(1.8rem, 4vw, 3rem);
-  display: grid; gap: clamp(1.5rem, 3vw, 2.2rem);
-}
-@media (prefers-color-scheme: dark) {
-  .dl {
-    background-image:
-      linear-gradient(rgba(26, 11, 4, .22), rgba(26, 11, 4, .22)),
-      url("img/hero-paper.jpg");
-  }
-}
-.dl-head { max-width: 40rem; }
-.dl-head h2 { color: #F7EFE3; }
-.dl-head .lead { color: #F4E9DC; margin-top: 1rem; }
-.dl-cards { display: grid; gap: 1rem; align-items: start; }
-@media (min-width: 760px) { .dl-cards { grid-template-columns: 1fr 1fr; gap: 1.2rem; } }
-.dl .get h3 { margin-bottom: 1rem; }
-.dl .get form { margin-top: 1.1rem; }
-.dl .get .field { margin-bottom: .8rem; }
-.dl :where(a, button, input):focus-visible { outline-color: #F7EFE3; }
-/* Плашка магазина на светлой коробке: та же форма, что в первом экране,
-   но цвета темы, и во всю ширину — вровень с кнопкой в соседней коробке:
-   «скачать сегодня» и «скачать скоро» стоят одинаково. */
-.appstore.on-card {
-  width: 100%; box-sizing: border-box;
-  border-color: var(--line); background: var(--bg-sunk); color: var(--text);
-}
-.appstore.on-card .appstore-top { color: var(--text-mute); opacity: 1; }
-
-/* ---------------------------------------------------------- версии */
-
-.releases { display: grid; gap: 0; max-width: 46rem; }
-.rel { display: grid; grid-template-columns: auto 1fr; gap: 1.5rem; padding: 1.4rem 0; border-top: 1px solid var(--line); }
-@media (max-width: 560px) { .rel { grid-template-columns: 1fr; gap: .6rem; } }
-.rel:first-child { border-top: 0; }
-.rel-v { font-weight: 800; font-variant-numeric: tabular-nums; white-space: nowrap; }
-.rel-d { display: block; font-size: .84rem; font-weight: 600; color: var(--text-mute); margin-top: .2rem; }
-.rel ul { margin: .5rem 0 0; padding-left: 1.1rem; color: var(--text-soft); font-size: .97rem; }
-.rel li { margin: .3rem 0; }
-.status { display: inline-block; font: 700 .74rem/1 var(--sans); letter-spacing: .05em; text-transform: uppercase; padding: .38rem .6rem; border-radius: 6px; background: color-mix(in srgb, var(--terra) 16%, transparent); color: var(--accent-text); }
-
-/* ---------------------------------------------------------- переводы */
-
-.amounts { display: grid; grid-template-columns: repeat(3, 1fr); gap: .6rem; margin-bottom: 1.2rem; }
-@media (max-width: 520px) { .amounts { grid-template-columns: 1fr; } }
-
-/* Выбор суммы обозначается контуром, а не заливкой.
-   Раньше выбранная сумма была байт в байт главной кнопкой — и люди
-   жали её, считая, что платят. Сплошная заливка теперь принадлежит
-   ровно одному элементу на экране: кнопке перевода. */
-.amount {
-  font: 800 1.15rem/1 var(--sans); letter-spacing: -0.02em;
-  min-height: 56px; padding: 1rem .9rem; border-radius: 14px;
-  background: var(--bg-card); border: 1.5px solid color-mix(in srgb, var(--text-mute) 45%, transparent); color: var(--text);
-  cursor: pointer; transition: border-color .15s, background .15s, transform .12s;
-}
-.amount:hover { border-color: var(--accent); }
-.amount:active { transform: translateY(1px); }
-.amount[aria-pressed=true] {
-  border-color: var(--accent); border-width: 2px;
-  background: color-mix(in srgb, var(--terra) 10%, var(--bg));
-  color: var(--text);
-}
-@media (prefers-color-scheme: dark) {
-  .amount { background: #2E211A; border-color: rgba(240, 228, 214, .3); }
-  .amount[aria-pressed=true] { background: color-mix(in srgb, var(--terra) 22%, #2E211A); }
-}
-
-#support .btn-primary { width: 100%; padding-block: 1.05rem; font-size: 1.05rem; }
-.btn[aria-disabled=true] {
-  background: var(--bg-sunk); color: var(--text-mute);
-  border-color: var(--line); box-shadow: none; cursor: default;
-}
-
-/* ---------------------------------------------------------- вопросы */
-
-.faq { max-width: 46rem; }
-details { border-bottom: 1px solid var(--line); }
-details > summary {
-  cursor: pointer; font-weight: 700; font-size: 1.05rem; list-style: none;
-  display: flex; justify-content: space-between; gap: 1rem; align-items: flex-start;
-  /* Отступ висит на summary, а не на details: иначе зона касания
-     оставалась 27px, а палец попадал в пустоту вокруг неё. */
-  padding: 1.15rem 0; min-height: 44px;
-}
-summary::-webkit-details-marker { display: none; }
-summary::after {
-  content: ""; flex: none; width: 10px; height: 10px; margin-top: .38em;
-  border-right: 2px solid var(--text-mute); border-bottom: 2px solid var(--text-mute);
-  transform: rotate(45deg); transition: transform .2s;
-}
-details[open] summary::after { transform: rotate(-135deg); }
-details p { margin: 0 0 1.15rem; color: var(--text-soft); font-size: .98rem; max-width: 44rem; }
-
-/* --------------------------------------------------- последний призыв
-
-   Дочитавшему до конца страницы раньше некуда было нажать: FAQ кончался,
-   и начинался подвал. Одна строка с двумя теми же кнопками, что
-   на первом экране, — заливная ровно одна, как везде. Полосы и фактуры
-   нет намеренно: терракотовая плашка «напишем, когда выйдет» стоит
-   выше, вторая такая же смотрелась бы повтором. */
-.go { text-align: center; }
-.go .sec-head { margin-inline: auto; margin-bottom: 1.6rem; }
-.go .lead { margin-inline: auto; }
-.go .cta { display: flex; flex-wrap: wrap; justify-content: center; gap: .8rem; }
-
-/* ---------------------------------------------------------- подвал */
-
-/* Две полки, а не две колонки. Прежде подвал был сеткой `1fr auto`:
-   правая колонка со ссылками брала себе всё, что просила, а ссылок
-   стало шестнадцать — и на описание оставалось 97 px. Слово «дик-
-   товка» вставало столбиком в шесть строк на любом мониторе, владелец
-   увидел это 18 августа 2026. Теперь ссылки идут первой полкой во всю
-   ширину, а описание и копирайт — одной строкой под ними, разведённые
-   по краям; на узком экране строка складывается в две. */
-footer { border-top: 1px solid var(--line); padding-block: 2.4rem 3.2rem; color: var(--text-mute); font-size: .92rem; }
-footer .wrap { display: grid; gap: 1.4rem; }
-footer a { color: var(--text-soft); text-decoration: none; }
-footer a:hover { color: var(--accent-text); text-decoration: underline; }
-.f-links { display: flex; flex-wrap: wrap; gap: .2rem 1.3rem; }
-.f-links a { padding-block: .75rem; }
-.f-about {
-  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline;
-  gap: .4rem 2rem; padding-top: 1.2rem; border-top: 1px solid var(--line);
-}
-.f-about p { margin: 0; }
-
-/* ---------------------------------------------------- китайская страница
-
-   Manrope и EB Garamond иероглифов не содержат вовсе — в них только
-   латиница и кириллица. Веб-шрифта с CJK сюда не поставить: полный
-   начертанный набор весит мегабайты, а страница обязана открываться
-   с плохой связи. Поэтому иероглифы рисует системный шрифт, а Manrope
-   остаётся первым в списке и по-прежнему держит латиницу: подстановка
-   в браузере идёт познаково, и «Scribla» с «App Store» на китайской
-   странице выглядят ровно так же, как на остальных.
-
-   Наклон приходится снимать отдельно. Настоящего курсива у иероглифов
-   нет, и браузер подделывает его сдвигом — знаки выходят кривыми
-   и читаются заметно хуже. Там, где на прочих страницах стоит наклонный
-   Garamond (реплика в демонстрации и примеры под карточками), китайский
-   встаёт прямым. Латинские вставки внутри тех же строк наклон теряют
-   вместе с ним — разделить их можно только разметкой вокруг каждого
-   слова, и цена этого выше выигрыша. */
-
-html[lang|="zh"] {
-  --sans: "Manrope", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
-          "Noto Sans SC", ui-sans-serif, system-ui, sans-serif;
-  --serif: "EB Garamond", "Songti SC", "Noto Serif SC", ui-serif, Georgia, serif;
-}
-html[lang|="zh"] .said,
-html[lang|="zh"] .card .ex { font-style: normal; }
-
-/* ---------------------------------------------------- переключатель языка
-
-   Языков стало четыре, и прежние 44 px на каждый съедали 176 px рядом
-   с шестью ссылками навигации — на узком столе шапка ломалась в две
-   строки. Ширина отдана содержимому, высота нажимаемой области
-   осталась прежней: WCAG меряет цель по обоим измерениям, и 44 px
-   по высоте при 34 px по ширине — это по-прежнему честная цель,
-   а не сжатая до нечитаемости. */
-.lang a { min-width: 0; padding-inline: .5rem; }
-
-
-/* ---------------------------------------------------------- этап 2, 22 августа 2026
-
-   Шапка: одна залитая кнопка и меню языков вместо четырёх ссылок. */
-
-.top-cta { min-height: 40px; padding: .6rem 1.1rem; font-size: .92rem; margin-left: auto; flex: none; }
-@media (min-width: 68.0625em) { .top-cta { margin-left: 0; } .nav { margin-left: auto; } }
 .lang-menu { position: relative; flex: none; }
 .lang-menu summary {
   list-style: none; cursor: pointer; user-select: none;
   font-size: .85rem; font-weight: 700; color: var(--text-mute);
   min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center;
-  gap: .3rem; border-radius: 8px; padding-inline: .5rem;
+  gap: .35rem; border-radius: 8px; padding-inline: .5rem;
 }
 .lang-menu summary::-webkit-details-marker { display: none; }
 .lang-menu summary::after { content: ""; width: 0; height: 0; border: 4px solid transparent; border-top: 5px solid currentColor; border-bottom: 0; margin-top: 2px; }
 .lang-menu[open] summary { color: var(--text); }
-.lang-menu .lang {
+.lang-menu:not([open]) .lang { display: none; }
+.lang {
   position: absolute; right: 0; top: calc(100% + 4px); z-index: 20;
-  flex-direction: column; gap: .15rem; padding: .35rem;
+  display: flex; flex-direction: column; gap: .15rem; padding: .35rem;
   background: var(--bg-card); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow-lg);
 }
-.lang-menu .lang a { justify-content: flex-start; padding-inline: .8rem; min-width: 96px; }
+.lang a { color: var(--text-soft); text-decoration: none; font-weight: 700; font-size: .85rem; border-radius: 8px; min-width: 96px; min-height: 40px; display: inline-flex; align-items: center; padding-inline: .8rem; white-space: nowrap; }
+.lang a[aria-current] { color: var(--accent-on); background: var(--accent); }
 
-/* Первый экран: заголовок сразу после шапки, кнопки под лидом. */
-.hero h1 { margin-top: .2rem; }
-.hero-cta { margin-top: 1.5rem; }
-.hero-meta { display: none; margin-top: .9rem; font-size: .82rem; color: #F1E3D2; opacity: .85; max-width: 34ch; }
-html.is-mac .hero-meta { display: block; }
+/* Узкие экраны: навигация лентой под шапкой, как и раньше. */
+@media (max-width: 56em) {
+  :root { --nav-strip: 2.9rem; }
+  .top { padding-bottom: var(--nav-strip); }
+  .top .wrap { gap: .6rem; }
+  .brand img.word { height: 30px; }
+  .nav {
+    position: absolute; left: 0; right: 0; top: var(--header);
+    min-height: var(--nav-strip); gap: 0; overflow-x: auto; scrollbar-width: none;
+    border-top: 1px solid var(--line); padding-inline: 1.25rem;
+    mask-image: linear-gradient(to right, #000 calc(100% - 1.5rem), transparent);
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 1.5rem), transparent);
+  }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav a { padding: .75rem .7rem; font-size: .9rem; }
+  .nav a:first-child { padding-left: 0; }
+}
+
+/* ---------------------------------------------------------- первый экран */
+
+.hero { padding-top: clamp(2rem, 5vw, 4rem); padding-bottom: clamp(2.5rem, 5vw, 4rem); }
+.hero-grid { display: grid; gap: 2.5rem; align-items: center; }
+@media (min-width: 56.0625em) { .hero-grid { grid-template-columns: 1.15fr .85fr; gap: 3rem; } }
+.hero-text { max-width: 36rem; }
+.hero h1 { margin-bottom: 1.1rem; }
+.hero .lead { font-size: clamp(1.05rem, 1.4vw, 1.2rem); }
+.hero-cta { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 1.6rem; }
+.hero-meta { display: none; margin-top: .9rem; font-size: .85rem; color: var(--text-mute); max-width: 36ch; }
+html.is-mac .hero-meta[data-dev=mac] { display: block; }
+html.is-ios .hero-meta-ios { display: block; }
 html.is-ios .hero-cta [data-dev=mac] { display: none; }
 html.is-other .hero-cta, html.is-other .hero-meta { display: none; }
 
-/* Блок для Windows, Android и всех прочих. */
-.hero-alt { margin-top: 1.4rem; display: grid; gap: .8rem; }
-.hero-alt-h { font: 700 1.05rem/1.3 var(--sans); color: #F7EFE3; margin: 0; }
-.hero-alt-p { color: #F4E9DC; font-size: .95rem; margin: 0; max-width: 40ch; }
-.hero-alt-row { display: flex; align-items: center; gap: 1.1rem; flex-wrap: wrap; }
-.hero-alt-row img[alt^="QR"], .hero-qr { background: #FBF6F0; border-radius: 10px; padding: 6px; width: 96px; height: 96px; }
-.hero-alt-form { margin-top: .2rem; display: grid; gap: .6rem; }
-.hero-alt-fields { display: flex; gap: .6rem; flex-wrap: wrap; }
-.hero-alt-fields input {
-  flex: 1 1 14rem; min-height: 48px; padding: .7rem 1rem; border-radius: 999px;
-  border: 1px solid rgba(245, 237, 227, .5); background: rgba(20, 8, 2, .25); color: #F7EFE3; font: inherit;
-}
-.hero-alt-fields input::placeholder { color: rgba(247, 239, 227, .55); }
-.hero-alt .msg { margin: 0; color: #F7EFE3; }
+.hero-alt { margin-top: 1.2rem; display: grid; gap: .7rem; }
+.hero-alt-h { font-weight: 700; font-size: 1.05rem; }
+.hero-alt-p { color: var(--text-soft); font-size: .95rem; max-width: 40ch; }
+.hero-alt-row { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.hero-qr { width: 88px; height: 88px; background: #fff; border-radius: 10px; padding: 6px; border: 1px solid var(--line); }
+.hero-alt-form { display: grid; gap: .5rem; }
+.hero-alt-fields { display: flex; gap: .5rem; flex-wrap: wrap; }
+.hero-alt-fields input { flex: 1 1 13rem; }
 .hero-alt .msg:empty { display: none; }
 
-/* Контрольная сумма у кнопки образа: длинная строка, рвётся где угодно. */
-.sha { display: block; font-size: .8rem; color: var(--text-mute); margin-bottom: .6rem; }
-.sha code { display: block; font: .72rem/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; word-break: break-all; color: var(--text-soft); }
+/* Телефон — настоящая запись экрана. Рамка минимальная: экран и скругление. */
+.hero-demo { margin: 0; position: relative; justify-self: center; width: min(100%, 19.5rem); }
+.phone {
+  border-radius: 34px; overflow: hidden; background: #000;
+  border: 6px solid #1B1614; box-shadow: var(--shadow-lg);
+  aspect-ratio: 886 / 1920;
+}
+.phone video { width: 100%; height: 100%; object-fit: cover; }
+.film-sound {
+  position: absolute; left: 50%; bottom: 1rem; transform: translateX(-50%);
+  display: inline-flex; align-items: center; gap: .45rem;
+  font: 600 .82rem/1 var(--sans); color: #fff;
+  background: rgba(20, 12, 8, .62); border: 1px solid rgba(255,255,255,.25);
+  padding: .5rem .85rem; border-radius: 999px; cursor: pointer;
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+}
+.film-sound svg { fill: currentColor; }
+.film-sound[aria-pressed=true] [data-film-wave] { opacity: .35; }
 
-.lang-menu:not([open]) .lang { display: none; }
-/* Две кнопки в ряд в колонке 355 px: чуть уже отступы. */
-.hero-cta .btn { padding-inline: 1.2rem; }
-.hero-alt { margin-top: 1.1rem; gap: .6rem; }
-.hero-qr { width: 84px; height: 84px; }
-/* Общие правила details/summary писаны под FAQ; меню языков их не носит. */
-.lang-menu, .lang-menu summary { border: 0; padding: 0; margin: 0; background: none; }
-.lang-menu summary { padding-inline: .5rem; min-height: 44px; }
+/* ---------------------------------------------------------- режимы */
+
+.modes { list-style: none; margin: 2rem 0 0; padding: 0; border-top: 1px solid var(--line); }
+.mode {
+  display: grid; gap: .5rem 1.5rem; padding: 1.1rem 0; border-bottom: 1px solid var(--line);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 48em) { .mode { grid-template-columns: 7rem 1fr 1fr; align-items: baseline; } }
+.mode-name { font-weight: 800; letter-spacing: -0.01em; }
+.mode-said, .mode-got { display: grid; gap: .15rem; }
+.mode-said i, .mode-got i { font: 600 .7rem/1 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--text-mute); font-style: normal; }
+.mode-said { font-family: var(--serif); font-style: italic; font-size: 1.15rem; color: var(--text-soft); }
+.mode-got { font-weight: 600; }
+
+/* ---------------------------------------------------------- три шага */
+
+.steps { list-style: none; counter-reset: step; margin: 2rem 0 0; padding: 0; display: grid; gap: 2rem; }
+@media (min-width: 48em) { .steps { grid-template-columns: repeat(3, 1fr); gap: 2rem; } }
+.step { counter-increment: step; display: grid; gap: .6rem; align-content: start; }
+.step img { max-width: 17rem; border-radius: 22px; border: 1px solid var(--line); box-shadow: var(--shadow); background: var(--bg-alt); margin-bottom: .6rem; }
+.step h3::before { content: counter(step) " · "; color: var(--accent-text); }
+.step p { color: var(--text-soft); font-size: .98rem; }
+
+/* ---------------------------------------------------------- mac */
+
+.mac-grid { display: grid; gap: 2.5rem; align-items: center; }
+@media (min-width: 56.0625em) { .mac-grid { grid-template-columns: 1fr 1fr; gap: 3.5rem; } }
+.facts { margin: 1.4rem 0 1.6rem; padding: 0 0 0 1.1rem; color: var(--text-soft); display: grid; gap: .4rem; }
+.sha { margin-top: 1rem; font-size: .82rem; color: var(--text-mute); }
+.sha code { display: block; word-break: break-all; color: var(--text-soft); font-size: .74rem; line-height: 1.5; }
+.mac-visual { display: grid; gap: 1.25rem; justify-items: end; }
+/* Тени у плашки и карточки свои, снятые вместе с окном: здесь ничего не добавляем. */
+.mac-visual .hud-rec { width: min(100%, 22rem); }
+.mac-visual .hud-answer { width: 100%; }
+.mac-keys { display: flex; gap: .6rem; align-items: center; font-size: 2rem; color: var(--text-mute); }
+.mac-keys kbd { font-size: 1.6rem; padding: .4em .6em; border-radius: 12px; }
+
+/* ---------------------------------------------------------- приватность */
+
+.privacy-grid { display: grid; gap: 1.5rem 2.5rem; margin-top: 1.8rem; }
+@media (min-width: 48em) { .privacy-grid { grid-template-columns: repeat(3, 1fr); } }
+.fact h3 { margin-bottom: .4rem; }
+.fact p { color: var(--text-soft); font-size: .98rem; }
+
+/* ---------------------------------------------------------- скачать */
+
+.download { background: var(--band); color: var(--band-text); border-top: 0; }
+.download h2 { color: var(--band-text); }
+.download .lead { color: var(--band-soft); }
+.dl-grid { display: grid; gap: 1rem; margin-top: 2rem; }
+@media (min-width: 40em) { .dl-grid { grid-template-columns: repeat(2, minmax(0, 22rem)); } }
+.dl-card { background: var(--bg-card); color: var(--text); border-radius: 20px; padding: 1.5rem; display: grid; gap: .9rem; align-content: start; justify-items: start; box-shadow: var(--shadow-lg); }
+.dl-card h3 { font-size: 1.25rem; }
+.dl-badge img { height: 52px; width: auto; }
+.dl-meta { color: var(--text-mute); font-size: .88rem; }
+.download :where(a, button):focus-visible { outline-color: var(--band-text); }
+
+/* ---------------------------------------------------------- вопросы */
+
+.faq { margin-top: 1.2rem; border-top: 1px solid var(--line); max-width: 48rem; }
+.faq details { border-bottom: 1px solid var(--line); }
+.faq summary {
+  list-style: none; cursor: pointer; font-weight: 700; font-size: 1.05rem; padding: 1rem 2.2rem 1rem 0; position: relative;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after {
+  content: ""; position: absolute; right: .4rem; top: 1.35rem; width: .55rem; height: .55rem;
+  border-right: 2px solid var(--text-mute); border-bottom: 2px solid var(--text-mute); transform: rotate(45deg);
+  transition: transform .15s;
+}
+.faq details[open] summary::after { transform: rotate(-135deg); top: 1.55rem; }
+.faq details p { color: var(--text-soft); padding-bottom: 1.1rem; max-width: 44rem; }
+.faq details p + p { margin-top: .5rem; }
+
+/* ---------------------------------------------------------- связь: форма и переводы */
+
+.contact { background: var(--bg-alt); border-top: 1px solid var(--line); }
+.contact .wrap { max-width: 44rem; }
+.contact section { padding-block: clamp(2.5rem, 6vw, 4rem); }
+.contact section + section { border-top: 1px solid var(--line); }
+.contact h2 { font-size: 1.5rem; }
+.contact .lead { font-size: 1rem; }
+.panel { margin-top: 1.4rem; display: grid; gap: 1rem; }
+.field { display: grid; gap: .4rem; }
+.field label, .field .lbl { font-weight: 700; font-size: .95rem; }
+.hint { color: var(--text-mute); font-weight: 400; font-size: .88rem; }
+input, textarea {
+  font: inherit; color: var(--text); background: var(--bg-card);
+  border: 1px solid var(--line); border-radius: 12px; padding: .75rem 1rem; width: 100%; min-height: 48px;
+}
+textarea { min-height: 8rem; resize: vertical; }
+input::placeholder, textarea::placeholder { color: var(--text-mute); opacity: .8; }
+input[aria-invalid=true], textarea[aria-invalid=true] { border-color: #B3261E; }
+.counter { color: var(--text-mute); font-size: .85rem; }
+.drop { border: 1.5px dashed var(--line); border-radius: 12px; background: var(--bg-card); }
+.drop.is-over { border-color: var(--accent); }
+.drop-face { display: flex; align-items: center; gap: .8rem; padding: .9rem 1rem; cursor: pointer; color: var(--text-soft); font-size: .95rem; }
+.drop-face b { color: var(--accent-text); }
+.shots { list-style: none; margin: .6rem 0 0; padding: 0; display: grid; gap: .5rem; }
+.shots li { display: grid; grid-template-columns: 56px 1fr auto; gap: .8rem; align-items: center; font-size: .9rem; }
+.shots img { width: 56px; height: 56px; object-fit: cover; border-radius: 8px; border: 1px solid var(--line); }
+.shots .who { display: grid; } .shots .who span { color: var(--text-mute); font-size: .85rem; }
+.drop-x { border: 0; background: var(--bg-alt); width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 1.1rem; color: var(--text-soft); }
+.msg { display: none; padding: .7rem 1rem; border-radius: 10px; font-size: .95rem; }
+.msg.on { display: block; }
+.msg.ok { background: #E4F1E2; color: #2E6B2A; }
+.msg.err { background: #FBE7E5; color: #B3261E; }
+@media (prefers-color-scheme: dark) { .msg.ok { background: #1C3320; color: #9AD39A; } .msg.err { background: #3A1F1D; color: #F28B82; } }
+.amounts { display: grid; grid-template-columns: repeat(3, 1fr); gap: .6rem; }
+@media (max-width: 30em) { .amounts { grid-template-columns: 1fr; } }
+.amount {
+  font: 700 1rem var(--sans); min-height: 48px; border-radius: 12px; cursor: pointer;
+  border: 1px solid var(--line); background: var(--bg-card); color: var(--text);
+}
+.amount[aria-pressed=true] { border-color: var(--accent); color: var(--accent-text); box-shadow: inset 0 0 0 1px var(--accent); }
+#support .btn-primary { width: 100%; }
+#support .note { margin-top: 0; }
+
+/* ---------------------------------------------------------- подвал */
+
+footer { padding: 2.5rem 0 3.5rem; border-top: 1px solid var(--line); font-size: .92rem; color: var(--text-mute); }
+.f-links { display: flex; flex-wrap: wrap; gap: .4rem 1.4rem; margin-bottom: 1rem; }
+.f-links a { color: var(--text-soft); text-decoration: none; font-weight: 600; }
+.f-links a:hover { color: var(--text); }
+.f-about a { color: inherit; }
+
+/* Без движения — без автопрокрутки и переходов. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}

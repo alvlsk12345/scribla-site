@@ -166,7 +166,7 @@
     const ua = navigator.userAgent || '';
     const plat = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || '';
     if (/iPhone|iPad|iPod/.test(ua) || (/Mac/.test(plat) && navigator.maxTouchPoints > 1)) return 'ios';
-    if (/Mac/.test(plat) || /Macintosh/.test(ua)) return 'mac';
+    if (/Mac/.test(plat) || (!plat && /Macintosh/.test(ua))) return 'mac';
     return 'other';
   })();
   document.documentElement.classList.add('is-' + DEV);
